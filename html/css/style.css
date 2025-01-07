@@ -1,10 +1,32 @@
-/* needed for interactive map in listplace.xsl */
-div#map {
-    height: 50vh;
+/*** global ***/
+nav .dropdown-item:active,
+nav .dropdown-item.active {
+    background-color: #474747;
+    color: #EBEBEB;
 }
 
-/** Match bootstrap navlink focus outline color. */
-:focus-visible {
-    outline: 0;
-    box-shadow: 0 0 0 .25rem rgba(13,110,253,.25);
+body {
+    text-align: justify;
+    padding-top: 100px;
+    hyphens: auto;
 }
+
+@media (max-width: 441px) {
+    body {
+        padding-top: 130px;
+    }
+}
+
+/*** global end ***/
+
+/*** calendar ***/
+#years-table .btn-light:focus,
+#years-table .btn-light.focus {
+    background: #363636;
+    color: #f8f9fa;
+}
+
+.yearbtn {
+    margin-bottom: 4px;
+}
+/*** calendar end ***/
