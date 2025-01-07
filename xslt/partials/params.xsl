@@ -8,7 +8,7 @@
     <xsl:param name="project_short_title">Nuntiatur Pius XI</xsl:param>
     <xsl:param name="github_url">https://github.com/nuntiaturberichte/nbr-pius-xi-static</xsl:param>
     <xsl:param name="html_title">Nuntiatur Pius XI</xsl:param>
-    <xsl:param name="project_logo">images/logo.png</xsl:param>
+    <xsl:param name="project_logo">images/project_logo.png</xsl:param>
     <xsl:param name="base_url">https://acdh-oeaw.github.io/</xsl:param>
     <xsl:param name="data_repo">https://github.com/nuntiaturberichte/nbr-pius-xi-data</xsl:param>
 </xsl:stylesheet>
