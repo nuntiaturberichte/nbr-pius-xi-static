@@ -58,6 +58,35 @@
             width: "10%"
             },
             
+            // Spalte: Dokumenttyp
+            {
+            title: "Dokumenttyp",
+            field: "dokumenttyp",
+            width: "10%",
+            headerFilter: "list",
+            headerFilterPlaceholder: "... wählen",
+            
+            // Funktion, um Werte dynamisch für das Dropdown-Feld zu generieren
+            headerFilterParams: {
+            valuesLookup: function (cell) {
+            let table = cell.getTable();
+            let field = cell.getColumn().getField();
+            let data = table.getData("active");
+            
+            // Eindeutige Werte sammeln und leere Option hinzufügen
+            let uniqueValues = Array.from(new Set(data.map(row => row[field])));
+            uniqueValues = uniqueValues.filter(v => v !== "").sort(); // Sortiere Werte, außer die leeren
+            uniqueValues.unshift(""); // Leere Option an den Anfang
+            
+            // Erstelle Dropdown-Optionen mit Labels
+            return uniqueValues.map(value => ({
+            label: value === "" ? "... wählen" : value, // Label für die leere Option
+            value: value
+            }));
+            }
+            },
+            },
+            
             // Spalte: Titel
             {
             title: "Titel",
@@ -84,8 +113,16 @@
             let field = cell.getColumn().getField();
             let data = table.getData("active");
             
-            // Eindeutige Werte sammeln und leere Option hinzufügen
-            let uniqueValues = Array.from(new Set(data.map(row => row[field])));
+            // Einzelne Werte sammeln, aufteilen, eindeutige Werte extrahieren
+            let uniqueValues = Array.from(
+            new Set(
+            data
+            .map(row => row[field])
+            .flatMap(value => (value ? value.split(", ") : [])) // Aufteilen nach ", "
+            .map(v => v.trim()) // Leerzeichen entfernen
+            )
+            );
+            
             uniqueValues = uniqueValues.filter(v => v !== "").sort(); // Sortiere Werte, außer die leeren
             uniqueValues.unshift(""); // Leere Option an den Anfang
             
