@@ -74,6 +74,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Archivnummer</th>
+                                    <th scope="col">Dokumenttyp</th>
                                     <th scope="col">Titel</th>
                                     <th scope="col">Schlagwort</th>
                                     <th scope="col">Sender</th>
@@ -89,26 +90,33 @@
                                         <xsl:value-of select="document-uri(/)"/>
                                     </xsl:variable>
                                     <xsl:variable name="filename"
-                                        select="substring-before(substring-after($full_path, '/'), '.xml')"/>
+                                        select="substring-before(tokenize($full_path, '/')[last()], '.xml')"/>
                                     <tr>
                                         <td>
                                             <xsl:value-of select="$filename"/>
                                         </td>
                                         <td>
+                                            <xsl:value-of select="descendant::tei:text/@type"/>
+                                        </td>
+                                        <td>
                                             <a>
                                                 <xsl:attribute name="href">
-                                                  <xsl:value-of
-                                                  select="replace(tokenize($full_path, '/')[last()], '.xml', '.html')"
+                                                  <xsl:value-of select="concat($filename, '.html')"
                                                   />
                                                 </xsl:attribute>
                                                 <xsl:value-of
-                                                  select="descendant::tei:body/tei:head/text()"/>
+                                                  select="descendant::tei:titleStmt/tei:title/text()"
+                                                />
                                             </a>
                                         </td>
                                         <td>
-                                            <xsl:value-of
-                                                select="descendant::tei:msContents/tei:msItem/tei:note[@type = 'keyword']"
-                                            />
+                                            <xsl:for-each
+                                                select="descendant::tei:msContents/tei:msItem/tei:note[@type = 'keyword']">
+                                                <xsl:value-of select="normalize-space(.)"/>
+                                                <xsl:if test="position() != last()">
+                                                  <xsl:text>, </xsl:text>
+                                                </xsl:if>
+                                            </xsl:for-each>
                                         </td>
                                         <td>
                                             <a target="_blank">
@@ -141,7 +149,8 @@
                                         </td>
                                         <td>
                                             <xsl:value-of
-                                                select="descendant::tei:correspAction[@type = 'sent']/tei:placeName"/>
+                                                select="descendant::tei:correspAction[@type = 'sent']/tei:placeName"
+                                            />
                                         </td>
                                     </tr>
                                 </xsl:for-each>
