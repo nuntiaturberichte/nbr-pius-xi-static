@@ -6,6 +6,7 @@
     <xsl:import href="./partials/html_footer.xsl"/>
     <xsl:import href="./partials/download_pdf_js.xsl"/>
     <xsl:import href="./partials/tooltip_js.xsl"/>
+    <xsl:import href="./partials/position_annotation_js.xsl"/>
     <xsl:output method="html" indent="yes"/>
 
     <xsl:template match="/">
@@ -21,6 +22,7 @@
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
                     rel="stylesheet"/>
                 <style>
+                    /* Beschreibungs-Tabelle Anfang */
                     table {
                         width: 100%;
                         font-size: 14px;
@@ -41,7 +43,39 @@
                     
                     table tr:nth-child(even) {
                         background-color: #FFFBEB;
-                    }</style>
+                    }
+                    /* Beschreibungs-Tabelle Ende */
+                    
+                    /* Text Anfang */
+                    .row {
+                        display: flex;
+                        position: relative; /* Ermöglicht absolute Positionierung der Anmerkungen */
+                    }
+                    
+                    .col-10 {
+                        width: 80%;
+                        position: relative; /* Referenz für absolute Positionierung */
+                    }
+                    
+                    .col-2 {
+                        width: 20%;
+                        position: relative; /* Referenz für absolute Positionierung */
+                    }
+                    
+                    .annotated-word {
+                        background-color: #f0f8ff; /* Optional: Markierung des Wortes */
+                        padding: 0.1rem;
+                        cursor: pointer;
+                        position: relative;
+                    }
+                    
+                    .annotation {
+                        position: absolute; /* Ermöglicht dynamische Platzierung */
+                        font-size: 0.9em;
+                        color: #666;
+                        white-space: nowrap; /* Optional: Verhindert Zeilenumbruch */
+                    }
+                    /* Text Ende */</style>
             </head>
             <body>
                 <xsl:call-template name="nav_bar"/>
@@ -555,46 +589,37 @@
 
                                 <!-- Schlagworte Ende -->
 
-                                <!-- opener Anfang -->
+                                <!-- Text Anfang -->
 
-                                <xsl:if test="//tei:text/tei:body/tei:p">
-                                    <div class="card-body">
-                                        <h2>Text</h2>
-                                        <xsl:if test="//tei:text/tei:body/tei:opener">
-                                            <div id="opener">
-                                                <xsl:apply-templates
-                                                  select="//tei:text/tei:body/tei:opener"/>
-                                            </div>
-                                        </xsl:if>
+                                <div class="card-body">
+                                    <h2>Text</h2>
 
-                                        <!-- opener Ende -->
-
-                                        <!-- Text Anfang -->
-
-                                        <div id="text">
-                                            <xsl:for-each select="//tei:text/tei:body/*">
-                                                <div class="row">
-                                                  <!-- col-10: Hauptinhalt -->
-                                                  <div class="col-10">
-                                                  <xsl:apply-templates select="."/>
-                                                  </div>
-
-                                                  <!-- col-2: Attribute -->
-                                                  <div class="col-2">
-                                                  <xsl:if
-                                                  test="self::tei:hi[@rend = 'underline'][@hand]">
-                                                  <xsl:value-of select="@hand"/>
-                                                  </xsl:if>
-                                                  </div>
-                                                </div>
-                                            </xsl:for-each>
+                                    <!-- opener Anfang -->
+                                    <xsl:if test="//tei:body/tei:opener">
+                                        <div id="opener">
+                                            <xsl:apply-templates
+                                                select="//tei:text/tei:body/tei:opener"/>
                                         </div>
+                                    </xsl:if>
+                                    <!-- opener Ende -->
 
-
-
-
+                                    <div id="text">
+                                        <div class="row">
+                                            <!-- Fließtext -->
+                                            <div class="col-10">
+                                                <xsl:apply-templates
+                                                  select="//tei:body/*[not(self::tei:note[@type = 'foliation']) and not(self::tei:opener)]"
+                                                />
+                                            </div>
+                                            <!-- Anmerkungen -->
+                                            <div class="col-2">
+                                                <xsl:apply-templates
+                                                  select="//tei:note[@type = 'foliation']"/>
+                                            </div>
+                                        </div>
                                     </div>
-                                </xsl:if>
+
+                                </div>
 
                                 <!-- Text Ende -->
 
@@ -686,6 +711,7 @@
                 <xsl:call-template name="html_footer"/>
                 <xsl:call-template name="download_pdf"/>
                 <xsl:call-template name="tooltip"/>
+                <xsl:call-template name="position_annotation"/>
             </body>
         </html>
     </xsl:template>
@@ -730,14 +756,18 @@
 
     <xsl:template match="tei:note[@type = 'foliation']">
         <sub>
-            <span class="badge bg-secondary">
+            <span class="badge bg-secondary annotated-word">
+                <xsl:attribute name="data-annotation">
+                    <xsl:value-of select="generate-id()"/>
+                </xsl:attribute>
                 <xsl:value-of select="."/>
             </span>
         </sub>
-    </xsl:template>
-    <xsl:template match="tei:note[@type = 'foliation']" mode="attributes">
         <xsl:if test="@rend">
-            <div>
+            <div class="annotation">
+                <xsl:attribute name="data-annotation">
+                    <xsl:value-of select="generate-id()"/>
+                </xsl:attribute>
                 <xsl:value-of select="@rend"/>
             </div>
         </xsl:if>
