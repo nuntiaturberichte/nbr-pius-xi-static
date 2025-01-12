@@ -24,12 +24,15 @@
                     href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css"
                     rel="stylesheet"/>
                 <style>
+                    /* Überschrift */
                     .header-container {
                         display: flex;
                         justify-content: center;
                         position: relative;
                         align-items: center;
                     }
+                    
+                    /* Loader */
                     #loader {
                         position: fixed;
                         left: 50%;
@@ -51,6 +54,30 @@
                     /* Tabelle */
                     .tabulator-tableholder {
                         overflow-x: hidden !important;
+                    }
+                    #tabulator-table-correspaction {
+                        background-color: #ffedad !important;
+                    }
+                    .tabulator-header {
+                        margin-left: 4px !important;
+                    }
+                    .tabulator-headers {
+                        padding: 0 !important;
+                    }
+                    .tabulator-col-sorter-element {
+                        background-color: #ffedad !important;
+                    }
+                    .tabulator-row.tabulator-row-even {
+                        background-color: #FFF6D6 !important;
+                    }
+                    .tabulator-page-counter {
+                        background-color: inherit !important;
+                    }
+                    .tabulator-paginator {
+                        background-color: inherit !important;
+                    }
+                    .tabulator-footer {
+                        background-color: #ffedad !important;
                     }</style>
             </head>
             <body>
@@ -157,12 +184,10 @@
                             </tbody>
                         </table>
                     </div>
-
                     <xsl:call-template name="html_tabulator_dl_buttons"/>
                 </main>
                 <xsl:call-template name="html_footer"/>
                 <xsl:call-template name="tabulator_js_correspaction"/>
-                <xsl:call-template name="html_tabulator_dl_buttons_js"/>
                 <xsl:call-template name="tooltip"/>
             </body>
         </html>
