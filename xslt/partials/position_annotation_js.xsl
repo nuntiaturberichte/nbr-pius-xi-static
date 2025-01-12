@@ -1,24 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="xs" version="2.0">
-    
+
     <xsl:template match="/" name="position_annotation">
-        <script>
-            document.querySelectorAll('.annotated-word').forEach(word => {
-            const annotationId = word.dataset.annotation; // ID der Anmerkung
-            const wordRect = word.getBoundingClientRect(); // Position des Wortes im Viewport
-            const col10Rect = word.closest('.col-10').getBoundingClientRect(); // Position von col-10
-            const annotation = document.querySelector(`.annotation[data-annotation="${annotationId}"]`);
+        <script>function positionAnnotations() {
+            const positions = {}; // Speichert die Anzahl der Elemente mit demselben top-Wert
             
-            if (annotation) {
-            // Berechnung der relativen Position des Wortes in der col-10
+            document.querySelectorAll('[title="annotation"]').forEach(annotation => {
+            const annotationId = annotation.getAttribute('data-annotation');
+            const word = document.querySelector(`[title="annotated-word"][data-annotation="${annotationId}"]`);
+            
+            if (word) {
+            const wordRect = word.getBoundingClientRect();
+            const col10Rect = word.closest('.col-10').getBoundingClientRect();
+            const col2 = document.querySelector('.col-2');
+            
+            if (col2) {
             const offsetTop = wordRect.top - col10Rect.top;
             
-            // Anmerkung in col-2 platzieren
-            annotation.style.top = `${offsetTop}px`;
+            // Prüfen, wie viele Elemente bereits denselben top-Wert haben
+            const existingCount = positions[offsetTop] || 0;
+            
+            // Hinzufügen der vertikalen Verschiebung
+            const adjustment = existingCount * 20; // 20px Abstand zwischen den Elementen
+            annotation.style.position = 'absolute';
+            annotation.style.top = `${offsetTop + adjustment}px`;
+            
+            // Zählen, wie viele Elemente denselben top-Wert haben
+            positions[offsetTop] = existingCount + 1;
+            }
             }
             });
+            }
+            
+            // Initiale Positionierung der Annotationen
+            positionAnnotations();
+            
+            // Event-Listener für Scrollen und Resizing
+            window.addEventListener('resize', positionAnnotations);
+            window.addEventListener('scroll', positionAnnotations);
         </script>
-        
+
     </xsl:template>
 </xsl:stylesheet>
