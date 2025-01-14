@@ -24,7 +24,7 @@
             // Hinzufügen der vertikalen Verschiebung
             const adjustment = existingCount * 20; // 20px Abstand zwischen den Elementen
             annotation.style.position = 'absolute';
-            annotation.style.top = `${offsetTop + adjustment}px`;
+            annotation.style.top = `${offsetTop + adjustment - 10}px`;
             
             // Zählen, wie viele Elemente denselben top-Wert haben
             positions[offsetTop] = existingCount + 1;
