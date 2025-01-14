@@ -66,8 +66,8 @@
                     
                     /* Annotation-Hervorhebung Anfang */
                     .highlight {
-                        transform: scale(1.5);
-                        transition: transform 0.3s ease, background-color 0.3s ease;
+                        border: 1px solid black;
+                        border-radius: 5px
                     }
                     /* Annotation-Hervorhebung Ende */</style>
             </head>
@@ -593,24 +593,14 @@
                                                 <!-- Fließtext Anfang -->
                                                 <div class="col-10"
                                                   style="border-right: 1px solid #db2017;">
-                                                  <!-- opener Anfang -->
-                                                  <xsl:if test="//tei:body/tei:opener">
-                                                  <div id="opener">
-                                                  <xsl:apply-templates
-                                                  select="//tei:text/tei:body/tei:opener"
-                                                  mode="col-10"/>
-                                                  </div>
-                                                  </xsl:if>
-                                                  <!-- opener Ende -->
-                                                  <xsl:apply-templates
-                                                  select="//tei:body/*[not(self::tei:note[@type = 'foliation']) and not(self::tei:opener)]"
+                                                  <xsl:apply-templates select="//tei:body/*"
                                                   mode="col-10"/>
                                                 </div>
                                                 <!-- Fließtext Ende -->
                                                 <!-- Anmerkungen Anfang -->
                                                 <div class="col-2">
                                                   <xsl:apply-templates
-                                                  select="//tei:note[@type = 'foliation']"
+                                                  select="//tei:note[@type = 'foliation'] | //tei:signed | //tei:hi[@rend = 'underline'] | //tei:hi[@rend = 'mark']"
                                                   mode="col-2"/>
                                                 </div>
                                                 <!-- Anmerkungen Ende -->
@@ -648,7 +638,7 @@
                                                   <xsl:value-of select="number($fnSign)"/>
                                                   </span>
                                                 </sup>&#160;<xsl:value-of
-                                                  select="normalize-space(.)"/>&#160; <a
+                                                  select="normalize-space(.)"/>&#160;<a
                                                   href="#{$fnId}_con"><i class="bi bi-arrow-up"
                                                   /></a>
                                             </li>
@@ -697,14 +687,16 @@
     </xsl:template>
 
     <xsl:template match="tei:seg[@type = 'subjectLine']" mode="col-10">
-        <strong class="d-block mb-4">
+        <strong class="d-block mb-4" style="text-align: center">
             <xsl:apply-templates mode="col-10"/>
         </strong>
     </xsl:template>
 
     <xsl:template match="tei:salute" mode="col-10">
         <p>
-            <xsl:apply-templates mode="col-10"/>
+            <em>
+                <xsl:apply-templates mode="col-10"/>
+            </em>
         </p>
     </xsl:template>
 
@@ -734,6 +726,61 @@
         </li>
     </xsl:template>
 
+    <xsl:template match="tei:note[@type = 'footnote']" mode="col-10">
+        <xsl:variable name="filename"
+            select="substring-before(tokenize(base-uri(/), '/')[last()], '.xml')"/>
+        <xsl:variable name="fnNumber">
+            <xsl:number count="tei:note[@type = 'footnote']" level="any"/>
+        </xsl:variable>
+        <xsl:variable name="fnSign">
+            <xsl:value-of select="format-number($fnNumber, '00')"/>
+        </xsl:variable>
+        <xsl:variable name="fnId" select="concat('FN_', $filename, '_', $fnSign)"/>
+        <a class="footnote" id="{$fnId}_con" href="#{$fnId}_app" title="{normalize-space(.)}">
+            <sup>
+                <span class="badge bg-primary">
+                    <xsl:value-of select="$fnNumber"/>
+                </span>
+            </sup>
+        </a>
+    </xsl:template>
+
+    <xsl:template match="tei:lb[position() > 1]" mode="col-10">
+        <br/>
+    </xsl:template>
+
+    <xsl:template match="tei:closer" mode="col-10">
+        <div style="margin-top: 75px; text-align: right;">
+            <xsl:apply-templates select="tei:salute" mode="col-10"/>
+            <xsl:apply-templates select="tei:signed" mode="col-10"/>
+        </div>
+    </xsl:template>
+
+    <!-- Unterschrift des Autors Anfang -->
+    <!-- col-10 -->
+    <xsl:template match="tei:signed" mode="col-10">
+        <p>
+            <em>
+                <span style="font-weight: bold" title="annotated-word">
+                    <xsl:attribute name="data-annotation">
+                        <xsl:value-of select="generate-id()"/>
+                    </xsl:attribute>
+                    <xsl:apply-templates mode="col-10"/>
+                </span>
+            </em>
+        </p>
+    </xsl:template>
+    <!-- col-2 -->
+    <xsl:template match="tei:signed" mode="col-2">
+        <div title="annotation">
+            <xsl:attribute name="data-annotation">
+                <xsl:value-of select="generate-id()"/>
+            </xsl:attribute>
+            <xsl:value-of select="@rend"/>
+        </div>
+    </xsl:template>
+    <!-- Unterschrift des Autors Ende -->
+
     <!-- Archivfolierungsnummer Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:note[@type = 'foliation']" mode="col-10">
@@ -746,7 +793,6 @@
             </span>
         </sub>
     </xsl:template>
-
     <!-- col-2 -->
     <xsl:template match="tei:note[@type = 'foliation']" mode="col-2">
         <div title="annotation">
@@ -758,71 +804,53 @@
     </xsl:template>
     <!-- Archivfolierungsnummer Ende -->
 
-
-    <!-- zu Entstehungsprozess - Anfang -->
-
     <!-- Unterstreichung Anfang -->
-    <xsl:template match="tei:hi[@rend = 'underline']">
-        <span style="text-decoration: underline;">
-            <xsl:value-of select="."/>
+    <!-- col-10 -->
+    <xsl:template match="tei:hi[@rend = 'underline']" mode="col-10">
+        <span style="text-decoration: underline;" title="annotated-word">
+            <xsl:attribute name="data-annotation">
+                <xsl:value-of select="generate-id()"/>
+            </xsl:attribute>
+            <xsl:apply-templates mode="col-10"/>
         </span>
+    </xsl:template>
+    <!-- col-2 -->
+    <xsl:template match="tei:hi[@rend = 'underline']" mode="col-2">
+        <xsl:if test="@hand">
+            <div title="annotation">
+                <xsl:attribute name="data-annotation">
+                    <xsl:value-of select="generate-id()"/>
+                </xsl:attribute>
+                <xsl:value-of select="@hand"/>
+            </div>
+        </xsl:if>
     </xsl:template>
     <!-- Unterstreichung Ende -->
 
+    <!-- Markierung Anfang -->
+    <!-- col-10 -->
+    <xsl:template match="tei:hi[@rend = 'mark']" mode="col-10">
+        <span style="background-color: #ffedad; border-radius: 5px;" title="annotated-word">
+            <xsl:attribute name="data-annotation">
+                <xsl:value-of select="generate-id()"/>
+            </xsl:attribute>
+            <xsl:apply-templates mode="col-10"/>
+        </span>
+    </xsl:template>
+    <!-- col-2 -->
+    <xsl:template match="tei:hi[@rend = 'mark']" mode="col-2">
+        <xsl:if test="@hand">
+            <div title="annotation">
+                <xsl:attribute name="data-annotation">
+                    <xsl:value-of select="generate-id()"/>
+                </xsl:attribute>
+                <xsl:value-of select="@hand"/>
+            </div>
+        </xsl:if>
+    </xsl:template>
+    <!-- Markierung Ende -->
+
 
     <!-- zu Entstehungsprozess - Ende -->
-
-
-
-
-
-
-
-
-
-
-    <xsl:template match="tei:lb[position() > 1]">
-        <br/>
-    </xsl:template>
-
-
-
-    <xsl:template match="tei:note[@type = 'footnote']">
-        <xsl:variable name="fnSign" select="substring-after(substring-after(@xml:id, '_'), '_')"/>
-        <xsl:variable name="fnId" select="@xml:id"/>
-        <a class="footnote" id="{$fnId}_con" href="#{$fnId}_app" title="{normalize-space(.)}">
-            <sup>
-                <span class="badge bg-primary">
-                    <xsl:value-of select="number($fnSign)"/>
-                </span>
-            </sup>
-        </a>
-    </xsl:template>
-
-    <xsl:template match="tei:note[@type = 'siglum']">
-        <xsl:variable name="sSign" select="substring-after(substring-after(@xml:id, '_'), '_')"/>
-        <xsl:variable name="sId" select="@xml:id"/>
-        <a class="siglum" id="{$sId}_con" href="#{$sId}_app" title="{normalize-space(.)}">
-            <sup>
-                <span class="badge bg-primary">
-                    <xsl:value-of select="$sSign"/>
-                </span>
-            </sup>
-        </a>
-    </xsl:template>
-
-    <xsl:template match="tei:ref">
-        <xsl:variable name="sRefSign" select="substring-after(substring-after(@xml:id, '_'), '_')"/>
-        <xsl:variable name="refId" select="@target"/>
-        <a class="siglum-ref" href="{$refId}">
-            <sup>
-                <span class="badge bg-primary">
-                    <xsl:value-of select="$sRefSign"/>
-                </span>
-            </sup>
-        </a>
-    </xsl:template>
-
-
 
 </xsl:stylesheet>
