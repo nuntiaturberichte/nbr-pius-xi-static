@@ -442,16 +442,16 @@
                                                   />
                                                   </xsl:if>
                                                   </a>
-                                                  <xsl:text>&#160;-&#160;</xsl:text>
                                                   <xsl:if
                                                   test="tei:correspAction[@type = 'sent']/tei:placeName">
+                                                  <xsl:text>&#160;-&#160;</xsl:text>
                                                   <xsl:value-of
                                                   select="tei:correspAction[@type = 'sent']/tei:placeName"
                                                   />
                                                   </xsl:if>
-                                                  <xsl:text>,&#160;</xsl:text>
                                                   <xsl:if
                                                   test="tei:correspAction[@type = 'sent']/tei:date">
+                                                  <xsl:text>,&#160;</xsl:text>
                                                   <xsl:value-of
                                                   select="tei:correspAction[@type = 'sent']/tei:date"
                                                   />
@@ -483,16 +483,16 @@
                                                   />
                                                   </xsl:if>
                                                   </a>
-                                                  <xsl:text>&#160;-&#160;</xsl:text>
                                                   <xsl:if
                                                   test="tei:correspAction[@type = 'received']/tei:placeName">
+                                                  <xsl:text>&#160;-&#160;</xsl:text>
                                                   <xsl:value-of
                                                   select="tei:correspAction[@type = 'received']/tei:placeName"
                                                   />
                                                   </xsl:if>
-                                                  <xsl:text>,&#160;</xsl:text>
                                                   <xsl:if
                                                   test="tei:correspAction[@type = 'sent']/tei:date">
+                                                  <xsl:text>,&#160;</xsl:text>
                                                   <xsl:value-of
                                                   select="tei:correspAction[@type = 'sent']/tei:date"
                                                   />
@@ -577,105 +577,87 @@
                                                 </xsl:for-each>
                                             </p>
                                         </xsl:if>
-                                        <hr/>
                                     </div>
+                                    <hr/>
                                 </xsl:if>
 
                                 <!-- Schlagworte Ende -->
 
                                 <!-- Text Anfang -->
 
-                                <div class="card-body">
-                                    <h2>Text</h2>
-                                    <div id="text">
-                                        <div class="row">
-                                            <!-- Fließtext Anfang -->
-                                            <div class="col-10"
-                                                style="border-right: 1px solid #db2017;">
-                                                <!-- opener Anfang -->
-                                                <xsl:if test="//tei:body/tei:opener">
+                                <xsl:if test="//tei:text/tei:body/*">
+                                    <div class="card-body">
+                                        <h2>Text</h2>
+                                        <div id="text">
+                                            <div class="row">
+                                                <!-- Fließtext Anfang -->
+                                                <div class="col-10"
+                                                  style="border-right: 1px solid #db2017;">
+                                                  <!-- opener Anfang -->
+                                                  <xsl:if test="//tei:body/tei:opener">
                                                   <div id="opener">
                                                   <xsl:apply-templates
                                                   select="//tei:text/tei:body/tei:opener"
                                                   mode="col-10"/>
                                                   </div>
-                                                </xsl:if>
-                                                <!-- opener Ende -->
-                                                <xsl:apply-templates
+                                                  </xsl:if>
+                                                  <!-- opener Ende -->
+                                                  <xsl:apply-templates
                                                   select="//tei:body/*[not(self::tei:note[@type = 'foliation']) and not(self::tei:opener)]"
                                                   mode="col-10"/>
-                                            </div>
-                                            <!-- Fließtext Ende -->
-                                            <!-- Anmerkungen Anfang -->
-                                            <div class="col-2">
-                                                <xsl:apply-templates
+                                                </div>
+                                                <!-- Fließtext Ende -->
+                                                <!-- Anmerkungen Anfang -->
+                                                <div class="col-2">
+                                                  <xsl:apply-templates
                                                   select="//tei:note[@type = 'foliation']"
                                                   mode="col-2"/>
+                                                </div>
+                                                <!-- Anmerkungen Ende -->
                                             </div>
                                         </div>
-                                        <!-- Anmerkungen Ende -->
                                     </div>
-                                </div>
-
+                                    <hr/>
+                                </xsl:if>
                             </div>
-
                             <!-- Text Ende -->
 
                             <!-- Legende Anfang -->
-
                             <div id="legend" class="card-body">
                                 <h3>Legende</h3>
                                 <!-- mit ifs prüfen -->
                             </div>
-
+                            <hr/>
                             <!-- Legende Ende -->
 
-
-
-
-
-
-
-
-                            <xsl:if test="//tei:note">
-                                <hr/>
+                            <!-- Fußnoten Anfang -->
+                            <xsl:if test="//tei:note[@type = 'footnote']">
                                 <div id="footnotes-apparatus" class="card-body">
                                     <h3>Fußnoten</h3>
                                     <ul class="list-unstyled">
-                                        <xsl:for-each select="//tei:note">
-                                            <xsl:if test="@type = 'footnote'">
-                                                <xsl:variable name="fnSign"
-                                                  select="number(substring-after(substring-after(@xml:id, '_'), '_'))"/>
-                                                <xsl:variable name="fnId" select="@xml:id"/>
-                                                <li id="{$fnId}_app" href="#{$fnId}_con">
-                                                  <sup>
+                                        <xsl:for-each select="//tei:note[@type = 'footnote']">
+                                            <xsl:variable name="filename"
+                                                select="substring-before(tokenize(base-uri(/), '/')[last()], '.xml')"/>
+                                            <xsl:variable name="fnSign"
+                                                select="format-number(position(), '00')"/>
+                                            <xsl:variable name="fnId"
+                                                select="concat('FN_', $filename, '_', $fnSign)"/>
+                                            <li id="{$fnId}_app" href="#{$fnId}_con">
+                                                <sup>
                                                   <span class="badge bg-primary">
                                                   <xsl:value-of select="number($fnSign)"/>
                                                   </span>
-                                                  </sup>&#160;<xsl:value-of
-                                                  select="normalize-space(.)"/>&#160;<a
+                                                </sup>&#160;<xsl:value-of
+                                                  select="normalize-space(.)"/>&#160; <a
                                                   href="#{$fnId}_con"><i class="bi bi-arrow-up"
                                                   /></a>
-                                                </li>
-                                            </xsl:if>
-                                            <xsl:if test="@type = 'siglum'">
-                                                <xsl:variable name="sSign"
-                                                  select="substring-after(substring-after(@xml:id, '_'), '_')"/>
-                                                <xsl:variable name="sId" select="@xml:id"/>
-                                                <li id="{$sId}_app" href="#{$sId}_con">
-                                                  <sup>
-                                                  <span class="badge bg-primary">
-                                                  <xsl:value-of select="$sSign"/>
-                                                  </span>
-                                                  </sup>&#160;<xsl:value-of
-                                                  select="normalize-space(.)"/>&#160;<a
-                                                  href="#{$sId}_con"><i class="bi bi-arrow-up"/></a>
-                                                </li>
-                                            </xsl:if>
+                                            </li>
                                         </xsl:for-each>
                                     </ul>
                                 </div>
                             </xsl:if>
+                            <!-- Fußnoten Ende -->
+
                             <div class="card-footer" style="background-color: #FFEDAD">
                                 <div class="row">
                                     <div class="col-12 col-md-4 d-flex justify-content-start">
