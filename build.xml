@@ -17,6 +17,10 @@
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
     </xslt>
+    <xslt in="../nbr-pius-xi-data/meta/index.xml" out="${target}/index.html" style="./xslt/index.xsl">
+        <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+        <classpath location="${basedir}/saxon/saxon9he.jar"/>
+    </xslt>
     <!-- 
     <xslt in="./xslt/calendar.xsl" out="${target}/calendar.html" style="./xslt/calendar.xsl">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
