@@ -3,12 +3,16 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="xs" version="2.0">
 
     <xsl:template match="/" name="position_annotation">
-        <script>function positionAnnotations() {
+        <script>
+            function positionAnnotations() {
             const positions = {}; // Speichert die Anzahl der Elemente mit demselben top-Wert
             
-            document.querySelectorAll('[title="annotation"]').forEach(annotation => {
+            // Suche nach Annotationen mit der Klasse "annotation"
+            document.querySelectorAll('.annotation').forEach(annotation => {
             const annotationId = annotation.getAttribute('data-annotation');
-            const word = document.querySelector(`[title="annotated-word"][data-annotation="${annotationId}"]`);
+            
+            // Suche nach den zugehörigen Wörtern mit der Klasse "annotated-word"
+            const word = document.querySelector(`.annotated-word[data-annotation="${annotationId}"]`);
             
             if (word) {
             const wordRect = word.getBoundingClientRect();
@@ -16,15 +20,15 @@
             const col2 = document.querySelector('.col-2');
             
             if (col2) {
-            const offsetTop = wordRect.top - col10Rect.top;
+            const offsetTop = wordRect.top - col10Rect.top - 2;
             
             // Prüfen, wie viele Elemente bereits denselben top-Wert haben
             const existingCount = positions[offsetTop] || 0;
             
             // Hinzufügen der vertikalen Verschiebung
-            const adjustment = existingCount * 20; // 20px Abstand zwischen den Elementen
+            const adjustment = existingCount * 24; // 24px Abstand zwischen den Elementen
             annotation.style.position = 'absolute';
-            annotation.style.top = `${offsetTop + adjustment - 10}px`;
+            annotation.style.top = `${offsetTop + adjustment}px`;
             
             // Zählen, wie viele Elemente denselben top-Wert haben
             positions[offsetTop] = existingCount + 1;
@@ -40,6 +44,5 @@
             window.addEventListener('resize', positionAnnotations);
             window.addEventListener('scroll', positionAnnotations);
         </script>
-
     </xsl:template>
 </xsl:stylesheet>
