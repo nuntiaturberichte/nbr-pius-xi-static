@@ -86,7 +86,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="correspaction.html">Briefe</a>
+                                <a class="nav-link" href="correspaction.html">Dokumente</a>
                             </li>
 
                             <li class="nav-item">
