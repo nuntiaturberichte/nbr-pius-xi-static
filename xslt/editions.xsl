@@ -8,6 +8,7 @@
     <xsl:import href="./partials/tooltip_js.xsl"/>
     <xsl:import href="./partials/position_annotation_js.xsl"/>
     <xsl:import href="partials/highlight_annotation_js.xsl"/>
+    <xsl:import href="partials/scroll_offset_js.xsl"/>
     <xsl:output method="html" indent="yes"/>
 
     <xsl:template match="/">
@@ -418,10 +419,10 @@
                                                 </tr>
                                             </xsl:if>
                                             <xsl:for-each select="//tei:correspDesc">
-                                                <tr>
-                                                  <td>Kommunikationsweg</td>
-                                                  <xsl:if
+                                                <xsl:if
                                                   test="tei:correspAction[@type = 'sent'] and tei:correspAction[@type = 'received']">
+                                                  <tr>
+                                                  <td>Kommunikationsweg</td>
                                                   <td style="text-align: center;">
                                                   <!-- Sender -->
                                                   <div style="margin-bottom: 1em;">
@@ -499,8 +500,8 @@
                                                   </xsl:if>
                                                   </div>
                                                   </td>
-                                                  </xsl:if>
-                                                </tr>
+                                                  </tr>
+                                                </xsl:if>
                                             </xsl:for-each>
                                             <xsl:if test="//tei:msIdentifier/tei:repository">
                                                 <tr>
@@ -600,7 +601,7 @@
                                                 <!-- Anmerkungen Anfang -->
                                                 <div class="col-2">
                                                   <xsl:apply-templates
-                                                  select="//tei:note[@type = 'foliation'] | //tei:signed | //tei:hi[@rend = 'underline'] | //tei:hi[@rend = 'mark'] | //tei:gap | //tei:add"
+                                                  select="//tei:note[@type = 'foliation'] | //tei:signed | //tei:hi[@rend = 'underline'] | //tei:hi[@rend = 'mark'] | //tei:add"
                                                   mode="col-2"/>
                                                 </div>
                                                 <!-- Anmerkungen Ende -->
@@ -682,6 +683,7 @@
                 <xsl:call-template name="tooltip"/>
                 <xsl:call-template name="position_annotation"/>
                 <xsl:call-template name="highlight_annotation"/>
+                <xsl:call-template name="scroll_offset"/>
             </body>
         </html>
     </xsl:template>
@@ -701,11 +703,9 @@
     </xsl:template>
 
     <xsl:template match="tei:pb" mode="col-10">
-        <sub>
-            <span class="badge bg-warning">
-                <xsl:value-of select="@n"/>
-            </span>
-        </sub>
+        <span class="badge bg-warning" style="font-size: 10px; padding: 2px 4px; line-height: 1.5">
+            <xsl:value-of select="@n"/>
+        </span>
     </xsl:template>
 
     <xsl:template match="tei:p" mode="col-10">
@@ -757,7 +757,7 @@
     </xsl:template>
 
     <xsl:template match="tei:subst" mode="col-10">
-        <span style="background-color: #EBEBEB; border-radius: 5px;">
+        <span style="border: black 1px dotted; border-radius: 5px;">
             <xsl:apply-templates mode="col-10"/>
         </span>
     </xsl:template>
@@ -767,7 +767,7 @@
     <xsl:template match="tei:signed" mode="col-10">
         <p>
             <em>
-                <span style="font-weight: bold" title="annotated-word">
+                <span style="font-weight: bold" class="annotated-word">
                     <xsl:attribute name="data-annotation">
                         <xsl:value-of select="generate-id()"/>
                     </xsl:attribute>
@@ -778,7 +778,7 @@
     </xsl:template>
     <!-- col-2 -->
     <xsl:template match="tei:signed" mode="col-2">
-        <div title="annotation">
+        <div class="annotation">
             <xsl:attribute name="data-annotation">
                 <xsl:value-of select="generate-id()"/>
             </xsl:attribute>
@@ -790,30 +790,31 @@
     <!-- Archivfolierungsnummer Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:note[@type = 'foliation']" mode="col-10">
-        <sub>
-            <span class="badge bg-secondary" title="annotated-word">
-                <xsl:attribute name="data-annotation">
-                    <xsl:value-of select="generate-id()"/>
-                </xsl:attribute>
-                <xsl:value-of select="."/>
-            </span>
-        </sub>
-    </xsl:template>
-    <!-- col-2 -->
-    <xsl:template match="tei:note[@type = 'foliation']" mode="col-2">
-        <div title="annotation">
+        <span class="badge bg-secondary annotated-word"
+            style="font-size: 10px; padding: 2px 4px; line-height: 1.5">
             <xsl:attribute name="data-annotation">
                 <xsl:value-of select="generate-id()"/>
             </xsl:attribute>
-            <xsl:value-of select="@rend"/>
-        </div>
+            <xsl:value-of select="."/>
+        </span>
+    </xsl:template>
+    <!-- col-2 -->
+    <xsl:template match="tei:note[@type = 'foliation']" mode="col-2">
+        <xsl:if test="@rend">
+            <div class="annotation">
+                <xsl:attribute name="data-annotation">
+                    <xsl:value-of select="generate-id()"/>
+                </xsl:attribute>
+                <xsl:value-of select="@rend"/>
+            </div>
+        </xsl:if>
     </xsl:template>
     <!-- Archivfolierungsnummer Ende -->
 
     <!-- Unterstreichung Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:hi[@rend = 'underline']" mode="col-10">
-        <span style="text-decoration: underline;" title="annotated-word">
+        <span style="text-decoration: underline;" class="annotated-word">
             <xsl:attribute name="data-annotation">
                 <xsl:value-of select="generate-id()"/>
             </xsl:attribute>
@@ -823,7 +824,7 @@
     <!-- col-2 -->
     <xsl:template match="tei:hi[@rend = 'underline']" mode="col-2">
         <xsl:if test="@hand">
-            <div title="annotation">
+            <div class="annotation">
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
                 </xsl:attribute>
@@ -836,7 +837,7 @@
     <!-- Markierung Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:hi[@rend = 'mark']" mode="col-10">
-        <span style="background-color: #ffedad; border-radius: 5px;" title="annotated-word">
+        <span style="background-color: #ffedad; border-radius: 5px;" class="annotated-word">
             <xsl:attribute name="data-annotation">
                 <xsl:value-of select="generate-id()"/>
             </xsl:attribute>
@@ -846,7 +847,7 @@
     <!-- col-2 -->
     <xsl:template match="tei:hi[@rend = 'mark']" mode="col-2">
         <xsl:if test="@hand">
-            <div title="annotation">
+            <div class="annotation">
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
                 </xsl:attribute>
@@ -858,55 +859,65 @@
 
     <!-- Durchstreichung Anfang -->
     <!-- col-10 -->
-    <xsl:template match="tei:del" mode="col-10">
-        <span style="text-decoration: line-through;" title="annotated-word">
-            <xsl:attribute name="data-annotation">
-                <xsl:value-of select="generate-id()"/>
-            </xsl:attribute>
+    <xsl:template match="tei:del[not(tei:gap)]" mode="col-10">
+        <span style="background-color: #F9CBC8; border-radius: 5px; text-decoration: line-through;">
+            <xsl:if test="@rend = 'overwritten'">
+                <xsl:attribute name="style">
+                    <xsl:value-of
+                        select="concat('background-color: #F9CBC8; text-decoration: line-through;', ' color: gray; text-decoration-style: wavy;')"
+                    />
+                </xsl:attribute>
+            </xsl:if>
             <xsl:apply-templates mode="col-10"/>
         </span>
     </xsl:template>
     <xsl:template match="tei:gap" mode="col-10">
-        <span style="text-decoration: line-through;" title="annotated-word">
-            <!-- Generiere ein data-annotation-Attribut -->
-            <xsl:attribute name="data-annotation">
-                <xsl:value-of select="generate-id()"/>
-            </xsl:attribute>
-            <!-- Generiere die Punkte basierend auf dem quantity-Wert -->
+        <xsl:variable name="style">
+            <xsl:choose>
+                <xsl:when test="@reason = 'strikethrough'">text-decoration: line-through;</xsl:when>
+                <xsl:when test="@reason = 'overwritten'">color: gray; text-decoration: line-through;
+                    text-decoration-style: wavy;</xsl:when>
+                <xsl:otherwise>background-color: #F9CBC8;</xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <span style="background-color: #F9CBC8; border-radius: 5px; {$style}" class="annotated-word">
             <xsl:variable name="quantity" select="@quantity"/>
-            <xsl:for-each select="1 to $quantity">
-                <xsl:text>☐</xsl:text>
-            </xsl:for-each>
+            <xsl:choose>
+                <xsl:when test="@unit = 'char'">
+                    <xsl:for-each select="1 to $quantity">
+                        <xsl:text>▯</xsl:text>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:when test="@unit = 'word'">
+                    <xsl:for-each select="1 to $quantity">
+                        <xsl:text>▭</xsl:text>
+                    </xsl:for-each>
+                </xsl:when>
+            </xsl:choose>
         </span>
-    </xsl:template>
-    <!-- col-2 -->
-    <xsl:template match="tei:gap" mode="col-2">
-        <xsl:if test="@reason">
-            <div title="annotation">
-                <xsl:attribute name="data-annotation">
-                    <xsl:value-of select="generate-id()"/>
-                </xsl:attribute>
-                <xsl:value-of select="@reason"/>
-            </div>
-        </xsl:if>
     </xsl:template>
     <!-- Durchstreichung Ende -->
 
     <!-- Ersetzung Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:add" mode="col-10">
-        <span title="annotated-word">
-            <!-- Generiere das Attribut data-annotation -->
+        <span class="annotated-word" style="border-radius: 5px; background-color: #CBE1D1">
             <xsl:attribute name="data-annotation">
                 <xsl:value-of select="generate-id()"/>
             </xsl:attribute>
             <xsl:choose>
                 <xsl:when test="@place = 'above'">
-                    <xsl:attribute name="style">vertical-align: super</xsl:attribute>
+                    <i class="bi bi-arrow-up"/>
                 </xsl:when>
                 <xsl:when test="@place = 'below'">
-                    <xsl:attribute name="style">vertical-align: sub</xsl:attribute>
+                    <i class="bi bi-arrow-down"/>
                 </xsl:when>
+                <xsl:when test="@place = 'margin'">
+                    <i class="bi bi-arrow-left"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <i class="bi bi-arrow-right"/>
+                </xsl:otherwise>
             </xsl:choose>
             <xsl:apply-templates mode="col-10"/>
         </span>
@@ -914,7 +925,7 @@
     <!-- col-2 -->
     <xsl:template match="tei:add" mode="col-2">
         <xsl:if test="@rend">
-            <div title="annotation">
+            <div class="annotation">
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
                 </xsl:attribute>
