@@ -11,7 +11,7 @@
     <xsl:strip-space elements="*"/>
 
     <xsl:template match="/">
-        <xsl:variable name="doc_title" select="'Alle Briefe'"/>
+        <xsl:variable name="doc_title" select="'Alle Dokumente'"/>
         <xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;</xsl:text>
         <html xmlns="http://www.w3.org/1999/xhtml" lang="de">
             <head>
@@ -85,7 +85,7 @@
                 <main>
                     <div class="container my-4">
                         <div class="header-container">
-                            <h1 class="text-center mb-0">Alle Briefe</h1>
+                            <h1 class="text-center mb-0">Alle Dokumente</h1>
                             <span id="tooltip" title="Alle Filter zurücksetzen"
                                 data-bs-placement="top">
                                 <button id="reset-filters" class="btn btn-lg" type="button">
