@@ -18,6 +18,13 @@
                             title="nuntiatur-pius-xi" alt="nuntiatur-pius-xi"
                             itemprop="logo"/>
                     </a>
+                    
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"/>
+                    </button>
 
                     <!-- Rechtsbündige Navigationselemente -->
                     <div class="collapse navbar-collapse justify-content-end"
