@@ -41,10 +41,22 @@
                                 <xsl:apply-templates select="//tei:body//tei:p[@style = 'small']"/>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-start">
                                     <a href="search.html" type="button"
-                                        class="btn btn-dark btn-lg px-4 me-md-2">Volltextsuche</a>
+                                        class="btn btn-dark btn px-4 me-md-2">Volltextsuche</a>
                                     <a href="correspaction.html" type="button"
-                                        class="btn btn-outline-dark btn-lg px-4">Zur
-                                        Korrespondenz</a>
+                                        class="btn btn-outline-dark px-4">Zur Korrespondenz</a>
+                                    <div class="dropdown">
+                                        <button
+                                            class="btn btn-secondary dropdown-toggle"
+                                            type="button" data-bs-toggle="dropdown"
+                                            aria-expanded="false">Zu anderen Nuntiaturen</button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a class="dropdown-item"
+                                                  href="https://grazer-nuntiatur.acdh.oeaw.ac.at/"
+                                                  >Grazer Nuntiatur</a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-10 col-sm-8 col-lg-6" style="text-align: center;">
