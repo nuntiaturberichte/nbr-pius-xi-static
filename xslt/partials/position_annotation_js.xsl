@@ -5,7 +5,7 @@
     <xsl:template match="/" name="position_annotation">
         <script>
             function positionAnnotations() {
-            const positions = {}; // Speichert die Anzahl der Elemente mit demselben top-Wert
+            const positions = []; // Liste der Positionen (Array)
             
             // Suche nach Annotationen mit der Klasse "annotation"
             document.querySelectorAll('.annotation').forEach(annotation => {
@@ -20,18 +20,21 @@
             const col2 = document.querySelector('.col-2');
             
             if (col2) {
-            const offsetTop = wordRect.top - col10Rect.top - 2;
+            let offsetTop = wordRect.top - col10Rect.top - 2;
             
-            // Prüfen, wie viele Elemente bereits denselben top-Wert haben
-            const existingCount = positions[offsetTop] || 0;
+            // Sicherstellen, dass der Abstand von 24px eingehalten wird
+            positions.forEach(existingTop => {
+            if (Math.abs(existingTop - offsetTop) &lt; 24) {
+            offsetTop = existingTop + 24; // Verschiebe die Position, um den Abstand einzuhalten
+            }
+            });
             
-            // Hinzufügen der vertikalen Verschiebung
-            const adjustment = existingCount * 24; // 24px Abstand zwischen den Elementen
+            // Element positionieren
             annotation.style.position = 'absolute';
-            annotation.style.top = `${offsetTop + adjustment}px`;
+            annotation.style.top = `${offsetTop}px`;
             
-            // Zählen, wie viele Elemente denselben top-Wert haben
-            positions[offsetTop] = existingCount + 1;
+            // Neue Position speichern
+            positions.push(offsetTop);
             }
             }
             });
