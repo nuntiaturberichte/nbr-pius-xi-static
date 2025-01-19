@@ -9,6 +9,7 @@
     <xsl:import href="./partials/position_annotation_js.xsl"/>
     <xsl:import href="partials/highlight_annotation_js.xsl"/>
     <xsl:import href="partials/scroll_offset_js.xsl"/>
+    <xsl:import href="partials/limit_toc_legend_div_js.xsl"/>
     <xsl:output method="html" indent="yes"/>
 
     <xsl:template match="/">
@@ -24,10 +25,71 @@
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
                     rel="stylesheet"/>
                 <style>
+                    .container {
+                        position: relative;
+                        display: block;
+                    }
+                    
+                    .card {
+                        position: relative;
+                    }
+                    
+                    /* Inhaltsverzeichnis Beginn */
+                    
+                    .toc {
+                        position: fixed;
+                        top: 148px;
+                        left: 30px;
+                        width: 250px;
+                        background-color: #ffedad;
+                        padding: 15px;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                    }
+                    
+                    .toc a {
+                        display: block;
+                        padding: 8px 12px;
+                        text-decoration: none;
+                        color: black;
+                        transition: background-color 0.3s, color 0.3s;
+                    }
+                    
+                    .toc a:hover {
+                        background-color: #f8c400;
+                        border-radius: 5px;
+                    }
+                    
+                    .toc a:active {
+                        background-color: black;
+                    }
+                    
+                    /* Inhaltsverzeichnis Ende */
+                    
+                    /* Legende Beginn */
+                    
+                    .legend {
+                        position: fixed;
+                        top: 148px;
+                        right: 30px;
+                        width: 250px;
+                    }
+                    
+                    .legend th {
+                        background-color: #ffedad
+                    }
+                    
+                    /* Legende Ende */
+                    
                     /* Beschreibungs-Tabelle Anfang */
                     table {
                         width: 100%;
                         font-size: 14px;
+                        border-collapse: separate;
+                        border-spacing: 0;
+                        border-radius: 7px;
+                        overflow: hidden;
+                        border: 1px solid #ddd;
                     }
                     
                     table th,
@@ -63,11 +125,18 @@
                         width: 20%;
                         position: relative; /* Referenz für absolute Positionierung */
                     }
+                    
+                    .annotation {
+                        background-color: #ffedad;
+                        border-radius: 5px;
+                        border: 1px solid #ddd;
+                    }
+                    
                     /* Text Ende */
                     
                     /* Annotation-Hervorhebung Anfang */
                     .highlight {
-                        border: 1px solid black;
+                        border: 1px solid black !important;
                         border-radius: 5px
                     }
                     /* Annotation-Hervorhebung Ende */</style>
@@ -76,6 +145,194 @@
                 <xsl:call-template name="nav_bar"/>
                 <main class="flex-shrink-0">
                     <div class="container">
+
+                        <!-- Inhaltsverzeichnis Anfang -->
+
+                        <div class="toc">
+                            <h2>Inhalt</h2>
+                            <ul class="list-unstyled" style="margin-bottom: 0px;">
+                                <xsl:if
+                                    test="//tei:text/@type | //tei:physDesc/tei:scriptDesc | //tei:msDesc/@type | //tei:correspAction | //tei:msIdentifier/tei:repository | //tei:msIdentifier/tei:idno">
+                                    <li>
+                                        <a href="#description">Beschreibung</a>
+                                    </li>
+                                </xsl:if>
+                                <xsl:if test="//tei:profileDesc/tei:abstract/tei:p">
+                                    <li>
+                                        <a href="#abstract">Regest</a>
+                                    </li>
+                                </xsl:if>
+                                <xsl:if test="//tei:text/tei:body/*">
+                                    <li>
+                                        <a href="#text">Text</a>
+                                    </li>
+                                </xsl:if>
+                                <xsl:if test="//tei:note[@type = 'footnote']">
+                                    <li>
+                                        <a href="#footnotes">Fußnoten</a>
+                                    </li>
+                                </xsl:if>
+                            </ul>
+                        </div>
+
+                        <!-- Inhaltsverzeichnis Ende -->
+
+
+                        <xsl:if
+                            test="//tei:body//tei:pb | //tei:body//tei:note[@type = 'foliation'] | //tei:body//tei:subst | //tei:body//tei:hi[@rend = 'mark'] | //tei:body//tei:hi[@rend = 'underline'] | //tei:body//tei:note[@type = 'footnote'] | //tei:body//tei:del | //tei:body//tei:gap | //tei:body//tei:add">
+                            <div class="legend">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th colspan="2">Legende</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <xsl:if test="//tei:body//tei:pb">
+                                            <tr>
+                                                <td>
+                                                  <span class="badge bg-warning"
+                                                  style="font-size: 10px; padding: 2px 4px; line-height: 1.5"
+                                                  >n</span>
+                                                </td>
+                                                <td>Seitenbeginn</td>
+                                            </tr>
+                                        </xsl:if>
+                                        <xsl:if test="//tei:body//tei:note[@type = 'foliation']">
+                                            <tr>
+                                                <td>
+                                                  <span class="badge bg-secondary"
+                                                  style="font-size: 10px; padding: 2px 4px; line-height: 1.5"
+                                                  >n</span>
+                                                </td>
+                                                <td>Folierungsnummer des Archivs</td>
+                                            </tr>
+                                        </xsl:if>
+                                        <xsl:if test="//tei:body//tei:note[@type = 'footnote']">
+                                            <tr>
+                                                <td>
+                                                  <sup>
+                                                  <span class="badge bg-primary">n</span>
+                                                  </sup>
+                                                </td>
+                                                <td>Fußnote</td>
+                                            </tr>
+                                        </xsl:if>
+                                        <xsl:if test="//tei:body//tei:hi[@rend = 'underline']">
+                                            <tr>
+                                                <td>
+                                                  <span style="text-decoration: underline;"
+                                                  >Text</span>
+                                                </td>
+                                                <td>Unterstreichung</td>
+                                            </tr>
+                                        </xsl:if>
+                                        <xsl:if test="//tei:body//tei:hi[@rend = 'mark']">
+                                            <tr>
+                                                <td>
+                                                  <span
+                                                  style="background-color: #ffedad; border-radius: 5px;"
+                                                  >Text</span>
+                                                </td>
+                                                <td>Markierung</td>
+                                            </tr>
+                                        </xsl:if>
+                                        <xsl:if test="//tei:body//tei:subst">
+                                            <tr>
+                                                <td>
+                                                  <span
+                                                  style="border: black 1px dotted; border-radius: 5px;">
+                                                  <span
+                                                  style="background-color: #F9CBC8; border-radius: 5px;"
+                                                  >&#160;&#160;&#160;&#160;&#160;</span>
+                                                  <span
+                                                  style="border-radius: 5px; background-color: #CBE1D1"
+                                                  >&#160;&#160;&#160;&#160;&#160;</span>
+                                                  </span>
+                                                </td>
+                                                <td>Ersetzung</td>
+                                            </tr>
+                                        </xsl:if>
+                                        <xsl:if
+                                            test="//tei:body//tei:del[@rend = 'strikethrough'] | //tei:body//tei:gap[@reason = 'strikethrough']">
+                                            <tr>
+                                                <td>
+                                                  <span
+                                                  style="background-color: #F9CBC8; border-radius: 5px; text-decoration: line-through;"
+                                                  >Text</span>
+                                                </td>
+                                                <td>Durchstreichung</td>
+                                            </tr>
+                                        </xsl:if>
+                                        <xsl:if
+                                            test="//tei:body//tei:del[@rend = 'overwritten'] | //tei:body//tei:gap[@reason = 'overwritten']">
+                                            <tr>
+                                                <td>
+                                                  <span
+                                                  style="background-color: #F9CBC8; border-radius: 5px; color: gray; text-decoration: line-through; text-decoration-style: wavy;"
+                                                  >Text</span>
+                                                </td>
+                                                <td>Überschreibung</td>
+                                            </tr>
+                                        </xsl:if>
+                                        <xsl:if test="//tei:body//tei:gap[@unit = 'char']">
+                                            <tr>
+                                                <td>▯</td>
+                                                <td>ein unlesbares Zeichen</td>
+                                            </tr>
+                                        </xsl:if>
+                                        <xsl:if test="//tei:body//tei:gap[@unit = 'words']">
+                                            <tr>
+                                                <td>▭</td>
+                                                <td>ein unlesbares Wort</td>
+                                            </tr>
+                                        </xsl:if>
+                                        <xsl:if test="//tei:body//tei:add[not(@place)]">
+                                            <tr>
+                                                <td>
+                                                  <span
+                                                  style="border-radius: 5px; background-color: #CBE1D1"
+                                                  ><i class="bi bi-arrow-right"/>Text</span>
+                                                </td>
+                                                <td>Einfügung in derselben Zeile bzw. über dem alten
+                                                  Text</td>
+                                            </tr>
+                                        </xsl:if>
+                                        <xsl:if test="//tei:body//tei:add[@place = 'above']">
+                                            <tr>
+                                                <td>
+                                                  <span
+                                                  style="border-radius: 5px; background-color: #CBE1D1"
+                                                  ><i class="bi bi-arrow-up"/>Text</span>
+                                                </td>
+                                                <td>Einfügung über der Zeile</td>
+                                            </tr>
+                                        </xsl:if>
+                                        <xsl:if test="//tei:body//tei:add[@place = 'below']">
+                                            <tr>
+                                                <td>
+                                                  <span
+                                                  style="border-radius: 5px; background-color: #CBE1D1"
+                                                  ><i class="bi bi-arrow-down"/>Text</span>
+                                                </td>
+                                                <td>Einfügung unter der Zeile</td>
+                                            </tr>
+                                        </xsl:if>
+                                        <xsl:if test="//tei:body//tei:add[@place = 'margin']">
+                                            <tr>
+                                                <td>
+                                                  <span
+                                                  style="border-radius: 5px; background-color: #CBE1D1"
+                                                  ><i class="bi bi-arrow-left"/>Text</span>
+                                                </td>
+                                                <td>Einfügung am Rand</td>
+                                            </tr>
+                                        </xsl:if>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </xsl:if>
+
                         <div class="card mt-5">
                             <div class="card-header" style="background-color: #FFEDAD">
                                 <div class="row align-items-center" id="title-nav">
@@ -221,16 +478,18 @@
                             <div id="letter-body">
 
                                 <!-- Beschreibung Anfang -->
-                                <div id="description" class="card-body">
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th colspan="2">Beschreibung</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <xsl:if test="//tei:text/@type">
+                                <xsl:if
+                                    test="//tei:text/@type | //tei:physDesc/tei:scriptDesc | //tei:msDesc/@type | //tei:correspAction | //tei:msIdentifier/tei:repository | //tei:msIdentifier/tei:idno">
+                                    <div id="description" class="card-body">
+                                        <table>
+                                            <thead>
                                                 <tr>
+                                                  <th colspan="2">Beschreibung</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <xsl:if test="//tei:text/@type">
+                                                  <tr>
                                                   <td>Art des Dokuments</td>
                                                   <td>
                                                   <!-- Brief -->
@@ -310,10 +569,10 @@
                                                   </xsl:otherwise>
                                                   </xsl:choose>
                                                   </td>
-                                                </tr>
-                                            </xsl:if>
-                                            <xsl:if test="//tei:physDesc/tei:scriptDesc">
-                                                <tr>
+                                                  </tr>
+                                                </xsl:if>
+                                                <xsl:if test="//tei:physDesc/tei:scriptDesc">
+                                                  <tr>
                                                   <td>Ausführung</td>
                                                   <td>
                                                   <!-- Maschinenschriftlich -->
@@ -364,10 +623,10 @@
                                                   </xsl:otherwise>
                                                   </xsl:choose>
                                                   </td>
-                                                </tr>
-                                            </xsl:if>
-                                            <xsl:if test="//tei:msDesc/@type">
-                                                <tr>
+                                                  </tr>
+                                                </xsl:if>
+                                                <xsl:if test="//tei:msDesc/@type">
+                                                  <tr>
                                                   <td>Status des Dokuments</td>
                                                   <td>
                                                   <!-- Reinschrift -->
@@ -416,10 +675,10 @@
                                                   </xsl:otherwise>
                                                   </xsl:choose>
                                                   </td>
-                                                </tr>
-                                            </xsl:if>
-                                            <xsl:for-each select="//tei:correspDesc">
-                                                <xsl:if
+                                                  </tr>
+                                                </xsl:if>
+                                                <xsl:for-each select="//tei:correspDesc">
+                                                  <xsl:if
                                                   test="tei:correspAction[@type = 'sent'] and tei:correspAction[@type = 'received']">
                                                   <tr>
                                                   <td>Kommunikationsweg</td>
@@ -501,10 +760,10 @@
                                                   </div>
                                                   </td>
                                                   </tr>
-                                                </xsl:if>
-                                            </xsl:for-each>
-                                            <xsl:if test="//tei:msIdentifier/tei:repository">
-                                                <tr>
+                                                  </xsl:if>
+                                                </xsl:for-each>
+                                                <xsl:if test="//tei:msIdentifier/tei:repository">
+                                                  <tr>
                                                   <td>Quelle</td>
                                                   <td>
                                                   <xsl:value-of
@@ -517,33 +776,34 @@
                                                   />
                                                   </xsl:if>
                                                   </td>
-                                                </tr>
-                                            </xsl:if>
-                                            <xsl:if
-                                                test="//tei:msIdentifier/tei:idno[@type = 'institutional' and @subtype = 'internal']">
-                                                <tr>
+                                                  </tr>
+                                                </xsl:if>
+                                                <xsl:if
+                                                  test="//tei:msIdentifier/tei:idno[@type = 'institutional' and @subtype = 'internal']">
+                                                  <tr>
                                                   <td>Interne Nummerierung</td>
                                                   <td>
                                                   <xsl:value-of
                                                   select="//tei:msIdentifier/tei:idno[@type = 'institutional' and @subtype = 'internal']"
                                                   />
                                                   </td>
-                                                </tr>
-                                            </xsl:if>
-                                            <xsl:if
-                                                test="//tei:msIdentifier/tei:idno[@type = 'institutional' and @subtype = 'external']">
-                                                <tr>
+                                                  </tr>
+                                                </xsl:if>
+                                                <xsl:if
+                                                  test="//tei:msIdentifier/tei:idno[@type = 'institutional' and @subtype = 'external']">
+                                                  <tr>
                                                   <td>Externe Nummerierung</td>
                                                   <td>
                                                   <xsl:value-of
                                                   select="//tei:msIdentifier/tei:idno[@type = 'institutional' and @subtype = 'external']"
                                                   />
                                                   </td>
-                                                </tr>
-                                            </xsl:if>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                  </tr>
+                                                </xsl:if>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </xsl:if>
 
                                 <!-- Beschreibung Ende -->
 
@@ -587,7 +847,7 @@
                                 <!-- Text Anfang -->
 
                                 <xsl:if test="//tei:text/tei:body/*">
-                                    <div class="card-body">
+                                    <div class="card-body" id="text">
                                         <h2>Text</h2>
                                         <div id="text">
                                             <div class="row">
@@ -608,179 +868,14 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <hr/>
                                 </xsl:if>
                             </div>
                             <!-- Text Ende -->
 
-                            <!-- Legende Anfang -->
-                            <xsl:choose>
-                                <xsl:when
-                                    test="//tei:body//tei:pb | //tei:body//tei:note[@type = 'foliation'] | //tei:body//tei:subst | //tei:body//tei:hi[@rend = 'mark'] | //tei:body//tei:hi[@rend = 'underline'] | //tei:body//tei:note[@type = 'footnote'] | //tei:body//tei:del | //tei:body//tei:gap | //tei:body//tei:add">
-                                    <div id="legend" class="card-body">
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                  <th colspan="2">Legende</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <xsl:if test="//tei:body//tei:pb">
-                                                  <tr>
-                                                  <td>
-                                                  <span class="badge bg-warning"
-                                                  style="font-size: 10px; padding: 2px 4px; line-height: 1.5"
-                                                  >n</span>
-                                                  </td>
-                                                  <td>Seitenbeginn</td>
-                                                  </tr>
-                                                </xsl:if>
-                                                <xsl:if
-                                                  test="//tei:body//tei:note[@type = 'foliation']">
-                                                  <tr>
-                                                  <td>
-                                                  <span class="badge bg-secondary"
-                                                  style="font-size: 10px; padding: 2px 4px; line-height: 1.5"
-                                                  >n</span>
-                                                  </td>
-                                                  <td>Folierungsnummer des Archivs</td>
-                                                  </tr>
-                                                </xsl:if>
-                                                <xsl:if
-                                                  test="//tei:body//tei:note[@type = 'footnote']">
-                                                  <tr>
-                                                  <td>
-                                                  <sup>
-                                                  <span class="badge bg-primary">n</span>
-                                                  </sup>
-                                                  </td>
-                                                  <td>Fußnote</td>
-                                                  </tr>
-                                                </xsl:if>
-                                                <xsl:if
-                                                  test="//tei:body//tei:hi[@rend = 'underline']">
-                                                  <tr>
-                                                  <td>
-                                                  <span style="text-decoration: underline;"
-                                                  >Text</span>
-                                                  </td>
-                                                  <td>Unterstreichung</td>
-                                                  </tr>
-                                                </xsl:if>
-                                                <xsl:if test="//tei:body//tei:hi[@rend = 'mark']">
-                                                  <tr>
-                                                  <td>
-                                                  <span
-                                                  style="background-color: #ffedad; border-radius: 5px;"
-                                                  >Text</span>
-                                                  </td>
-                                                  <td>Markierung</td>
-                                                  </tr>
-                                                </xsl:if>
-                                                <xsl:if test="//tei:body//tei:subst">
-                                                  <tr>
-                                                  <td>
-                                                  <span
-                                                  style="border: black 1px dotted; border-radius: 5px;">
-                                                  <span
-                                                  style="background-color: #F9CBC8; border-radius: 5px;"
-                                                  >&#160;&#160;&#160;&#160;&#160;</span>
-                                                  <span
-                                                  style="border-radius: 5px; background-color: #CBE1D1"
-                                                  >&#160;&#160;&#160;&#160;&#160;</span>
-                                                  </span>
-                                                  </td>
-                                                  <td>Ersetzung</td>
-                                                  </tr>
-                                                </xsl:if>
-                                                <xsl:if
-                                                  test="//tei:body//tei:del[@rend = 'strikethrough'] | //tei:body//tei:gap[@reason = 'strikethrough']">
-                                                  <tr>
-                                                  <td>
-                                                  <span
-                                                  style="background-color: #F9CBC8; border-radius: 5px; text-decoration: line-through;"
-                                                  >Text</span>
-                                                  </td>
-                                                  <td>Durchstreichung</td>
-                                                  </tr>
-                                                </xsl:if>
-                                                <xsl:if
-                                                  test="//tei:body//tei:del[@rend = 'overwritten'] | //tei:body//tei:gap[@reason = 'overwritten']">
-                                                  <tr>
-                                                  <td>
-                                                  <span
-                                                  style="background-color: #F9CBC8; border-radius: 5px; color: gray; text-decoration: line-through; text-decoration-style: wavy;"
-                                                  >Text</span>
-                                                  </td>
-                                                  <td>Überschreibung</td>
-                                                  </tr>
-                                                </xsl:if>
-                                                <xsl:if test="//tei:body//tei:gap[@unit = 'char']">
-                                                  <tr>
-                                                  <td>▯</td>
-                                                  <td>ein unlesbares Zeichen</td>
-                                                  </tr>
-                                                </xsl:if>
-                                                <xsl:if test="//tei:body//tei:gap[@unit = 'words']">
-                                                  <tr>
-                                                  <td>▭</td>
-                                                  <td>ein unlesbares Wort</td>
-                                                  </tr>
-                                                </xsl:if>
-                                                <xsl:if test="//tei:body//tei:add[not(@place)]">
-                                                  <tr>
-                                                  <td>
-                                                  <span
-                                                  style="border-radius: 5px; background-color: #CBE1D1"
-                                                  ><i class="bi bi-arrow-right"/>Text</span>
-                                                  </td>
-                                                  <td>Einfügung in derselben Zeile bzw. über dem
-                                                  alten Text</td>
-                                                  </tr>
-                                                </xsl:if>
-                                                <xsl:if test="//tei:body//tei:add[@place = 'above']">
-                                                  <tr>
-                                                  <td>
-                                                  <span
-                                                  style="border-radius: 5px; background-color: #CBE1D1"
-                                                  ><i class="bi bi-arrow-up"/>Text</span>
-                                                  </td>
-                                                  <td>Einfügung über der Zeile</td>
-                                                  </tr>
-                                                </xsl:if>
-                                                <xsl:if test="//tei:body//tei:add[@place = 'below']">
-                                                  <tr>
-                                                  <td>
-                                                  <span
-                                                  style="border-radius: 5px; background-color: #CBE1D1"
-                                                  ><i class="bi bi-arrow-down"/>Text</span>
-                                                  </td>
-                                                  <td>Einfügung unter der Zeile</td>
-                                                  </tr>
-                                                </xsl:if>
-                                                <xsl:if
-                                                  test="//tei:body//tei:add[@place = 'margin']">
-                                                  <tr>
-                                                  <td>
-                                                  <span
-                                                  style="border-radius: 5px; background-color: #CBE1D1"
-                                                  ><i class="bi bi-arrow-left"/>Text</span>
-                                                  </td>
-                                                  <td>Einfügung am Rand</td>
-                                                  </tr>
-                                                </xsl:if>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <hr/>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                            <!-- Legende Ende -->
-
                             <!-- Fußnoten Anfang -->
                             <xsl:if test="//tei:note[@type = 'footnote']">
-                                <div id="footnotes-apparatus" class="card-body">
+                                <div id="footnotes" class="card-body">
                                     <h3>Fußnoten</h3>
                                     <ul class="list-unstyled">
                                         <xsl:for-each select="//tei:note[@type = 'footnote']">
@@ -841,6 +936,7 @@
                 <xsl:call-template name="position_annotation"/>
                 <xsl:call-template name="highlight_annotation"/>
                 <xsl:call-template name="scroll_offset"/>
+                <xsl:call-template name="limit_toc_legend_div"/>
             </body>
         </html>
     </xsl:template>
