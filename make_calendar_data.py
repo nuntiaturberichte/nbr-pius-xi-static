@@ -4,6 +4,10 @@ import os
 import json
 from acdh_tei_pyutils.tei import TeiReader
 from tqdm import tqdm
+from collections import defaultdict
+
+# Wörterbuch für den Zähler pro Datum
+date_counter = defaultdict(int)
 
 # Erstelle den Pfad für die Ausgabe
 out_path = os.path.join("html", "js-data")
@@ -21,44 +25,57 @@ for x in tqdm(files, total=len(files)):
     item = {}
     head, tail = os.path.split(x)
     doc = TeiReader(x)
-
+###
     # Extrahiere den Titel (Name des Ereignisses)
     name = doc.any_xpath('//tei:titleStmt/tei:title/text()')
     if name:
         cleaned_name = name[0].replace("\n", " ")
         item["name"] = re.sub(r"\s+", " ", cleaned_name)
     else:
-        continue  # Wenn kein Titel vorhanden ist, überspringe die Datei
+        continue
+###
+    # Extrahiere das Datum
+    date_xpaths = [
+        '//tei:correspAction[@type="sent"]/tei:date/@when',  # 1. Priorität
+        '//tei:creation//tei:date/@when'  # 2. Priorität
+        '//tei:opener//tei:date/@when',  # 3. Priorität
+        '//tei:closer//tei:date/@when',  # 4. Priorität
+        '//tei:head//tei:date/@when',  # 5. Priorität
+    ]
 
-    # Versuche die Datumsangaben zu extrahieren
-    correspActionSent_date = doc.any_xpath('//tei:correspAction[@type="sent"]/tei:date/@when')
-    head_date = doc.any_xpath('//tei:head//tei:date/@when')
-    opener_date = doc.any_xpath('//tei:opener//tei:date/@when')
-    closer_date = doc.any_xpath('//tei:closer//tei:date/@when')
-    creation_date = doc.any_xpath('//tei:creation//tei:date/@when')
-
-    # Verarbeite @when-iso, @notBefore und @notAfter
-    if correspActionSent_date:
-        item["startDate"] = correspActionSent_date[0]
-        item["endDate"] = correspActionSent_date[0]
+    for xpath in date_xpaths:
+        date_value = doc.any_xpath(xpath)
+        if date_value:
+            item["startDate"] = date_value[0]
+            item["endDate"] = date_value[0]
+            break
     else:
-        continue  # Wenn keine relevanten Datumsangaben vorhanden sind, überspringen
+        continue
+###
+    # Mapping der Farbe
+    color_mapping = {
+        "Brief": "#0d6efd",
+        "Bericht": "#C74343",
+        "Telegramm": "#6AB547",
+        "Archivsnotiz": "#7B287D",
+        "Provvista": "#f8c400"
+    }
 
-    # Bereinige Tageszähler und ID
-    tageszaehler = doc.any_xpath('//tei:title[@type="iso-date"]/@n')
-    if tageszaehler:
-        item["tageszaehler"] = tageszaehler[0]
-        item["id"] = tail.replace(".xml", ".html")
-        data.append(item)
+    document_type = doc.any_xpath('//tei:text/@type')
+    if document_type:
+        item["color"] = color_mapping.get(document_type[0], "#000000")
     else:
-        continue  # Wenn kein Tageszähler vorhanden ist, überspringe die Datei
-
-    # Setze die Farbe basierend auf den Bedingungen
-    if when_iso and not cert:
-        item["color"] = "#0d6efd"  # Wenn nur when_iso vorhanden ist, aber kein cert
-    else:
-        item["color"] = "#C74343"  # In allen anderen Fällen
-
+        item["color"] = "#000000"
+###
+    # Berechne den Tageszähler
+    start_date = item["startDate"]
+    date_counter[start_date] += 1
+    item["tageszaehler"] = str(date_counter[start_date])
+###
+    # Erstelle die ID
+    item["id"] = tail.replace(".xml", ".html")
+    data.append(item)
+###
 # Ausgabe in die JS-Datei schreiben
 print(f"writing calendar data to {out_file}")
 with open(out_file, "w", encoding="utf8") as f:
