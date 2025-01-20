@@ -127,7 +127,7 @@
                     }
                     
                     .annotation {
-                        background-color: #ffedad;
+                        background-color: #e0e0e0;
                         border-radius: 5px;
                         border: 1px solid #ddd;
                     }
@@ -136,6 +136,12 @@
                     
                     /* Annotation-Hervorhebung Anfang */
                     .highlight {
+                        border: 1px solid black !important;
+                        border-radius: 5px
+                    }
+                    
+                    .col-2 .highlight {
+                        background-color: #999999;
                         border: 1px solid black !important;
                         border-radius: 5px
                     }
@@ -861,7 +867,7 @@
                                                 <!-- Anmerkungen Anfang -->
                                                 <div class="col-2">
                                                   <xsl:apply-templates
-                                                  select="//tei:note[@type = 'foliation'] | //tei:signed | //tei:hi[@rend = 'underline'] | //tei:hi[@rend = 'mark'] | //tei:add"
+                                                  select="//tei:note[@type = 'foliation'] | //tei:signed | //tei:hi[@rend = 'underline'] | //tei:hi[@rend = 'mark'] | //tei:add | //tei:unclear | //tei:sic | //tei:corr | //tei:supplied[@reason = 'deciphering']"
                                                   mode="col-2"/>
                                                 </div>
                                                 <!-- Anmerkungen Ende -->
@@ -947,12 +953,74 @@
         </strong>
     </xsl:template>
 
+    <!-- Am Dokumentbeginn Anfang -->
+
+    <xsl:template match="tei:opener" mode="col-10">
+        <span style="background-color: gray">
+            <xsl:apply-templates mode="col-10"/>
+        </span>
+    </xsl:template>
+
+    <!-- Am Dokumentbeginn Anfang -->
+
+    <!-- Am Dokumentende Anfang -->
+
+    <xsl:template match="tei:closer" mode="col-10">
+        <div style="margin-top: 75px; text-align: right;">
+            <xsl:apply-templates select="tei:salute" mode="col-10"/>
+            <xsl:apply-templates select="tei:signed" mode="col-10"/>
+        </div>
+    </xsl:template>
+
+    <!-- Unterschrift des Autors Anfang -->
+    <!-- col-10 -->
+    <xsl:template match="tei:signed" mode="col-10">
+        <p>
+            <em>
+                <span style="font-weight: bold" class="annotated-word">
+                    <xsl:if test="@rend and @rend != 'align(right)'">
+                        <xsl:attribute name="data-annotation">
+                            <xsl:value-of select="generate-id()"/>
+                        </xsl:attribute>
+                    </xsl:if>
+                    <xsl:apply-templates mode="col-10"/>
+                </span>
+            </em>
+        </p>
+    </xsl:template>
+    <!-- col-2 -->
+    <xsl:template match="tei:signed" mode="col-2">
+        <xsl:if test="@rend != 'align(right)'">
+            <div class="annotation">
+                <xsl:attribute name="data-annotation">
+                    <xsl:value-of select="generate-id()"/>
+                </xsl:attribute>
+                <xsl:value-of select="@rend"/>
+            </div>
+        </xsl:if>
+    </xsl:template>
+    <!-- Unterschrift des Autors Ende -->
+
+    <!-- Am Dokumentende Ende -->
+
+    <!-- Am Dokumentanfang und -ende Anfang -->
+
     <xsl:template match="tei:salute" mode="col-10">
         <p>
             <em>
                 <xsl:apply-templates mode="col-10"/>
             </em>
         </p>
+    </xsl:template>
+
+    <!-- Am Dokumentanfang und -ende Ende -->
+
+    <!-- Im Fließtext Anfang -->
+
+    <xsl:template match="tei:head" mode="col-10">
+        <strong>
+            <xsl:apply-templates mode="col-10"/>
+        </strong>
     </xsl:template>
 
     <xsl:template match="tei:pb" mode="col-10">
@@ -998,51 +1066,17 @@
         </a>
     </xsl:template>
 
+    <!-- Im Fließtext Ende -->
+
+    <!--Überall Anfang -->
+
     <xsl:template match="tei:lb[position() > 1]" mode="col-10">
         <br/>
     </xsl:template>
 
-    <xsl:template match="tei:closer" mode="col-10">
-        <div style="margin-top: 75px; text-align: right;">
-            <xsl:apply-templates select="tei:salute" mode="col-10"/>
-            <xsl:apply-templates select="tei:signed" mode="col-10"/>
-        </div>
-    </xsl:template>
+    <!-- Überall Ende -->
 
-    <xsl:template match="tei:subst" mode="col-10">
-        <span style="border: black 1px dotted; border-radius: 5px;">
-            <xsl:apply-templates mode="col-10"/>
-        </span>
-    </xsl:template>
-
-    <!-- Unterschrift des Autors Anfang -->
-    <!-- col-10 -->
-    <xsl:template match="tei:signed" mode="col-10">
-        <p>
-            <em>
-                <span style="font-weight: bold" class="annotated-word">
-                    <xsl:if test="@rend and @rend != 'align(right)'">
-                        <xsl:attribute name="data-annotation">
-                            <xsl:value-of select="generate-id()"/>
-                        </xsl:attribute>
-                    </xsl:if>
-                    <xsl:apply-templates mode="col-10"/>
-                </span>
-            </em>
-        </p>
-    </xsl:template>
-    <!-- col-2 -->
-    <xsl:template match="tei:signed" mode="col-2">
-        <div class="annotation">
-            <xsl:attribute name="data-annotation">
-                <xsl:value-of select="generate-id()"/>
-            </xsl:attribute>
-            <xsl:if test="@rend != 'align(right)'">
-                <xsl:value-of select="@rend"/>
-            </xsl:if>
-        </div>
-    </xsl:template>
-    <!-- Unterschrift des Autors Ende -->
+    <!-- Zu Entstehungsprozess Anfang -->
 
     <!-- Archivfolierungsnummer Anfang -->
     <!-- col-10 -->
@@ -1120,6 +1154,14 @@
     </xsl:template>
     <!-- Markierung Ende -->
 
+    <!-- Ersetzung Anfang -->
+    <xsl:template match="tei:subst" mode="col-10">
+        <span style="border: black 1px dotted; border-radius: 5px;">
+            <xsl:apply-templates mode="col-10"/>
+        </span>
+    </xsl:template>
+    <!-- Ersetzung Ende -->
+
     <!-- Durchstreichung Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:del[not(tei:gap)]" mode="col-10">
@@ -1161,7 +1203,7 @@
     </xsl:template>
     <!-- Durchstreichung Ende -->
 
-    <!-- Ersetzung Anfang -->
+    <!-- Einfügung Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:add" mode="col-10">
         <span class="annotated-word" style="border-radius: 5px; background-color: #CBE1D1">
@@ -1198,9 +1240,88 @@
             </div>
         </xsl:if>
     </xsl:template>
-    <!-- Ersetzung Ende -->
-
+    <!-- Einfügung Ende -->
 
     <!-- zu Entstehungsprozess - Ende -->
+
+    <!-- vom Bearbeiter Anfang -->
+
+    <!-- unclear Anfang -->
+    <!-- col-10 -->
+    <xsl:template match="tei:unclear" mode="col-10">
+        <span class="annotated-word">
+            <xsl:attribute name="data-annotation">
+                <xsl:value-of select="generate-id()"/>
+            </xsl:attribute>
+            <xsl:apply-templates mode="col-10"/>
+        </span>
+    </xsl:template>
+    <!-- col-2 -->
+    <xsl:template match="tei:unclear" mode="col-2">
+        <div class="annotation">
+            <xsl:attribute name="data-annotation">
+                <xsl:value-of select="generate-id()"/>
+            </xsl:attribute>Unklare Lesung</div>
+    </xsl:template>
+    <!-- unclear Ende -->
+
+    <!-- sic Anfang -->
+    <!-- col-10 -->
+    <xsl:template match="tei:sic" mode="col-10">
+        <span class="annotated-word">
+            <xsl:attribute name="data-annotation">
+                <xsl:value-of select="generate-id()"/>
+            </xsl:attribute>
+            <xsl:apply-templates mode="col-10"/>
+        </span>
+    </xsl:template>
+    <!-- col-2 -->
+    <xsl:template match="tei:sic" mode="col-2">
+        <div class="annotation">
+            <xsl:attribute name="data-annotation">
+                <xsl:value-of select="generate-id()"/>
+            </xsl:attribute>sic</div>
+    </xsl:template>
+    <!-- sic Ende -->
+
+    <!-- corr Anfang -->
+    <!-- col-10 -->
+    <xsl:template match="tei:corr" mode="col-10">
+        <span class="annotated-word">
+            <xsl:attribute name="data-annotation">
+                <xsl:value-of select="generate-id()"/>
+            </xsl:attribute>
+            <xsl:apply-templates mode="col-10"/>
+        </span>
+    </xsl:template>
+    <!-- col-2 -->
+    <xsl:template match="tei:corr" mode="col-2">
+        <div class="annotation">
+            <xsl:attribute name="data-annotation">
+                <xsl:value-of select="generate-id()"/>
+            </xsl:attribute>Korrektur</div>
+    </xsl:template>
+    <!-- corr Ende -->
+
+    <!-- Dechiffrierung Anfang -->
+    <!-- col-10 -->
+    <xsl:template match="tei:supplied[@reason = 'deciphering']" mode="col-10">
+        <span class="annotated-word">
+            <xsl:attribute name="data-annotation">
+                <xsl:value-of select="generate-id()"/>
+            </xsl:attribute>
+            <xsl:apply-templates mode="col-10"/>
+        </span>
+    </xsl:template>
+    <!-- col-2 -->
+    <xsl:template match="tei:supplied[@reason = 'deciphering']" mode="col-2">
+        <div class="annotation">
+            <xsl:attribute name="data-annotation">
+                <xsl:value-of select="generate-id()"/>
+            </xsl:attribute>Dechiffrierung</div>
+    </xsl:template>
+    <!-- Dechiffrierung Ende -->
+
+    <!-- vom Bearbeiter Ende -->
 
 </xsl:stylesheet>
