@@ -3,6 +3,7 @@
 html/*.xml
 /saxon
 data/imprint.xml
+html/js-data/
 
 data/indices/*.xml
 data/editions/*.xml
