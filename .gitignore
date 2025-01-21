@@ -144,3 +144,6 @@ desktop.ini
 
 # MacOS
 .DS_Store
+
+# JetBrains IDEs (PyCharm, IntelliJ IDEA, etc.)
+.idea
