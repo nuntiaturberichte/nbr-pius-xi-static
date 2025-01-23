@@ -10,6 +10,7 @@
     <xsl:import href="partials/highlight_annotation_js.xsl"/>
     <xsl:import href="partials/scroll_offset_js.xsl"/>
     <xsl:import href="partials/limit_toc_legend_div_js.xsl"/>
+    <xsl:import href="partials/toggle_view_js.xsl"/>
     <xsl:output method="html" indent="yes"/>
 
     <xsl:template match="/">
@@ -158,7 +159,7 @@
                     
                     @media (max-width : 550px) {
                         .col-2 {
-                            display: none; /* Blendet die Spalte aus */
+                            display: none;
                         }
                     
                         .col-10 {
@@ -172,6 +173,20 @@
                         border-radius: 5px;
                         border: 1px solid #ddd;
                     }
+                    
+                    /* Adaption für Leseansicht Anfang*/
+                    .col-12 {
+                    border-right: none !important;
+                    }
+                    
+                    .toggle-content {
+                    display: inline;
+                    }
+                    
+                    .no-annotations .toggle-content {
+                    display: none;
+                    }
+                    /* Adaption für Leseansicht Ende */
                     
                     /* Text Ende */
                     
@@ -224,6 +239,7 @@
 
                         <!-- Inhaltsverzeichnis Ende -->
 
+                        <!-- Legende Anfang -->
 
                         <xsl:if
                             test="//tei:body//tei:pb | //tei:body//tei:note[@type = 'foliation'] | //tei:body//tei:subst | //tei:body//tei:hi[@rend = 'mark'] | //tei:body//tei:hi[@rend = 'underline'] | //tei:body//tei:note[@type = 'footnote'] | //tei:body//tei:del | //tei:body//tei:gap | //tei:body//tei:add">
@@ -390,7 +406,12 @@
                             </div>
                         </xsl:if>
 
+                        <!-- Legende Ende -->
+
                         <div class="card mt-5">
+
+                            <!-- Card Header Anfang -->
+
                             <div class="card-header" style="background-color: #FFEDAD">
                                 <div class="row align-items-center" id="title-nav">
                                     <!-- LINKS -->
@@ -531,6 +552,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Card Header Ende -->
 
                             <div id="letter-body">
 
@@ -899,10 +922,17 @@
                                 <xsl:if test="//tei:text/tei:body/*">
                                     <div class="card-body" id="text">
                                         <h2>Text</h2>
+                                        <div class="btn-group mb-3" role="group"
+                                            aria-label="Ansicht umschalten">
+                                            <button id="showAnnotations" class="btn btn-primary"
+                                                >Annotierte Ansicht</button>
+                                            <button id="showReadingView" class="btn btn-secondary"
+                                                >Leseansicht</button>
+                                        </div>
                                         <div id="text">
                                             <div class="row">
                                                 <!-- Fließtext Anfang -->
-                                                <div class="col-10"
+                                                <div class="col-10 text-column"
                                                   style="border-right: 1px solid #db2017;">
                                                   <xsl:apply-templates select="//tei:body/*"
                                                   mode="col-10"/>
@@ -1155,6 +1185,7 @@
                 <xsl:call-template name="highlight_annotation"/>
                 <xsl:call-template name="scroll_offset"/>
                 <xsl:call-template name="limit_toc_legend_div"/>
+                <xsl:call-template name="toggle_view"/>
             </body>
         </html>
     </xsl:template>
@@ -1276,10 +1307,13 @@
 
     <!--Überall Anfang -->
 
-    <xsl:template match="tei:lb[position() > 1]" mode="col-10">&#8629;<br/></xsl:template>
+    <xsl:template match="tei:lb[position() > 1]" mode="col-10">
+        <span class="toggle-content">&#8629;<br/></span>
+    </xsl:template>
 
     <xsl:template match="tei:pb" mode="col-10">
-        <span class="badge bg-warning" style="font-size: 10px; padding: 2px 4px; line-height: 1.5">
+        <span class="badge bg-warning toggle-content"
+            style="font-size: 10px; padding: 2px 4px; line-height: 1.5">
             <xsl:value-of select="@n"/>
         </span>
     </xsl:template>
@@ -1291,7 +1325,7 @@
     <!-- Archivfolierungsnummer Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:note[@type = 'foliation']" mode="col-10">
-        <span class="badge bg-secondary annotated-word"
+        <span class="badge bg-secondary annotated-word toggle-content"
             style="font-size: 10px; padding: 2px 4px; line-height: 1.5">
             <xsl:if test="@rend">
                 <xsl:attribute name="data-annotation">
@@ -1375,7 +1409,8 @@
     <!-- Durchstreichung Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:del[not(tei:gap)]" mode="col-10">
-        <span style="background-color: #F9CBC8; border-radius: 5px; text-decoration: line-through;">
+        <span class="toggle-content"
+            style="background-color: #F9CBC8; border-radius: 5px; text-decoration: line-through;">
             <xsl:if test="@rend = 'overwritten'">
                 <xsl:attribute name="style">
                     <xsl:value-of
@@ -1395,7 +1430,8 @@
                 <xsl:otherwise>background-color: #F9CBC8;</xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <span style="background-color: #F9CBC8; border-radius: 5px; {$style}" class="annotated-word">
+        <span style="background-color: #F9CBC8; border-radius: 5px; {$style}"
+            class="annotated-word toggle-content">
             <xsl:variable name="quantity" select="@quantity"/>
             <xsl:choose>
                 <xsl:when test="@unit = 'char'">
@@ -1424,16 +1460,16 @@
             </xsl:if>
             <xsl:choose>
                 <xsl:when test="@place = 'above'">
-                    <i class="bi bi-arrow-up"/>
+                    <i class="bi bi-arrow-up toggle-content"/>
                 </xsl:when>
                 <xsl:when test="@place = 'below'">
-                    <i class="bi bi-arrow-down"/>
+                    <i class="bi bi-arrow-down toggle-content"/>
                 </xsl:when>
                 <xsl:when test="@place = 'margin'">
-                    <i class="bi bi-arrow-left"/>
+                    <i class="bi bi-arrow-left toggle-content"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <i class="bi bi-arrow-right"/>
+                    <i class="bi bi-arrow-right toggle-content"/>
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:apply-templates mode="col-10"/>
@@ -1516,7 +1552,7 @@
     <!-- Dechiffrierung Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:supplied[@reason = 'deciphering']" mode="col-10">
-        <span class="annotated-word">
+        <span class="annotated-word toggle-content">
             <xsl:attribute name="data-annotation">
                 <xsl:value-of select="generate-id()"/>
             </xsl:attribute>
