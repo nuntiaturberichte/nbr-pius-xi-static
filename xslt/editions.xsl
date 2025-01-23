@@ -39,7 +39,7 @@
                     .toc {
                         position: fixed;
                         top: 148px;
-                        left: 30px;
+                        left: 1vw;
                         width: 250px;
                         background-color: #ffedad;
                         padding: 15px;
@@ -66,12 +66,12 @@
                     
                     /* Inhaltsverzeichnis Ende */
                     
-                    /* Legende Beginn */
+                    /* Legende breit Beginn */
                     
                     .legend {
                         position: fixed;
                         top: 148px;
-                        right: 30px;
+                        right: 1vw;
                         width: 250px;
                     }
                     
@@ -79,7 +79,37 @@
                         background-color: #ffedad
                     }
                     
-                    /* Legende Ende */
+                    /* Legende breit Ende */
+                    
+                    /* Legende schmal Anfang */
+                    .legend-slim {
+                        display: none;
+                    }
+                    
+                    @media (max-width : 1810px) {
+                        .legend-slim {
+                            display: block;
+                        }
+                    }
+                    /* Legende schmal Anfang */
+                    
+                    /* Handling toc und legend bezüglich Bildschirmbreite Anfang */
+                    @media (max-width : 1840px) {
+                        .toc {
+                            left: 5px;
+                        }
+                        .legend {
+                            right: 5px;
+                        }
+                    }
+                    
+                    @media (max-width : 1810px) {
+                        .legend,
+                        .toc {
+                            display: none;
+                        }
+                    }
+                    /* Handling toc und legend bezüglich Bildschirmbreite Ende */
                     
                     /* Beschreibungs-Tabelle Anfang */
                     table {
@@ -117,13 +147,24 @@
                     }
                     
                     .col-10 {
-                        width: 80%;
-                        position: relative; /* Referenz für absolute Positionierung */
+                        flex: 10;
+                        position: relative;
                     }
                     
                     .col-2 {
-                        width: 20%;
-                        position: relative; /* Referenz für absolute Positionierung */
+                        flex: 2;
+                        position: relative;
+                    }
+                    
+                    @media (max-width : 550px) {
+                        .col-2 {
+                            display: none; /* Blendet die Spalte aus */
+                        }
+                    
+                        .col-10 {
+                            flex: 1;
+                            border-right: none !important;
+                        }
                     }
                     
                     .annotation {
@@ -188,6 +229,10 @@
                             test="//tei:body//tei:pb | //tei:body//tei:note[@type = 'foliation'] | //tei:body//tei:subst | //tei:body//tei:hi[@rend = 'mark'] | //tei:body//tei:hi[@rend = 'underline'] | //tei:body//tei:note[@type = 'footnote'] | //tei:body//tei:del | //tei:body//tei:gap | //tei:body//tei:add">
                             <div class="legend">
                                 <table>
+                                    <colgroup>
+                                        <col style="width: 30%;"/>
+                                        <col style="width: 70%;"/>
+                                    </colgroup>
                                     <thead>
                                         <tr>
                                             <th colspan="2">Legende</th>
@@ -222,6 +267,12 @@
                                                   </sup>
                                                 </td>
                                                 <td>Fußnote</td>
+                                            </tr>
+                                        </xsl:if>
+                                        <xsl:if test="//tei:lb[position() > 1]">
+                                            <tr>
+                                                <td>&#8629;</td>
+                                                <td>Zeilenwechsel</td>
                                             </tr>
                                         </xsl:if>
                                         <xsl:if test="//tei:body//tei:hi[@rend = 'underline']">
@@ -673,7 +724,7 @@
                                                   <xsl:when test="//tei:msDesc/@type = 'Abschrift'">
                                                   <span
                                                   style="background-color: #ADADAD; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
-                                                  > Abschrift </span>
+                                                  >Abschrift</span>
                                                   </xsl:when>
                                                   <xsl:otherwise>
                                                   <span style="color: #d3d3d3; font-size: 0.9em;"
@@ -815,17 +866,10 @@
 
                                 <!-- Regest Anfang -->
 
-                                <xsl:if test="//tei:profileDesc/tei:abstract/tei:p">
+                                <xsl:if test="//tei:profileDesc/tei:abstract">
                                     <div id="abstract" class="card-body">
                                         <h3>Regest</h3>
-                                        <xsl:for-each select="//tei:profileDesc/tei:abstract/tei:p">
-                                            <p>
-                                                <em>
-                                                  <xsl:apply-templates/>
-                                                </em>
-                                            </p>
-                                        </xsl:for-each>
-
+                                        <xsl:apply-templates select="//tei:abstract" mode="col-10"/>
 
                                         <!-- Regest Ende -->
 
@@ -867,7 +911,7 @@
                                                 <!-- Anmerkungen Anfang -->
                                                 <div class="col-2">
                                                   <xsl:apply-templates
-                                                  select="//tei:note[@type = 'foliation'] | //tei:signed | //tei:hi[@rend = 'underline'] | //tei:hi[@rend = 'mark'] | //tei:add | //tei:unclear | //tei:sic | //tei:corr | //tei:supplied[@reason = 'deciphering']"
+                                                  select="//tei:note[@type = 'foliation'] | //tei:signed | //tei:hi[@rend = 'underline'] | //tei:hi[@rend = 'mark'] | //tei:add | //tei:unclear | //tei:body//tei:sic | //tei:corr | //tei:supplied[@reason = 'deciphering']"
                                                   mode="col-2"/>
                                                 </div>
                                                 <!-- Anmerkungen Ende -->
@@ -878,6 +922,173 @@
                                 </xsl:if>
                             </div>
                             <!-- Text Ende -->
+
+                            <!-- Legende wenn Breite unter 1810 px Anfang -->
+                            <xsl:if
+                                test="//tei:body//tei:pb | //tei:body//tei:note[@type = 'foliation'] | //tei:body//tei:subst | //tei:body//tei:hi[@rend = 'mark'] | //tei:body//tei:hi[@rend = 'underline'] | //tei:body//tei:note[@type = 'footnote'] | //tei:body//tei:del | //tei:body//tei:gap | //tei:body//tei:add">
+                                <div class="legend-slim card-body">
+                                    <table>
+                                        <colgroup>
+                                            <col style="width: 30%;"/>
+                                            <col style="width: 70%;"/>
+                                        </colgroup>
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2">Legende</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <xsl:if test="//tei:body//tei:pb">
+                                                <tr>
+                                                  <td>
+                                                  <span class="badge bg-warning"
+                                                  style="font-size: 10px; padding: 2px 4px; line-height: 1.5"
+                                                  >n</span>
+                                                  </td>
+                                                  <td>Seitenbeginn</td>
+                                                </tr>
+                                            </xsl:if>
+                                            <xsl:if test="//tei:body//tei:note[@type = 'foliation']">
+                                                <tr>
+                                                  <td>
+                                                  <span class="badge bg-secondary"
+                                                  style="font-size: 10px; padding: 2px 4px; line-height: 1.5"
+                                                  >n</span>
+                                                  </td>
+                                                  <td>Folierungsnummer des Archivs</td>
+                                                </tr>
+                                            </xsl:if>
+                                            <xsl:if test="//tei:body//tei:note[@type = 'footnote']">
+                                                <tr>
+                                                  <td>
+                                                  <sup>
+                                                  <span class="badge bg-primary">n</span>
+                                                  </sup>
+                                                  </td>
+                                                  <td>Fußnote</td>
+                                                </tr>
+                                            </xsl:if>
+                                            <xsl:if test="//tei:lb[position() > 1]">
+                                                <tr>
+                                                  <td>&#8629;</td>
+                                                  <td>Zeilenwechsel</td>
+                                                </tr>
+                                            </xsl:if>
+                                            <xsl:if test="//tei:body//tei:hi[@rend = 'underline']">
+                                                <tr>
+                                                  <td>
+                                                  <span style="text-decoration: underline;"
+                                                  >Text</span>
+                                                  </td>
+                                                  <td>Unterstreichung</td>
+                                                </tr>
+                                            </xsl:if>
+                                            <xsl:if test="//tei:body//tei:hi[@rend = 'mark']">
+                                                <tr>
+                                                  <td>
+                                                  <span
+                                                  style="background-color: #ffedad; border-radius: 5px;"
+                                                  >Text</span>
+                                                  </td>
+                                                  <td>Markierung</td>
+                                                </tr>
+                                            </xsl:if>
+                                            <xsl:if test="//tei:body//tei:subst">
+                                                <tr>
+                                                  <td>
+                                                  <span
+                                                  style="border: black 1px dotted; border-radius: 5px;">
+                                                  <span
+                                                  style="background-color: #F9CBC8; border-radius: 5px;"
+                                                  >&#160;&#160;&#160;&#160;&#160;</span>
+                                                  <span
+                                                  style="border-radius: 5px; background-color: #CBE1D1"
+                                                  >&#160;&#160;&#160;&#160;&#160;</span>
+                                                  </span>
+                                                  </td>
+                                                  <td>Ersetzung</td>
+                                                </tr>
+                                            </xsl:if>
+                                            <xsl:if
+                                                test="//tei:body//tei:del[@rend = 'strikethrough'] | //tei:body//tei:gap[@reason = 'strikethrough']">
+                                                <tr>
+                                                  <td>
+                                                  <span
+                                                  style="background-color: #F9CBC8; border-radius: 5px; text-decoration: line-through;"
+                                                  >Text</span>
+                                                  </td>
+                                                  <td>Durchstreichung</td>
+                                                </tr>
+                                            </xsl:if>
+                                            <xsl:if
+                                                test="//tei:body//tei:del[@rend = 'overwritten'] | //tei:body//tei:gap[@reason = 'overwritten']">
+                                                <tr>
+                                                  <td>
+                                                  <span
+                                                  style="background-color: #F9CBC8; border-radius: 5px; color: gray; text-decoration: line-through; text-decoration-style: wavy;"
+                                                  >Text</span>
+                                                  </td>
+                                                  <td>Überschreibung</td>
+                                                </tr>
+                                            </xsl:if>
+                                            <xsl:if test="//tei:body//tei:gap[@unit = 'char']">
+                                                <tr>
+                                                  <td>▯</td>
+                                                  <td>ein unlesbares Zeichen</td>
+                                                </tr>
+                                            </xsl:if>
+                                            <xsl:if test="//tei:body//tei:gap[@unit = 'words']">
+                                                <tr>
+                                                  <td>▭</td>
+                                                  <td>ein unlesbares Wort</td>
+                                                </tr>
+                                            </xsl:if>
+                                            <xsl:if test="//tei:body//tei:add[not(@place)]">
+                                                <tr>
+                                                  <td>
+                                                  <span
+                                                  style="border-radius: 5px; background-color: #CBE1D1"
+                                                  ><i class="bi bi-arrow-right"/>Text</span>
+                                                  </td>
+                                                  <td>Einfügung in derselben Zeile bzw. über dem
+                                                  alten Text</td>
+                                                </tr>
+                                            </xsl:if>
+                                            <xsl:if test="//tei:body//tei:add[@place = 'above']">
+                                                <tr>
+                                                  <td>
+                                                  <span
+                                                  style="border-radius: 5px; background-color: #CBE1D1"
+                                                  ><i class="bi bi-arrow-up"/>Text</span>
+                                                  </td>
+                                                  <td>Einfügung über der Zeile</td>
+                                                </tr>
+                                            </xsl:if>
+                                            <xsl:if test="//tei:body//tei:add[@place = 'below']">
+                                                <tr>
+                                                  <td>
+                                                  <span
+                                                  style="border-radius: 5px; background-color: #CBE1D1"
+                                                  ><i class="bi bi-arrow-down"/>Text</span>
+                                                  </td>
+                                                  <td>Einfügung unter der Zeile</td>
+                                                </tr>
+                                            </xsl:if>
+                                            <xsl:if test="//tei:body//tei:add[@place = 'margin']">
+                                                <tr>
+                                                  <td>
+                                                  <span
+                                                  style="border-radius: 5px; background-color: #CBE1D1"
+                                                  ><i class="bi bi-arrow-left"/>Text</span>
+                                                  </td>
+                                                  <td>Einfügung am Rand</td>
+                                                </tr>
+                                            </xsl:if>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </xsl:if>
+                            <!-- Legende wenn Breite unter 1810px Ende -->
 
                             <!-- Fußnoten Anfang -->
                             <xsl:if test="//tei:note[@type = 'footnote']">
@@ -891,7 +1102,8 @@
                                                 select="format-number(position(), '00')"/>
                                             <xsl:variable name="fnId"
                                                 select="concat('FN_', $filename, '_', $fnSign)"/>
-                                            <li id="{$fnId}_app" href="#{$fnId}_con">
+                                            <li id="{$fnId}_app" href="#{$fnId}_con"
+                                                style="margin-bottom: 1rem;">
                                                 <sup>
                                                   <span class="badge bg-primary">
                                                   <xsl:value-of select="number($fnSign)"/>
@@ -956,19 +1168,19 @@
     <!-- Am Dokumentbeginn Anfang -->
 
     <xsl:template match="tei:opener" mode="col-10">
-        <span style="background-color: gray">
+        <div style="background-color: #fffbeb; border-radius: 5px;">
             <xsl:apply-templates mode="col-10"/>
-        </span>
+        </div>
     </xsl:template>
 
-    <!-- Am Dokumentbeginn Anfang -->
+    <!-- Am Dokumentbeginn Ende -->
 
     <!-- Am Dokumentende Anfang -->
 
     <xsl:template match="tei:closer" mode="col-10">
-        <div style="margin-top: 75px; text-align: right;">
-            <xsl:apply-templates select="tei:salute" mode="col-10"/>
-            <xsl:apply-templates select="tei:signed" mode="col-10"/>
+        <div
+            style="margin-top: 75px; text-align: right; background-color: #fffbeb; border-radius: 5px;">
+            <xsl:apply-templates mode="col-10"/>
         </div>
     </xsl:template>
 
@@ -1023,12 +1235,6 @@
         </strong>
     </xsl:template>
 
-    <xsl:template match="tei:pb" mode="col-10">
-        <span class="badge bg-warning" style="font-size: 10px; padding: 2px 4px; line-height: 1.5">
-            <xsl:value-of select="@n"/>
-        </span>
-    </xsl:template>
-
     <xsl:template match="tei:p" mode="col-10">
         <p>
             <xsl:apply-templates mode="col-10"/>
@@ -1036,13 +1242,13 @@
     </xsl:template>
 
     <xsl:template match="tei:list" mode="col-10">
-        <ul>
+        <ul style="list-style-type: none;">
             <xsl:apply-templates mode="col-10"/>
         </ul>
     </xsl:template>
 
     <xsl:template match="tei:list/tei:item" mode="col-10">
-        <li>
+        <li style="margin-bottom: 1rem;">
             <xsl:apply-templates mode="col-10"/>
         </li>
     </xsl:template>
@@ -1070,8 +1276,12 @@
 
     <!--Überall Anfang -->
 
-    <xsl:template match="tei:lb[position() > 1]" mode="col-10">
-        <br/>
+    <xsl:template match="tei:lb[position() > 1]" mode="col-10">&#8629;<br/></xsl:template>
+
+    <xsl:template match="tei:pb" mode="col-10">
+        <span class="badge bg-warning" style="font-size: 10px; padding: 2px 4px; line-height: 1.5">
+            <xsl:value-of select="@n"/>
+        </span>
     </xsl:template>
 
     <!-- Überall Ende -->
