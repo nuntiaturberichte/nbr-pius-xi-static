@@ -70,6 +70,9 @@
                     .tabulator-row.tabulator-row-even {
                         background-color: #FFF6D6 !important;
                     }
+                    .tabulator-row.tabulator-row-even:hover {
+                        background-color: #bbb !important;
+                    }
                     .tabulator-page-counter {
                         background-color: inherit !important;
                     }
