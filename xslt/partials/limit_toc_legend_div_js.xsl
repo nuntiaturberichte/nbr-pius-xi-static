@@ -6,7 +6,7 @@
         <script>
             document.addEventListener("scroll", function () {
             const toc = document.querySelector('.toc');
-            const legend = document.querySelector('.legend');
+            const legend = document.querySelector('.legend-slim');
             const card = document.querySelector('.card');
             
             const cardRect = card.getBoundingClientRect();
@@ -26,7 +26,7 @@
             toc.style.bottom = 'auto'; // Deaktiviere bottom
             }
             
-            // Für `.legend`
+            // Für `.legend-slim`
             if (cardBottomInViewport &lt;= 0) {
             legend.style.position = 'fixed';
             legend.style.top = 'auto'; // Deaktiviere top
