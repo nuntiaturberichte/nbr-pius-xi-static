@@ -2,7 +2,7 @@
 *.html
 html/*.xml
 /saxon
-data/imprint.xml
+data/*
 html/js-data/
 
 data/indices/*.xml
