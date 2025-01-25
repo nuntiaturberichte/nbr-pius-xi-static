@@ -7,7 +7,7 @@
         <fileset dir="${target}" includes="*.html"/>
     </delete>
     
-    <xslt style="./xslt/editions.xsl" basedir="./data/TEI/editions" destdir="${target}" includes="**/*.xml">
+    <xslt style="./xslt/editions.xsl" basedir="../nbr-pius-xi-data/TEI/editions" destdir="${target}" includes="**/*.xml">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
     </xslt>
@@ -17,7 +17,7 @@
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
     </xslt>
-    <xslt in="./data/meta/index.xml" out="${target}/index.html" style="./xslt/index.xsl">
+    <xslt in="../nbr-pius-xi-data/meta/index.xml" out="${target}/index.html" style="./xslt/index.xsl">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
     </xslt>
