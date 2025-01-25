@@ -3,59 +3,87 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="xs" version="2.0">
 
     <xsl:template match="/" name="toggle_view">
-        <script>
+        <script>// Map zum Speichern der ursprünglichen Werte von data-annotation
+            const annotationValues = new Map();
+            
+            // Initialisierung: Werte von data-annotation speichern
+            document.addEventListener('DOMContentLoaded', () => {
+            const annotatedElements = document.querySelectorAll('[data-annotation]');
+            annotatedElements.forEach(el => {
+            const value = el.getAttribute('data-annotation');
+            if (value !== null) {
+            annotationValues.set(el, value); // Originalwert speichern
+            }
+            });
+            });
+            
             // Annotierte Ansicht
             document.getElementById('showAnnotations').addEventListener('click', function () {
-            const textColumn = document.querySelector('.text-column'); // Textspalte anhand einer festen Klasse auswählen
-            const annotationColumn = document.querySelector('.col-2'); // Annotationen-Spalte auswählen
-            const toggleElements = document.querySelectorAll('.toggle-content'); // Alle Toggle-Content-Elemente auswählen
+            const textColumn = document.querySelector('.text-column');
+            const annotationColumn = document.querySelector('.col-2');
+            const toggleElements = document.querySelectorAll('.toggle-content');
             
             if (textColumn) {
-            // Zurück zu col-10 (annotierte Ansicht)
             textColumn.classList.remove('col-12');
             textColumn.classList.add('col-10');
             }
             if (annotationColumn) {
-            annotationColumn.style.display = 'block'; // Annotationen-Spalte einblenden
+            annotationColumn.style.display = 'block';
             }
             if (toggleElements) {
             toggleElements.forEach(el => {
-            el.style.display = 'inline'; // Toggle-Content-Elemente einblenden
+            el.classList.remove('no-annotations');
             });
             }
             
+            // Werte von data-annotation aus der Map wiederherstellen
+            annotationValues.forEach((value, el) => {
+            if (document.body.contains(el)) { // Nur wenn das Element noch im DOM existiert
+            el.setAttribute('data-annotation', value);
+            }
+            });
+            
             // Buttons anpassen
-            this.classList.add('btn-primary'); // Aktiver Button
-            this.classList.remove('btn-secondary');
-            document.getElementById('showReadingView').classList.add('btn-secondary');
-            document.getElementById('showReadingView').classList.remove('btn-primary');
+            this.classList.add('btn-dark');
+            this.classList.remove('btn-outline-dark');
+            document.getElementById('showReadingView').classList.add('btn-outline-dark');
+            document.getElementById('showReadingView').classList.remove('btn-dark');
             });
             
             // Leseansicht
             document.getElementById('showReadingView').addEventListener('click', function () {
-            const textColumn = document.querySelector('.text-column'); // Textspalte anhand einer festen Klasse auswählen
-            const annotationColumn = document.querySelector('.col-2'); // Annotationen-Spalte auswählen
-            const toggleElements = document.querySelectorAll('.toggle-content'); // Alle Toggle-Content-Elemente auswählen
+            const textColumn = document.querySelector('.text-column');
+            const annotationColumn = document.querySelector('.col-2');
+            const toggleElements = document.querySelectorAll('.toggle-content');
+            const annotatedElements = document.querySelectorAll('[data-annotation]');
             
             if (textColumn) {
-            // Auf col-12 umstellen (Leseansicht)
             textColumn.classList.remove('col-10');
             textColumn.classList.add('col-12');
             }
             if (annotationColumn) {
-            annotationColumn.style.display = 'none'; // Annotationen-Spalte ausblenden
+            annotationColumn.style.display = 'none';
             }
             if (toggleElements) {
             toggleElements.forEach(el => {
-            el.style.display = 'none'; // Toggle-Content-Elemente ausblenden
+            el.classList.add('no-annotations');
             });
             }
             
+            // Werte von data-annotation speichern und Attribut entfernen
+            annotatedElements.forEach(el => {
+            const value = el.getAttribute('data-annotation');
+            if (value !== null) {
+            annotationValues.set(el, value); // Originalwert speichern
+            }
+            el.removeAttribute('data-annotation');
+            });
+            
             // Buttons anpassen
-            this.classList.add('btn-primary'); // Aktiver Button
-            this.classList.remove('btn-secondary');
-            document.getElementById('showAnnotations').classList.add('btn-secondary');
-            document.getElementById('showAnnotations').classList.remove('btn-primary');
+            this.classList.add('btn-dark');
+            this.classList.remove('btn-outline-dark');
+            document.getElementById('showAnnotations').classList.add('btn-outline-dark');
+            document.getElementById('showAnnotations').classList.remove('btn-dark');
             });
         </script>
     </xsl:template>
