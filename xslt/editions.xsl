@@ -67,45 +67,45 @@
                     
                     /* Inhaltsverzeichnis Ende */
                     
-                    /* Legende breit Beginn */
+                    /* Legende schmal Beginn */
                     
-                    .legend {
+                    .legend-slim {
                         position: fixed;
                         top: 148px;
                         right: 1vw;
                         width: 250px;
                     }
                     
-                    .legend th {
+                    .legend-slim th {
                         background-color: #ffedad
                     }
                     
-                    /* Legende breit Ende */
+                    /* Legende schmal Ende */
                     
-                    /* Legende schmal Anfang */
-                    .legend-slim {
+                    /* Legende breit Anfang */
+                    .legend-broad {
                         display: none;
                     }
                     
                     @media (max-width : 1810px) {
-                        .legend-slim {
+                        .legend-broad {
                             display: block;
                         }
                     }
-                    /* Legende schmal Anfang */
+                    /* Legende breit Anfang */
                     
                     /* Handling toc und legend bezüglich Bildschirmbreite Anfang */
                     @media (max-width : 1840px) {
                         .toc {
                             left: 5px;
                         }
-                        .legend {
+                        .legend-slim {
                             right: 5px;
                         }
                     }
                     
                     @media (max-width : 1810px) {
-                        .legend,
+                        .legend-slim.toggle-content,
                         .toc {
                             display: none;
                         }
@@ -176,15 +176,36 @@
                     
                     /* Adaption für Leseansicht Anfang*/
                     .col-12 {
-                    border-right: none !important;
+                        border-right: none !important;
                     }
                     
                     .toggle-content {
-                    display: inline;
+                        display: inline;
                     }
                     
-                    .no-annotations .toggle-content {
-                    display: none;
+                    /* Unterstreichung */
+                    .no-annotations.toggle-content[style *= "text-decoration: underline;"] {
+                        display: inline;
+                        text-decoration: none !important;
+                    }
+                    /* Markierung */
+                    .no-annotations.toggle-content[style *= "background-color: #ffedad; border-radius: 5px;"] {
+                        display: inline;
+                        background-color: transparent !important;
+                    }
+                    /* Ersetzung */
+                    .no-annotations.toggle-content[style *= "border: black 1px dotted; border-radius: 5px;"] {
+                        display: inline;
+                        border: none !important;
+                    }
+                    /* Einfügung */
+                    .no-annotations.toggle-content[style *= "border-radius: 5px; background-color: #CBE1D1"] {
+                        display: inline;
+                        background-color: transparent !important;
+                    }
+                    
+                    .no-annotations.toggle-content {
+                        display: none;
                     }
                     /* Adaption für Leseansicht Ende */
                     
@@ -243,11 +264,11 @@
 
                         <xsl:if
                             test="//tei:body//tei:pb | //tei:body//tei:note[@type = 'foliation'] | //tei:body//tei:subst | //tei:body//tei:hi[@rend = 'mark'] | //tei:body//tei:hi[@rend = 'underline'] | //tei:body//tei:note[@type = 'footnote'] | //tei:body//tei:del | //tei:body//tei:gap | //tei:body//tei:add">
-                            <div class="legend">
+                            <div class="legend-slim toggle-content">
                                 <table>
                                     <colgroup>
-                                        <col style="width: 30%;"/>
-                                        <col style="width: 70%;"/>
+                                        <col style="width: 40%;"/>
+                                        <col style="width: 60%;"/>
                                     </colgroup>
                                     <thead>
                                         <tr>
@@ -317,10 +338,10 @@
                                                   style="border: black 1px dotted; border-radius: 5px;">
                                                   <span
                                                   style="background-color: #F9CBC8; border-radius: 5px;"
-                                                  >&#160;&#160;&#160;&#160;&#160;</span>
+                                                  >-Text</span>
                                                   <span
                                                   style="border-radius: 5px; background-color: #CBE1D1"
-                                                  >&#160;&#160;&#160;&#160;&#160;</span>
+                                                  >+Text</span>
                                                   </span>
                                                 </td>
                                                 <td>Ersetzung</td>
@@ -921,13 +942,15 @@
 
                                 <xsl:if test="//tei:text/tei:body/*">
                                     <div class="card-body" id="text">
-                                        <h2>Text</h2>
-                                        <div class="btn-group mb-3" role="group"
-                                            aria-label="Ansicht umschalten">
-                                            <button id="showAnnotations" class="btn btn-primary"
-                                                >Annotierte Ansicht</button>
-                                            <button id="showReadingView" class="btn btn-secondary"
-                                                >Leseansicht</button>
+                                        <div style="display: flex; align-items: center;">
+                                            <h2 style="margin-right: 1rem;">Text</h2>
+                                            <div class="btn-group btn-group-sm" role="group"
+                                                aria-label="Ansicht umschalten">
+                                                <button id="showAnnotations" class="btn btn-dark"
+                                                  >Annotierte Ansicht</button>
+                                                <button id="showReadingView"
+                                                  class="btn btn-outline-dark">Leseansicht</button>
+                                            </div>
                                         </div>
                                         <div id="text">
                                             <div class="row">
@@ -948,7 +971,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <hr/>
                                 </xsl:if>
                             </div>
                             <!-- Text Ende -->
@@ -956,7 +978,7 @@
                             <!-- Legende wenn Breite unter 1810 px Anfang -->
                             <xsl:if
                                 test="//tei:body//tei:pb | //tei:body//tei:note[@type = 'foliation'] | //tei:body//tei:subst | //tei:body//tei:hi[@rend = 'mark'] | //tei:body//tei:hi[@rend = 'underline'] | //tei:body//tei:note[@type = 'footnote'] | //tei:body//tei:del | //tei:body//tei:gap | //tei:body//tei:add">
-                                <div class="legend-slim card-body">
+                                <div class="legend-broad card-body">
                                     <table>
                                         <colgroup>
                                             <col style="width: 30%;"/>
@@ -1030,10 +1052,10 @@
                                                   style="border: black 1px dotted; border-radius: 5px;">
                                                   <span
                                                   style="background-color: #F9CBC8; border-radius: 5px;"
-                                                  >&#160;&#160;&#160;&#160;&#160;</span>
+                                                  >-Text</span>
                                                   <span
                                                   style="border-radius: 5px; background-color: #CBE1D1"
-                                                  >&#160;&#160;&#160;&#160;&#160;</span>
+                                                  >+Text</span>
                                                   </span>
                                                   </td>
                                                   <td>Ersetzung</td>
@@ -1122,6 +1144,7 @@
 
                             <!-- Fußnoten Anfang -->
                             <xsl:if test="//tei:note[@type = 'footnote']">
+                                <hr/>
                                 <div id="footnotes" class="card-body">
                                     <h3>Fußnoten</h3>
                                     <ul class="list-unstyled">
@@ -1351,7 +1374,7 @@
     <!-- Unterstreichung Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:hi[@rend = 'underline']" mode="col-10">
-        <span style="text-decoration: underline;" class="annotated-word">
+        <span style="text-decoration: underline;" class="annotated-word toggle-content">
             <xsl:if test="@hand">
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
@@ -1376,7 +1399,8 @@
     <!-- Markierung Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:hi[@rend = 'mark']" mode="col-10">
-        <span style="background-color: #ffedad; border-radius: 5px;" class="annotated-word">
+        <span style="background-color: #ffedad; border-radius: 5px;"
+            class="annotated-word toggle-content">
             <xsl:if test="@hand">
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
@@ -1400,7 +1424,7 @@
 
     <!-- Ersetzung Anfang -->
     <xsl:template match="tei:subst" mode="col-10">
-        <span style="border: black 1px dotted; border-radius: 5px;">
+        <span class="toggle-content" style="border: black 1px dotted; border-radius: 5px;">
             <xsl:apply-templates mode="col-10"/>
         </span>
     </xsl:template>
@@ -1444,6 +1468,9 @@
                         <xsl:text>▭</xsl:text>
                     </xsl:for-each>
                 </xsl:when>
+                <xsl:when test="@reason = 'illegible' and not(@unit)">
+                    <span style="color: gray;">unlesbar</span>
+                </xsl:when>
             </xsl:choose>
         </span>
     </xsl:template>
@@ -1452,7 +1479,8 @@
     <!-- Einfügung Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:add" mode="col-10">
-        <span class="annotated-word" style="border-radius: 5px; background-color: #CBE1D1">
+        <span class="annotated-word toggle-content"
+            style="border-radius: 5px; background-color: #CBE1D1">
             <xsl:if test="@rend">
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
