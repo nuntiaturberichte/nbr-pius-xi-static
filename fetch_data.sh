@@ -9,15 +9,15 @@ rm -rf data/ && mkdir data
 curl -LO https://codeload.github.com/nuntiaturberichte/nbr-pius-xi-data/zip/refs/heads/default
 
 # Entpacke das heruntergeladene ZIP-Archiv
-unzip main.zip
+unzip default.zip
 
 # # Verschiebe die benötigten Ordner aus dem tieferen Verzeichnis in die entsprechenden Verzeichnisse unter "data"
-mv ./nbr-pius-xi-data-main/* ./data
+mv ./nbr-pius-xi-data-default/* ./data
 
 
 # # Bereinige: Lösche das heruntergeladene ZIP-Archiv und das entpackte Verzeichnis
-rm main.zip
-rm -rf ./nbr-pius-xi-data-main
+rm default.zip
+rm -rf ./nbr-pius-xi-data-default
 
 echo "Transcriptions have been successfully updated."
 
