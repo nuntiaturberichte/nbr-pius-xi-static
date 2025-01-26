@@ -7,6 +7,7 @@
     <xsl:import href="./partials/tabulator_js.xsl"/>
     <xsl:import href="./partials/tooltip_js.xsl"/>
 
+    <xsl:param name="collectionPath"/>
     <xsl:output method="html" encoding="UTF-8" indent="yes"/>
     <xsl:strip-space elements="*"/>
 
@@ -114,8 +115,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <xsl:for-each
-                                    select="collection($collectionPath)/tei:TEI">
+                                <xsl:for-each select="collection($collectionPath)/tei:TEI">
                                     <xsl:variable name="full_path">
                                         <xsl:value-of select="document-uri(/)"/>
                                     </xsl:variable>
