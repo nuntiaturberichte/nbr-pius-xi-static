@@ -6,7 +6,7 @@
     <xsl:import href="./partials/html_footer.xsl"/>
     <xsl:import href="./partials/tabulator_js.xsl"/>
     <xsl:import href="./partials/tooltip_js.xsl"/>
-    
+
     <xsl:output method="html" encoding="UTF-8" indent="yes"/>
     <xsl:strip-space elements="*"/>
 
@@ -114,7 +114,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <xsl:for-each select="collection('../data/tei/editions/?select=*.xml')/tei:TEI">
+                                <xsl:for-each
+                                    select="collection('../../nbr-pius-xi-data/tei/editions/?select=*.xml')/tei:TEI">
                                     <xsl:variable name="full_path">
                                         <xsl:value-of select="document-uri(/)"/>
                                     </xsl:variable>
