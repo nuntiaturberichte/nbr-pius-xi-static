@@ -7,9 +7,10 @@ rm -rf data/ && mkdir data
 
 # Lade das Repository als ZIP-Archiv herunter
 curl -LO https://codeload.github.com/nuntiaturberichte/nbr-pius-xi-data/zip/refs/heads/default
+ls -l
 
 # Entpacke das heruntergeladene ZIP-Archiv
-unzip nbr-pius-xi-data-default.zip
+unzip default.zip
 
 # # Verschiebe die benötigten Ordner aus dem tieferen Verzeichnis in die entsprechenden Verzeichnisse unter "data"
 mv ./nbr-pius-xi-data-default/* ./data
