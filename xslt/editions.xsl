@@ -1177,13 +1177,15 @@
                                     <div class="col-12 col-md-4 d-flex justify-content-start">
                                         <h4>Download</h4>
                                     </div>
+                                    <xsl:variable name="fileName"
+                                        select="tokenize(document-uri(.), '/')[last()]"/>
                                     <div class="col-12 col-md-4 d-flex justify-content-center">
                                         <a
-                                            href="https://grazer-nuntiatur.acdh.oeaw.ac.at/{concat(//tei:TEI/@xml:id, '.xml')}"
+                                            href="https://nuntiaturberichte.github.io/nbr-pius-xi-static/{$fileName}"
                                             target="_blank" style="color: black;">
                                             <i class="fas fa-file-code fa-2x"
                                                 title="XML herunterladen"/>&#160;<xsl:value-of
-                                                select="concat(//tei:TEI/@xml:id, '.xml')"/>
+                                                select="$fileName"/>
                                         </a>
                                     </div>
                                     <div class="col-12 col-md-4 d-flex justify-content-center">
@@ -1192,7 +1194,8 @@
                                                 title="PDF herunterladen"/>&#160;<span
                                                 id="pdfFileName">
                                                 <xsl:value-of
-                                                  select="concat(//tei:TEI/@xml:id, '.pdf')"/>
+                                                  select="replace(tokenize(document-uri(.), '/')[last()], '.xml$', '.pdf')"
+                                                />
                                             </span>
                                         </a>
                                     </div>
