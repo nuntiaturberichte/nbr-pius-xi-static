@@ -7,20 +7,55 @@
         <fileset dir="${target}" includes="*.html"/>
     </delete>
 
+    <!-- meta Anfang -->
+
+    <xslt in="../nbr-pius-xi-data/meta/index.xml" out="${target}/index.html"
+        style="./xslt/index.xsl">
+        <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+        <classpath location="${basedir}/saxon/saxon9he.jar"/>
+    </xslt>
+
+    <xslt in="../nbr-pius-xi-data/meta/imprint.xml" out="${target}/imprint.html"
+        style="./xslt/imprint.xsl">
+        <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+        <classpath location="${basedir}/saxon/saxon9he.jar"/>
+    </xslt>
+
+    <xslt in="../nbr-pius-xi-data/meta/workflow.xml" out="${target}/workflow.html"
+        style="./xslt/workflow.xsl">
+        <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+        <classpath location="${basedir}/saxon/saxon9he.jar"/>
+    </xslt>
+
+    <xslt in="../nbr-pius-xi-data/meta/about.xml" out="${target}/about.html"
+        style="./xslt/about.xsl">
+        <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+        <classpath location="${basedir}/saxon/saxon9he.jar"/>
+    </xslt>
+
+    <xslt in="../nbr-pius-xi-data/meta/elements.xml" out="${target}/elements.html"
+        style="./xslt/elements.xsl">
+        <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+        <classpath location="${basedir}/saxon/saxon9he.jar"/>
+    </xslt>
+
+    <xslt in="./xslt/404.xsl" out="${target}/404.html" style="./xslt/404.xsl">
+        <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+        <classpath location="${basedir}/saxon/saxon9he.jar"/>
+    </xslt>
+
+    <!-- meta Ende -->
+
+    <!-- Projektbezogen Anfang -->
+
     <xslt style="./xslt/editions.xsl" basedir="../nbr-pius-xi-data/TEI/editions" destdir="${target}"
         includes="**/*.xml">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
     </xslt>
 
-    <xslt in="./xslt/correspaction-off.xsl" out="${target}/correspaction-off.html"
+    <xslt in="./xslt/correspaction-off.xsl" out="${target}/correspaction.html"
         style="./xslt/correspaction-off.xsl">
-        <factory name="net.sf.saxon.TransformerFactoryImpl"/>
-        <classpath location="${basedir}/saxon/saxon9he.jar"/>
-    </xslt>
-
-    <xslt in="../nbr-pius-xi-data/meta/index.xml" out="${target}/index.html"
-        style="./xslt/index.xsl">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
     </xslt>
@@ -30,12 +65,9 @@
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
     </xslt>
 
-    <xslt in="./xslt/404.xsl" out="${target}/404.html" style="./xslt/404.xsl">
-        <factory name="net.sf.saxon.TransformerFactoryImpl"/>
-        <classpath location="${basedir}/saxon/saxon9he.jar"/>
-    </xslt>
-    
-    
+    <!-- Projektbezogen Ende -->
+
+
     <replace dir="${target}" value="">
         <include name="*.html"/>
         <replacetoken> xmlns=""</replacetoken>
