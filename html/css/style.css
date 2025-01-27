@@ -1,8 +1,22 @@
 /*** global ***/
-nav .dropdown-item:active,
-nav .dropdown-item.active {
-    background-color: #474747;
-    color: #EBEBEB;
+nav a.nav-link {
+    border-radius: 5px;
+}
+
+nav a.nav-link:hover {
+    background-color: #db2017;
+    border-radius: 5px;
+    color: white;
+}
+
+nav .dropdown-item:hover {
+    background-color: #EE6059;
+    color: white;
+}
+
+nav .dropdown-item:active {
+    background-color: #db2017;
+    color: white;
 }
 
 body {
@@ -11,7 +25,7 @@ body {
     hyphens: auto;
 }
 
-@media (max-width: 441px) {
+@media (max-width : 441px) {
     body {
         padding-top: 130px;
     }
