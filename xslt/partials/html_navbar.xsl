@@ -15,10 +15,9 @@
                     <a href="index.html" class="navbar-brand custom-logo-link" rel="home"
                         itemprop="url">
                         <img src="./images/project_logo.png" class="img-fluid"
-                            title="nuntiatur-pius-xi" alt="nuntiatur-pius-xi"
-                            itemprop="logo"/>
+                            title="nuntiatur-pius-xi" alt="nuntiatur-pius-xi" itemprop="logo"/>
                     </a>
-                    
+
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent"
                         aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -58,36 +57,13 @@
                                     </li>
                                     <li>
                                         <a class="dropdown-item"
-                                            href="https://github.com/nuntiaturberichte/nbr-graz-data"
+                                            href="https://github.com/nuntiaturberichte/nbr-pius-xi-data"
                                             target="_blank">Quelldaten auf GitHub</a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item"
-                                            href="https://github.com/nuntiaturberichte/nbr-graz-static"
+                                            href="https://github.com/nuntiaturberichte/nbr-pius-xi-static"
                                             target="_blank">App auf GitHub</a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false"
-                                    >Bandeinleitungen</a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item" href="front-1.html">Band 1</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="front-2.html">Band 2</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="front-3.html">Band 3</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="front-4.html">Band 4</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="front-5.html">Band 5</a>
                                     </li>
                                 </ul>
                             </li>
@@ -98,10 +74,6 @@
 
                             <li class="nav-item">
                                 <a class="nav-link" href="calendar.html">Kalender</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="register.html">Register</a>
                             </li>
 
                             <li class="nav-item">
