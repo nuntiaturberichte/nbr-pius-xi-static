@@ -20,14 +20,17 @@
                     <xsl:with-param name="html_title" select="$doc_title"/>
                 </xsl:call-template>
                 <meta name="description"
-                    content="Recherchieren Sie in der frei zugänglichen Korrespondenz des päpstlichen Gesandten während der Zwischenkriegszeit, einer politisch und religiös wegweisenden Epoche."
-                />
+                    content="Recherchieren Sie in der frei zugänglichen Korrespondenz des päpstlichen Gesandten während der Zwischenkriegszeit, einer politisch und religiös wegweisenden Epoche."/>
+                <style>
+                    .nunt-link:hover {
+                        background-color: #f8f9fa !important;
+                    }</style>
             </head>
             <body class="d-flex flex-column h-100">
                 <xsl:call-template name="nav_bar"/>
                 <main class="flex-shrink-0 flex-grow-1">
                     <div class="container col-xxl-8 pt-3">
-                        <div class="row flex-lg-row align-items-center g-5 py-5">
+                        <div class="row flex-lg-row align-items-center g-5 py-3">
                             <div class="col-lg-6">
                                 <h1 class="lh-base">
                                     <span class="display-6">Nuntiatur Pius XI</span>
@@ -41,17 +44,19 @@
                                 <xsl:apply-templates select="//tei:body//tei:p[@style = 'small']"/>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-start">
                                     <a href="search.html" type="button"
-                                        class="btn btn-dark btn px-4 me-md-2">Volltextsuche</a>
+                                        class="btn btn-warning px-4 me-md-2">Volltextsuche</a>
                                     <a href="correspaction.html" type="button"
-                                        class="btn btn-outline-dark px-4">Zur Korrespondenz</a>
+                                        class="btn btn-outline-warning px-4" style="color: black;"
+                                        >Zu den Dokumenten</a>
                                     <div class="dropdown">
-                                        <button
-                                            class="btn btn-secondary dropdown-toggle"
-                                            type="button" data-bs-toggle="dropdown"
-                                            aria-expanded="false">Zu anderen Nuntiaturen</button>
+                                        <button class="btn dropdown-toggle"
+                                            style="background-color: #ffe485" type="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">Zu
+                                            anderen Nuntiaturen</button>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a class="dropdown-item"
+                                                <a class="dropdown-item nunt-link"
+                                                  style="background-color: #e0e0e0"
                                                   href="https://grazer-nuntiatur.acdh.oeaw.ac.at/"
                                                   >Grazer Nuntiatur</a>
                                             </li>
