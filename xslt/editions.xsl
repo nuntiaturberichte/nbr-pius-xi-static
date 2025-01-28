@@ -972,81 +972,84 @@
                                         </div>
                                     </div>
                                 </xsl:if>
-                            </div>
-                            <!-- Text Ende -->
 
-                            <!-- Legende wenn Breite unter 1810 px Anfang -->
-                            <xsl:if
-                                test="//tei:body//tei:pb | //tei:body//tei:note[@type = 'foliation'] | //tei:body//tei:subst | //tei:body//tei:hi[@rend = 'mark'] | //tei:body//tei:hi[@rend = 'underline'] | //tei:body//tei:note[@type = 'footnote'] | //tei:body//tei:del | //tei:body//tei:gap | //tei:body//tei:add">
-                                <div class="legend-broad card-body">
-                                    <table>
-                                        <colgroup>
-                                            <col style="width: 30%;"/>
-                                            <col style="width: 70%;"/>
-                                        </colgroup>
-                                        <thead>
-                                            <tr>
-                                                <th colspan="2">Legende</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <xsl:if test="//tei:body//tei:pb">
+                                <!-- Text Ende -->
+
+                                <!-- Legende wenn Breite unter 1810 px Anfang -->
+                                <xsl:if
+                                    test="//tei:body//tei:pb | //tei:body//tei:note[@type = 'foliation'] | //tei:body//tei:subst | //tei:body//tei:hi[@rend = 'mark'] | //tei:body//tei:hi[@rend = 'underline'] | //tei:body//tei:note[@type = 'footnote'] | //tei:body//tei:del | //tei:body//tei:gap | //tei:body//tei:add">
+                                    <div class="legend-broad card-body">
+                                        <table>
+                                            <colgroup>
+                                                <col style="width: 30%;"/>
+                                                <col style="width: 70%;"/>
+                                            </colgroup>
+                                            <thead>
                                                 <tr>
+                                                  <th colspan="2">Legende</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <xsl:if test="//tei:body//tei:pb">
+                                                  <tr>
                                                   <td>
                                                   <span class="badge bg-warning"
                                                   style="font-size: 10px; padding: 2px 4px; line-height: 1.5"
                                                   >n</span>
                                                   </td>
                                                   <td>Seitenbeginn</td>
-                                                </tr>
-                                            </xsl:if>
-                                            <xsl:if test="//tei:body//tei:note[@type = 'foliation']">
-                                                <tr>
+                                                  </tr>
+                                                </xsl:if>
+                                                <xsl:if
+                                                  test="//tei:body//tei:note[@type = 'foliation']">
+                                                  <tr>
                                                   <td>
                                                   <span class="badge bg-secondary"
                                                   style="font-size: 10px; padding: 2px 4px; line-height: 1.5"
                                                   >n</span>
                                                   </td>
                                                   <td>Folierungsnummer des Archivs</td>
-                                                </tr>
-                                            </xsl:if>
-                                            <xsl:if test="//tei:body//tei:note[@type = 'footnote']">
-                                                <tr>
+                                                  </tr>
+                                                </xsl:if>
+                                                <xsl:if
+                                                  test="//tei:body//tei:note[@type = 'footnote']">
+                                                  <tr>
                                                   <td>
                                                   <sup>
                                                   <span class="badge bg-primary">n</span>
                                                   </sup>
                                                   </td>
                                                   <td>Fußnote</td>
-                                                </tr>
-                                            </xsl:if>
-                                            <xsl:if test="//tei:lb[position() > 1]">
-                                                <tr>
+                                                  </tr>
+                                                </xsl:if>
+                                                <xsl:if test="//tei:lb[position() > 1]">
+                                                  <tr>
                                                   <td>&#8629;</td>
                                                   <td>Zeilenwechsel</td>
-                                                </tr>
-                                            </xsl:if>
-                                            <xsl:if test="//tei:body//tei:hi[@rend = 'underline']">
-                                                <tr>
+                                                  </tr>
+                                                </xsl:if>
+                                                <xsl:if
+                                                  test="//tei:body//tei:hi[@rend = 'underline']">
+                                                  <tr>
                                                   <td>
                                                   <span style="text-decoration: underline;"
                                                   >Text</span>
                                                   </td>
                                                   <td>Unterstreichung</td>
-                                                </tr>
-                                            </xsl:if>
-                                            <xsl:if test="//tei:body//tei:hi[@rend = 'mark']">
-                                                <tr>
+                                                  </tr>
+                                                </xsl:if>
+                                                <xsl:if test="//tei:body//tei:hi[@rend = 'mark']">
+                                                  <tr>
                                                   <td>
                                                   <span
                                                   style="background-color: #ffedad; border-radius: 5px;"
                                                   >Text</span>
                                                   </td>
                                                   <td>Markierung</td>
-                                                </tr>
-                                            </xsl:if>
-                                            <xsl:if test="//tei:body//tei:subst">
-                                                <tr>
+                                                  </tr>
+                                                </xsl:if>
+                                                <xsl:if test="//tei:body//tei:subst">
+                                                  <tr>
                                                   <td>
                                                   <span
                                                   style="border: black 1px dotted; border-radius: 5px;">
@@ -1059,44 +1062,44 @@
                                                   </span>
                                                   </td>
                                                   <td>Ersetzung</td>
-                                                </tr>
-                                            </xsl:if>
-                                            <xsl:if
-                                                test="//tei:body//tei:del[@rend = 'strikethrough'] | //tei:body//tei:gap[@reason = 'strikethrough']">
-                                                <tr>
+                                                  </tr>
+                                                </xsl:if>
+                                                <xsl:if
+                                                  test="//tei:body//tei:del[@rend = 'strikethrough'] | //tei:body//tei:gap[@reason = 'strikethrough']">
+                                                  <tr>
                                                   <td>
                                                   <span
                                                   style="background-color: #F9CBC8; border-radius: 5px; text-decoration: line-through;"
                                                   >Text</span>
                                                   </td>
                                                   <td>Durchstreichung</td>
-                                                </tr>
-                                            </xsl:if>
-                                            <xsl:if
-                                                test="//tei:body//tei:del[@rend = 'overwritten'] | //tei:body//tei:gap[@reason = 'overwritten']">
-                                                <tr>
+                                                  </tr>
+                                                </xsl:if>
+                                                <xsl:if
+                                                  test="//tei:body//tei:del[@rend = 'overwritten'] | //tei:body//tei:gap[@reason = 'overwritten']">
+                                                  <tr>
                                                   <td>
                                                   <span
                                                   style="background-color: #F9CBC8; border-radius: 5px; color: gray; text-decoration: line-through; text-decoration-style: wavy;"
                                                   >Text</span>
                                                   </td>
                                                   <td>Überschreibung</td>
-                                                </tr>
-                                            </xsl:if>
-                                            <xsl:if test="//tei:body//tei:gap[@unit = 'char']">
-                                                <tr>
+                                                  </tr>
+                                                </xsl:if>
+                                                <xsl:if test="//tei:body//tei:gap[@unit = 'char']">
+                                                  <tr>
                                                   <td>▯</td>
                                                   <td>ein unlesbares Zeichen</td>
-                                                </tr>
-                                            </xsl:if>
-                                            <xsl:if test="//tei:body//tei:gap[@unit = 'words']">
-                                                <tr>
+                                                  </tr>
+                                                </xsl:if>
+                                                <xsl:if test="//tei:body//tei:gap[@unit = 'words']">
+                                                  <tr>
                                                   <td>▭</td>
                                                   <td>ein unlesbares Wort</td>
-                                                </tr>
-                                            </xsl:if>
-                                            <xsl:if test="//tei:body//tei:add[not(@place)]">
-                                                <tr>
+                                                  </tr>
+                                                </xsl:if>
+                                                <xsl:if test="//tei:body//tei:add[not(@place)]">
+                                                  <tr>
                                                   <td>
                                                   <span
                                                   style="border-radius: 5px; background-color: #CBE1D1"
@@ -1104,73 +1107,76 @@
                                                   </td>
                                                   <td>Einfügung in derselben Zeile bzw. über dem
                                                   alten Text</td>
-                                                </tr>
-                                            </xsl:if>
-                                            <xsl:if test="//tei:body//tei:add[@place = 'above']">
-                                                <tr>
+                                                  </tr>
+                                                </xsl:if>
+                                                <xsl:if test="//tei:body//tei:add[@place = 'above']">
+                                                  <tr>
                                                   <td>
                                                   <span
                                                   style="border-radius: 5px; background-color: #CBE1D1"
                                                   ><i class="bi bi-arrow-up"/>Text</span>
                                                   </td>
                                                   <td>Einfügung über der Zeile</td>
-                                                </tr>
-                                            </xsl:if>
-                                            <xsl:if test="//tei:body//tei:add[@place = 'below']">
-                                                <tr>
+                                                  </tr>
+                                                </xsl:if>
+                                                <xsl:if test="//tei:body//tei:add[@place = 'below']">
+                                                  <tr>
                                                   <td>
                                                   <span
                                                   style="border-radius: 5px; background-color: #CBE1D1"
                                                   ><i class="bi bi-arrow-down"/>Text</span>
                                                   </td>
                                                   <td>Einfügung unter der Zeile</td>
-                                                </tr>
-                                            </xsl:if>
-                                            <xsl:if test="//tei:body//tei:add[@place = 'margin']">
-                                                <tr>
+                                                  </tr>
+                                                </xsl:if>
+                                                <xsl:if
+                                                  test="//tei:body//tei:add[@place = 'margin']">
+                                                  <tr>
                                                   <td>
                                                   <span
                                                   style="border-radius: 5px; background-color: #CBE1D1"
                                                   ><i class="bi bi-arrow-left"/>Text</span>
                                                   </td>
                                                   <td>Einfügung am Rand</td>
-                                                </tr>
-                                            </xsl:if>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </xsl:if>
-                            <!-- Legende wenn Breite unter 1810px Ende -->
+                                                  </tr>
+                                                </xsl:if>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </xsl:if>
+                                <!-- Legende wenn Breite unter 1810px Ende -->
 
-                            <!-- Fußnoten Anfang -->
-                            <xsl:if test="//tei:note[@type = 'footnote']">
-                                <hr/>
-                                <div id="footnotes" class="card-body">
-                                    <h3>Fußnoten</h3>
-                                    <ul class="list-unstyled">
-                                        <xsl:for-each select="//tei:note[@type = 'footnote']">
-                                            <xsl:variable name="filename"
-                                                select="substring-before(tokenize(base-uri(/), '/')[last()], '.xml')"/>
-                                            <xsl:variable name="fnSign"
-                                                select="format-number(position(), '00')"/>
-                                            <xsl:variable name="fnId"
-                                                select="concat('FN_', $filename, '_', $fnSign)"/>
-                                            <li id="{$fnId}_app" href="#{$fnId}_con"
-                                                style="margin-bottom: 1rem;">
-                                                <sup>
+                                <!-- Fußnoten Anfang -->
+                                <xsl:if test="//tei:note[@type = 'footnote']">
+                                    <hr/>
+                                    <div id="footnotes" class="card-body">
+                                        <h3>Fußnoten</h3>
+                                        <ul class="list-unstyled">
+                                            <xsl:for-each select="//tei:note[@type = 'footnote']">
+                                                <xsl:variable name="filename"
+                                                  select="substring-before(tokenize(base-uri(/), '/')[last()], '.xml')"/>
+                                                <xsl:variable name="fnSign"
+                                                  select="format-number(position(), '00')"/>
+                                                <xsl:variable name="fnId"
+                                                  select="concat('FN_', $filename, '_', $fnSign)"/>
+                                                <li id="{$fnId}_app" href="#{$fnId}_con"
+                                                  style="margin-bottom: 1rem;">
+                                                  <sup>
                                                   <span class="badge bg-primary">
                                                   <xsl:value-of select="number($fnSign)"/>
                                                   </span>
-                                                </sup>&#160;<xsl:value-of
+                                                  </sup>&#160;<xsl:value-of
                                                   select="normalize-space(.)"/>&#160;<a
                                                   href="#{$fnId}_con"><i class="bi bi-arrow-up"
                                                   /></a>
-                                            </li>
-                                        </xsl:for-each>
-                                    </ul>
-                                </div>
-                            </xsl:if>
-                            <!-- Fußnoten Ende -->
+                                                </li>
+                                            </xsl:for-each>
+                                        </ul>
+                                    </div>
+                                </xsl:if>
+                                <!-- Fußnoten Ende -->
+
+                            </div>
 
                             <div class="card-footer" style="background-color: #FFEDAD">
                                 <div class="row">
@@ -1246,7 +1252,8 @@
     <xsl:template match="tei:signed" mode="col-10">
         <p>
             <em>
-                <span style="font-weight: bold" class="annotated-word">
+                <span style="font-weight: bold; border: 1px solid transparent;"
+                    class="annotated-word">
                     <xsl:if test="@rend and @rend != 'align(right)'">
                         <xsl:attribute name="data-annotation">
                             <xsl:value-of select="generate-id()"/>
@@ -1260,7 +1267,7 @@
     <!-- col-2 -->
     <xsl:template match="tei:signed" mode="col-2">
         <xsl:if test="@rend != 'align(right)'">
-            <div class="annotation">
+            <div class="annotation" style="border: 1px solid transparent;">
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
                 </xsl:attribute>
@@ -1352,7 +1359,7 @@
     <!-- col-10 -->
     <xsl:template match="tei:note[@type = 'foliation']" mode="col-10">
         <span class="badge bg-secondary annotated-word toggle-content"
-            style="font-size: 10px; padding: 2px 4px; line-height: 1.5">
+            style="font-size: 10px; padding: 2px 4px; line-height: 1.5; border: 1px solid transparent;">
             <xsl:if test="@rend">
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
@@ -1364,7 +1371,7 @@
     <!-- col-2 -->
     <xsl:template match="tei:note[@type = 'foliation']" mode="col-2">
         <xsl:if test="@rend">
-            <div class="annotation">
+            <div class="annotation" style="border: 1px solid transparent;">
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
                 </xsl:attribute>
@@ -1377,7 +1384,8 @@
     <!-- Unterstreichung Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:hi[@rend = 'underline']" mode="col-10">
-        <span style="text-decoration: underline;" class="annotated-word toggle-content">
+        <span style="text-decoration: underline; border: 1px solid transparent;"
+            class="annotated-word toggle-content">
             <xsl:if test="@hand">
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
@@ -1389,7 +1397,7 @@
     <!-- col-2 -->
     <xsl:template match="tei:hi[@rend = 'underline']" mode="col-2">
         <xsl:if test="@hand">
-            <div class="annotation">
+            <div class="annotation" style="border: 1px solid transparent;">
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
                 </xsl:attribute>
@@ -1402,7 +1410,7 @@
     <!-- Markierung Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:hi[@rend = 'mark']" mode="col-10">
-        <span style="background-color: #ffedad; border-radius: 5px;"
+        <span style="background-color: #ffedad; border-radius: 5px; border: 1px solid transparent;"
             class="annotated-word toggle-content">
             <xsl:if test="@hand">
                 <xsl:attribute name="data-annotation">
@@ -1415,7 +1423,7 @@
     <!-- col-2 -->
     <xsl:template match="tei:hi[@rend = 'mark']" mode="col-2">
         <xsl:if test="@hand">
-            <div class="annotation">
+            <div class="annotation" style="border: 1px solid transparent;">
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
                 </xsl:attribute>
@@ -1483,7 +1491,7 @@
     <!-- col-10 -->
     <xsl:template match="tei:add" mode="col-10">
         <span class="annotated-word toggle-content"
-            style="border-radius: 5px; background-color: #CBE1D1">
+            style="border-radius: 5px; background-color: #CBE1D1; border: 1px solid transparent;">
             <xsl:if test="@rend">
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
@@ -1509,7 +1517,7 @@
     <!-- col-2 -->
     <xsl:template match="tei:add" mode="col-2">
         <xsl:if test="@rend">
-            <div class="annotation">
+            <div class="annotation" style="border: 1px solid transparent;">
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
                 </xsl:attribute>
@@ -1526,7 +1534,7 @@
     <!-- unclear Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:unclear" mode="col-10">
-        <span class="annotated-word">
+        <span class="annotated-word" style="border: 1px solid transparent;">
             <xsl:attribute name="data-annotation">
                 <xsl:value-of select="generate-id()"/>
             </xsl:attribute>
@@ -1535,7 +1543,7 @@
     </xsl:template>
     <!-- col-2 -->
     <xsl:template match="tei:unclear" mode="col-2">
-        <div class="annotation">
+        <div class="annotation" style="border: 1px solid transparent;">
             <xsl:attribute name="data-annotation">
                 <xsl:value-of select="generate-id()"/>
             </xsl:attribute>Unklare Lesung</div>
@@ -1545,7 +1553,7 @@
     <!-- sic Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:sic" mode="col-10">
-        <span class="annotated-word">
+        <span class="annotated-word" style="border: 1px solid transparent;">
             <xsl:attribute name="data-annotation">
                 <xsl:value-of select="generate-id()"/>
             </xsl:attribute>
@@ -1554,7 +1562,7 @@
     </xsl:template>
     <!-- col-2 -->
     <xsl:template match="tei:sic" mode="col-2">
-        <div class="annotation">
+        <div class="annotation" style="border: 1px solid transparent;">
             <xsl:attribute name="data-annotation">
                 <xsl:value-of select="generate-id()"/>
             </xsl:attribute>sic</div>
@@ -1564,7 +1572,7 @@
     <!-- corr Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:corr" mode="col-10">
-        <span class="annotated-word">
+        <span class="annotated-word" style="border: 1px solid transparent;">
             <xsl:attribute name="data-annotation">
                 <xsl:value-of select="generate-id()"/>
             </xsl:attribute>
@@ -1573,7 +1581,7 @@
     </xsl:template>
     <!-- col-2 -->
     <xsl:template match="tei:corr" mode="col-2">
-        <div class="annotation">
+        <div class="annotation" style="border: 1px solid transparent;">
             <xsl:attribute name="data-annotation">
                 <xsl:value-of select="generate-id()"/>
             </xsl:attribute>Korrektur</div>
@@ -1583,7 +1591,7 @@
     <!-- Dechiffrierung Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:supplied[@reason = 'deciphering']" mode="col-10">
-        <span class="annotated-word toggle-content">
+        <span class="annotated-word toggle-content" style="border: 1px solid transparent;">
             <xsl:attribute name="data-annotation">
                 <xsl:value-of select="generate-id()"/>
             </xsl:attribute>
@@ -1592,7 +1600,7 @@
     </xsl:template>
     <!-- col-2 -->
     <xsl:template match="tei:supplied[@reason = 'deciphering']" mode="col-2">
-        <div class="annotation">
+        <div class="annotation" style="border: 1px solid transparent;">
             <xsl:attribute name="data-annotation">
                 <xsl:value-of select="generate-id()"/>
             </xsl:attribute>Dechiffrierung</div>
