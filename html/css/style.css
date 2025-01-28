@@ -1,23 +1,28 @@
 /*** global ***/
+/* navbar anfang */
 nav a.nav-link {
     border-radius: 5px;
+    margin-right: .25rem;
+    border: 1px solid transparent;
+}
+
+.nav-link.sec {
+    background-color: #ffe485;
+}
+
+.nav-link.pri {
+    background-color: #db2017;
+    color: white;
 }
 
 nav a.nav-link:hover {
-    background-color: #db2017;
-    border-radius: 5px;
-    color: white;
+    border: black 1px solid;
 }
 
 nav .dropdown-item:hover {
-    background-color: #EE6059;
-    color: white;
+    background-color: #FFEDAD;
 }
-
-nav .dropdown-item:active {
-    background-color: #db2017;
-    color: white;
-}
+/* navbar ende */
 
 body {
     text-align: justify;
