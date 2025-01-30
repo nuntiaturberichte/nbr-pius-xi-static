@@ -55,14 +55,14 @@
             headerFilter: "input",
             headerFilterPlaceholder: "... eingeben",
             formatter: "html",
-            width: "10%"
+            width: "8%"
             },
             
             // Spalte: Dokumenttyp
             {
             title: "Dokumenttyp",
             field: "dokumenttyp",
-            width: "10%",
+            width: "8%",
             headerFilter: "list",
             headerFilterPlaceholder: "... wählen",
             
@@ -94,7 +94,7 @@
             headerFilter: "input",
             headerFilterPlaceholder: "... eingeben",
             formatter: "html",
-            width: "40%"
+            width: "27%"
             },
             
             // Spalte: Schlagwort
@@ -102,7 +102,7 @@
             title: "Schlagwort",
             field: "schlagwort",
             formatter: "html",
-            width: "10%",
+            width: "17%",
             headerFilter: "list",
             headerFilterPlaceholder: "... wählen",
             
@@ -135,12 +135,22 @@
             },
             },
             
+            // Spalte: Sendedatum
+            {
+            title: "Sendedatum",
+            field: "sendedatum",
+            headerFilter: "input",
+            headerFilterPlaceholder: "... eingeben",
+            formatter: "html",
+            width: "8%"
+            },
+            
             // Spalte: Sender
             {
             title: "Sender",
             field: "sender",
             formatter: "html",
-            width: "10%",
+            width: "8%",
             headerFilter: "list",
             headerFilterPlaceholder: "... wählen",
             
@@ -203,7 +213,7 @@
             title: "Empfänger",
             field: "empfänger",
             formatter: "html",
-            width: "10%",
+            width: "8%",
             headerFilter: "list",
             headerFilterPlaceholder: "... wählen",
             
@@ -257,22 +267,57 @@
             },
             },
             
-            // Spalte: Sendedatum
-            {
-            title: "Sendedatum",
-            field: "sendedatum",
-            headerFilter: "input",
-            headerFilterPlaceholder: "... eingeben",
-            formatter: "html",
-            width: "10%"
-            },
-            
             // Spalte: Sendeort
             {
             title: "Sendeort",
             field: "sendeort",
             formatter: "html",
-            width: "10%",
+            width: "8%",
+            headerFilter: "list",
+            headerFilterPlaceholder: "... wählen",
+            
+            // Funktion, um Werte dynamisch für das Dropdown-Feld zu generieren
+            headerFilterParams: {
+            valuesLookup: function (cell) {
+            let table = cell.getTable();
+            let field = cell.getColumn().getField();
+            let data = table.getData("active");
+            
+            // Eindeutige Werte sammeln und leere Option hinzufügen
+            let uniqueValues = Array.from(new Set(data.map(row => row[field])));
+            uniqueValues = uniqueValues.filter(v => v !== "").sort(); // Sortiere Werte, außer die leeren
+            uniqueValues.unshift(""); // Leere Option an den Anfang
+            
+            // Erstelle Dropdown-Optionen mit Labels
+            return uniqueValues.map(value => ({
+            label: value === "" ? "... wählen" : value, // Label für die leere Option
+            value: value
+            }));
+            }
+            },
+            
+            // Funktion, um HTML-Tags aus den Werten zu entfernen
+            accessor: function (value) {
+            const div = document.createElement("div");
+            div.innerHTML = value; // HTML-Inhalte entfernen
+            return div.textContent || div.innerText || "";
+            },
+            
+            // Filterfunktion: Prüft, ob der Wert mit dem Filter übereinstimmt
+            headerFilterFunc: function (headerValue, rowValue) {
+            const div = document.createElement("div");
+            div.innerHTML = rowValue;
+            const plainTextValue = div.textContent || div.innerText || "";
+            return headerValue === "" || plainTextValue === headerValue; // Filterlogik
+            },
+            },
+            
+            // Spalte: Empfangsort
+            {
+            title: "Empfangsort",
+            field: "empfangsort",
+            formatter: "html",
+            width: "8%",
             headerFilter: "list",
             headerFilterPlaceholder: "... wählen",
             
@@ -311,6 +356,7 @@
             return headerValue === "" || plainTextValue === headerValue; // Filterlogik
             },
             }
+            
             ],
             // Sicherstellen, dass Filter aktualisiert werden
             dataFiltered: function(filters, rows) {
