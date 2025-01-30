@@ -23,33 +23,14 @@
                     <xsl:with-param name="html_title" select="$doc_title"/>
                 </xsl:call-template>
                 <style>
-                    .level-2 {
-                        margin-left: 1vw;
-                        margin-right: 1vw;
-                        background-color: #f9f9f9;
-                        margin-bottom: 20px;
+                    .level-1 {
                         padding: 10px;
                         border: 1px solid #ccc;
                         border-radius: 5px;
+                        background-color: #FFFBEB;
+                        margin-bottom: 1rem;
                     }
-                    .level-3 {
-                        margin-left: 1vw;
-                        margin-right: 1vw;
-                        background-color: #f1f1f1;
-                        margin-bottom: 20px;
-                        padding: 10px;
-                        border: 1px solid #ccc;
-                        border-radius: 5px;
-                    }
-                    .level-4 {
-                        margin-left: 1vw;
-                        margin-right: 1vw;
-                        background-color: #e9e9e9;
-                        margin-bottom: 20px;
-                        padding: 10px;
-                        border: 1px solid #ccc;
-                        border-radius: 5px;
-                    }
+                    
                     table {
                         width: 100%;
                         border-collapse: collapse;
@@ -69,15 +50,6 @@
                     
                     table tr:nth-child(even) {
                         background-color: #F5F5F5;
-                    }
-                    
-                    table a {
-                        color: #007bff;
-                        text-decoration: none;
-                    }
-                    
-                    table a:hover {
-                        text-decoration: underline;
                     }</style>
             </head>
             <body class="d-flex flex-column h-100">
@@ -107,7 +79,7 @@
 
     <xsl:template match="tei:head">
         <xsl:variable name="level" select="@type"/>
-        <xsl:element name="{concat('h', $level)}">
+        <xsl:element name="{concat('h', $level+1)}">
             <xsl:value-of select="."/>
         </xsl:element>
     </xsl:template>
@@ -139,50 +111,9 @@
         </a>
     </xsl:template>
 
-    <xsl:template match="tei:table">
-        <div class="table-responsive">
-            <table>
-                <xsl:for-each select="tei:row">
-                    <tr>
-                        <xsl:choose>
-                            <xsl:when test="position() = 1">
-                                <xsl:for-each select="tei:cell">
-                                    <th style="text-align:center; background-color: #99C3FF;">
-                                        <xsl:value-of select="."/>
-                                    </th>
-                                </xsl:for-each>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:for-each select="tei:cell">
-                                    <xsl:choose>
-                                        <xsl:when test="@cols">
-                                            <td colspan="{@cols}"
-                                                style="text-align:center; font-style: italic; background-color: #D6E7FF;">
-                                                <xsl:value-of select="."/>
-                                            </td>
-                                        </xsl:when>
-                                        <xsl:otherwise>
-                                            <td>
-                                                <xsl:value-of select="."/>
-                                            </td>
-                                        </xsl:otherwise>
-                                    </xsl:choose>
-                                </xsl:for-each>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </tr>
-                </xsl:for-each>
-            </table>
-        </div>
-    </xsl:template>
-
     <xsl:template match="tei:code">
         <code>
             <xsl:apply-templates/>
         </code>
-    </xsl:template>
-
-    <xsl:template match="tei:gi">
-        <code><xsl:apply-templates/></code>
     </xsl:template>
 </xsl:stylesheet>

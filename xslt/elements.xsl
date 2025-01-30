@@ -20,38 +20,52 @@
                     <xsl:with-param name="html_title" select="$doc_title"/>
                 </xsl:call-template>
                 <style>
+                    .level-1 {
+                        padding: 10px;
+                        border: 1px solid #ccc;
+                        border-radius: 5px;
+                    }
+                    
+                    .level-2,
+                    .level-3,
+                    .level-4,
+                    .level-5,
+                    .level-6,
+                    .level-7 {
+                        margin-left: 1vw;
+                        margin-right: 1vw;
+                        margin-bottom: 20px;
+                        padding: 10px;
+                        border: 1px solid #ccc;
+                        border-radius: 5px;
+                    }
+                    
+                    .level-1 {
+                        background-color: #FFFBEB;
+                    }
+                    
                     .level-2 {
-                        margin-left: 1vw;
-                        margin-right: 1vw;
-                        background-color: #f9f9f9;
-                        margin-bottom: 20px;
-                        padding: 10px;
-                        border: 1px solid #ccc;
-                        border-radius: 5px;
+                        background-color: #FFF3C2;
                     }
+                    
                     .level-3 {
-                        margin-left: 1vw;
-                        margin-right: 1vw;
-                        background-color: #f1f1f1;
-                        margin-bottom: 20px;
-                        padding: 10px;
-                        border: 1px solid #ccc;
-                        border-radius: 5px;
+                        background-color: #FFEB99;
                     }
+                    
                     .level-4 {
-                        margin-left: 1vw;
-                        margin-right: 1vw;
-                        background-color: #e9e9e9;
-                        margin-bottom: 20px;
-                        padding: 10px;
-                        border: 1px solid #ccc;
-                        border-radius: 5px;
+                        background-color: #FFE270;
                     }
-                    #kodierung-bsp {
-                        margin-top: 2em;
-                        border: 2px solid black;
-                        padding: 5px;
-                        border-radius: 8px;
+                    
+                    .level-5 {
+                        background-color: #FFDA47;
+                    }
+                    
+                    .level-6 {
+                        background-color: #FFD21F;
+                    }
+                    
+                    .level-7 {
+                        background-color: #F5C400;
                     }</style>
             </head>
             <body class="d-flex flex-column h-100">
@@ -109,22 +123,14 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="tei:figure[@xml:id = 'kodierung-bsp.png']">
-        <img class="img-fluid">
-            <xsl:attribute name="id">
-                <xsl:text>kodierung-bsp</xsl:text>
-            </xsl:attribute>
-            <xsl:attribute name="src">
-                <xsl:value-of select="@source"/>
-            </xsl:attribute>
-            <xsl:attribute name="alt">
-                <xsl:value-of select="tei:desc"/>
-            </xsl:attribute>
-        </img>
-    </xsl:template>
-
     <xsl:template match="tei:list">
         <ul>
+            <xsl:apply-templates/>
+        </ul>
+    </xsl:template>
+
+    <xsl:template match="tei:list[@type = 'circle']">
+        <ul style="list-style-type: circle;">
             <xsl:apply-templates/>
         </ul>
     </xsl:template>
@@ -140,14 +146,4 @@
             <xsl:value-of select="."/>
         </code>
     </xsl:template>
-    
-    <xsl:template match="tei:gi">
-        <code><xsl:apply-templates/></code>
-    </xsl:template>
-
-    <xsl:template match="tei:lb">
-        <br/>
-    </xsl:template>
-
-
 </xsl:stylesheet>
