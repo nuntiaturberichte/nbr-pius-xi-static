@@ -942,14 +942,32 @@
 
                                 <xsl:if test="//tei:text/tei:body/*">
                                     <div class="card-body" id="text">
-                                        <div style="display: flex; align-items: center;">
-                                            <h2 style="margin-right: 1rem;">Text</h2>
+                                        <div
+                                            style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
+                                            <h2>Text</h2>
+
                                             <div class="btn-group btn-group-sm" role="group"
                                                 aria-label="Ansicht umschalten">
                                                 <button id="showAnnotations" class="btn btn-dark"
                                                   >Annotierte Ansicht</button>
                                                 <button id="showReadingView"
                                                   class="btn btn-outline-dark">Leseansicht</button>
+                                            </div>
+
+                                            <xsl:variable name="fileName"
+                                                select="tokenize(document-uri(.), '/')[last()]"/>
+                                            <div>
+                                                <a id="downloadPdf" class="btn btn-danger btn-sm"
+                                                  style="margin-right: .25rem;">
+                                                  <span id="pdfFileName" style="display: none;">
+                                                  <xsl:value-of
+                                                  select="replace(tokenize(document-uri(.), '/')[last()], '.xml$', '.pdf')"
+                                                  />
+                                                  </span>PDF herunterladen</a>
+                                                <a
+                                                  href="https://nuntiaturberichte.github.io/nbr-pius-xi-static/{$fileName}"
+                                                  target="_blank" class="btn btn-primary btn-sm">XML
+                                                  herunterladen</a>
                                             </div>
                                         </div>
                                         <div id="text">
@@ -1176,36 +1194,6 @@
                                 </xsl:if>
                                 <!-- Fußnoten Ende -->
 
-                            </div>
-
-                            <div class="card-footer" style="background-color: #FFEDAD">
-                                <div class="row">
-                                    <div class="col-12 col-md-4 d-flex justify-content-start">
-                                        <h4>Download</h4>
-                                    </div>
-                                    <xsl:variable name="fileName"
-                                        select="tokenize(document-uri(.), '/')[last()]"/>
-                                    <div class="col-12 col-md-4 d-flex justify-content-center">
-                                        <a
-                                            href="https://nuntiaturberichte.github.io/nbr-pius-xi-static/{$fileName}"
-                                            target="_blank" style="color: black;">
-                                            <i class="fas fa-file-code fa-2x"
-                                                title="XML herunterladen"/>&#160;<xsl:value-of
-                                                select="$fileName"/>
-                                        </a>
-                                    </div>
-                                    <div class="col-12 col-md-4 d-flex justify-content-center">
-                                        <a href="#" id="downloadPdf" style="color: black;">
-                                            <i class="fas fa-file-pdf fa-2x"
-                                                title="PDF herunterladen"/>&#160;<span
-                                                id="pdfFileName">
-                                                <xsl:value-of
-                                                  select="replace(tokenize(document-uri(.), '/')[last()], '.xml$', '.pdf')"
-                                                />
-                                            </span>
-                                        </a>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
