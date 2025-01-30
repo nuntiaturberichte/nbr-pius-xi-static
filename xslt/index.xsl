@@ -39,7 +39,7 @@
                                     <br/>
                                     <span class="display-6">XXXX-XXXX</span>
                                 </h1>
-                                <p class="text-end">Herausgegeben von XXXX</p>
+                                <p class="text-end">Bearbeitet von Bernhard Kronegger</p>
                                 <xsl:apply-templates select="//tei:body//tei:p[@style = 'big']"/>
                                 <xsl:apply-templates select="//tei:body//tei:p[@style = 'small']"/>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-start">
