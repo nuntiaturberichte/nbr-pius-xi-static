@@ -6,7 +6,7 @@
     <xsl:import href="./partials/html_footer.xsl"/>
     <xsl:import href="./partials/tabulator_js.xsl"/>
     <xsl:import href="./partials/tooltip_js.xsl"/>
-    
+
     <xsl:output method="html" encoding="UTF-8" indent="yes"/>
     <xsl:strip-space elements="*"/>
 
@@ -107,14 +107,16 @@
                                     <th scope="col">Dokumenttyp</th>
                                     <th scope="col">Titel</th>
                                     <th scope="col">Schlagwort</th>
+                                    <th scope="col">Sendedatum</th>
                                     <th scope="col">Sender</th>
                                     <th scope="col">Empfänger</th>
-                                    <th scope="col">Sendedatum</th>
                                     <th scope="col">Sendeort</th>
+                                    <th scope="col">Empfangsort</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <xsl:for-each select="collection('../data/TEI/editions/?select=*.xml')/tei:TEI">
+                                <xsl:for-each
+                                    select="collection('../data/TEI/editions/?select=*.xml')/tei:TEI">
                                     <xsl:variable name="full_path">
                                         <xsl:value-of select="document-uri(/)"/>
                                     </xsl:variable>
@@ -148,6 +150,11 @@
                                             </xsl:for-each>
                                         </td>
                                         <td>
+                                            <xsl:value-of
+                                                select="descendant::tei:correspDesc/tei:correspAction[@type = 'sent']/tei:date/@when"
+                                            />
+                                        </td>
+                                        <td>
                                             <a target="_blank">
                                                 <xsl:attribute name="href">
                                                   <xsl:value-of
@@ -173,12 +180,12 @@
                                         </td>
                                         <td>
                                             <xsl:value-of
-                                                select="descendant::tei:correspDesc/tei:correspAction[@type = 'sent']/tei:date/@when"
+                                                select="descendant::tei:correspAction[@type = 'sent']/tei:placeName"
                                             />
                                         </td>
                                         <td>
                                             <xsl:value-of
-                                                select="descendant::tei:correspAction[@type = 'sent']/tei:placeName"
+                                                select="descendant::tei:correspAction[@type = 'received']/tei:placeName"
                                             />
                                         </td>
                                     </tr>
