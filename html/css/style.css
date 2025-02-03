@@ -1,5 +1,10 @@
 /*** global ***/
 /* navbar anfang */
+nav .nav-link {
+    margin-top: .25rem;
+    margin-bottom: .25rem;
+}
+
 nav a.nav-link {
     border-radius: 5px;
     margin-right: .25rem;
