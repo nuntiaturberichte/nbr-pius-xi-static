@@ -152,6 +152,14 @@
                         position: relative;
                     }
                     
+                    .page-nr.toggle-content {
+                        display: revert;
+                        border-top: 1px solid #d2d2d2;
+                        text-align: center;
+                        margin: 20px 0;
+                        padding-top: 5px;
+                    }
+                    
                     .col-2 {
                         flex: 2;
                         position: relative;
@@ -1210,11 +1218,19 @@
         </html>
     </xsl:template>
 
-    <xsl:template match="tei:seg[@type = 'subjectLine']" mode="col-10">
-        <strong class="d-block mb-4" style="text-align: center">
-            <xsl:apply-templates mode="col-10"/>
-        </strong>
+    <!--Überall Anfang -->
+
+    <xsl:template match="tei:pb" mode="col-10">
+        <div class="page-nr toggle-content" style="background-color: white;">— Seite <xsl:value-of
+                select="@n"/> —</div>
     </xsl:template>
+
+
+    <xsl:template match="tei:lb[position() > 1]" mode="col-10">
+        <span class="toggle-content">&#8629;<br/></span>
+    </xsl:template>
+
+    <!-- Überall Ende -->
 
     <!-- Am Dokumentbeginn Anfang -->
 
@@ -1222,6 +1238,12 @@
         <div style="background-color: #fffbeb; border-radius: 5px;">
             <xsl:apply-templates mode="col-10"/>
         </div>
+    </xsl:template>
+
+    <xsl:template match="tei:seg[@type = 'subjectLine']" mode="col-10">
+        <strong class="d-block mb-4" style="text-align: center">
+            <xsl:apply-templates mode="col-10"/>
+        </strong>
     </xsl:template>
 
     <!-- Am Dokumentbeginn Ende -->
@@ -1259,7 +1281,12 @@
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
                 </xsl:attribute>
-                <xsl:value-of select="@rend"/>
+                <xsl:choose>
+                    <xsl:when test="@rend = 'handwritten'">handschriftlich</xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="@rend"/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </div>
         </xsl:if>
     </xsl:template>
@@ -1326,21 +1353,6 @@
 
     <!-- Im Fließtext Ende -->
 
-    <!--Überall Anfang -->
-
-    <xsl:template match="tei:lb[position() > 1]" mode="col-10">
-        <span class="toggle-content">&#8629;<br/></span>
-    </xsl:template>
-
-    <xsl:template match="tei:pb" mode="col-10">
-        <span class="badge bg-warning toggle-content"
-            style="font-size: 10px; padding: 2px 4px; line-height: 1.5">
-            <xsl:value-of select="@n"/>
-        </span>
-    </xsl:template>
-
-    <!-- Überall Ende -->
-
     <!-- Zu Entstehungsprozess Anfang -->
 
     <!-- Archivfolierungsnummer Anfang -->
@@ -1363,7 +1375,12 @@
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
                 </xsl:attribute>
-                <xsl:value-of select="@rend"/>
+                <xsl:choose>
+                    <xsl:when test="@rend = 'typewritten'">maschinenschriftlich</xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="@rend"/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </div>
         </xsl:if>
     </xsl:template>
@@ -1389,7 +1406,15 @@
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
                 </xsl:attribute>
-                <xsl:value-of select="@hand"/>
+                <xsl:choose>
+                    <xsl:when test="@hand = '#UR'">unbekannter Rezipient</xsl:when>
+                    <xsl:when test="@hand = 'author'">Autor</xsl:when>
+                    <xsl:when test="@hand = '#LF'">Luigi Faidutti</xsl:when>
+                    <xsl:when test="@hand = '#ES'">Enrico Sibilia</xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="@hand"/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </div>
         </xsl:if>
     </xsl:template>
@@ -1415,7 +1440,12 @@
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
                 </xsl:attribute>
-                <xsl:value-of select="@hand"/>
+                <xsl:choose>
+                    <xsl:when test="@hand = '#UR'">unbekannter Rezipient</xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="@hand"/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </div>
         </xsl:if>
     </xsl:template>
@@ -1509,10 +1539,18 @@
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
                 </xsl:attribute>
-                <xsl:value-of select="@rend"/>
+                <xsl:choose>
+                    <xsl:when test="@rend = 'typewritten'">maschinenschriftlich</xsl:when>
+                    <xsl:when test="@rend = 'handwritten'">handschriftlich</xsl:when>
+                    <xsl:when test="@rend = 'overwritten'">überschrieben</xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="@rend"/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </div>
         </xsl:if>
     </xsl:template>
+
     <!-- Einfügung Ende -->
 
     <!-- zu Entstehungsprozess - Ende -->
