@@ -20,7 +20,7 @@
                     <xsl:with-param name="html_title" select="$doc_title"/>
                 </xsl:call-template>
                 <meta name="description"
-                    content="Recherchieren Sie in der frei zugänglichen Korrespondenz des päpstlichen Gesandten während der Zwischenkriegszeit, einer politisch und religiös wegweisenden Epoche."/>
+                    content="Recherchieren Sie in der digitalen Edition der Nuntiatur Pius XI., einer frei zugänglichen Sammlung der Korrespondenz des Papstes aus der Zwischenkriegszeit."/>
                 <style>
                     .nunt-link:hover {
                         background-color: #f8f9fa !important;
