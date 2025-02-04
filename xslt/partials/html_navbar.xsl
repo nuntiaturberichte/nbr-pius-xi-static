@@ -9,12 +9,12 @@
                 border-bottom-right-radius: 20px;
                 background-color: #F8C400;
                 border: 1px solid #666;
-                box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.35);">
+                box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.35); padding-top: 0px; padding-bottom: 0px;">
                 <div class="container-fluid">
                     <!-- Linksbündig -->
                     <a href="index.html" class="navbar-brand custom-logo-link" rel="home"
                         itemprop="url">
-                        <img src="./images/project_logo.png" class="img-fluid"
+                        <img src="./images/project_logo.png" class="img-fluid" style="height: 83px;"
                             title="nuntiatur-pius-xi" alt="nuntiatur-pius-xi" itemprop="logo"/>
                     </a>
 
