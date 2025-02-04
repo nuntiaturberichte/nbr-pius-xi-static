@@ -11,6 +11,7 @@
     <xsl:import href="partials/scroll_offset_js.xsl"/>
     <xsl:import href="partials/limit_toc_legend_div_js.xsl"/>
     <xsl:import href="partials/toggle_view_js.xsl"/>
+    <xsl:import href="./partials/tooltip_js.xsl"/>
     <xsl:output method="html" indent="yes"/>
 
     <xsl:template match="/">
@@ -284,16 +285,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <xsl:if test="//tei:body//tei:pb">
-                                            <tr>
-                                                <td>
-                                                  <span class="badge bg-warning"
-                                                  style="font-size: 10px; padding: 2px 4px; line-height: 1.5"
-                                                  >n</span>
-                                                </td>
-                                                <td>Seitenbeginn</td>
-                                            </tr>
-                                        </xsl:if>
                                         <xsl:if test="//tei:body//tei:note[@type = 'foliation']">
                                             <tr>
                                                 <td>
@@ -336,7 +327,7 @@
                                                   style="background-color: #ffedad; border-radius: 5px;"
                                                   >Text</span>
                                                 </td>
-                                                <td>Markierung</td>
+                                                <td>Markierung am Seitenrand</td>
                                             </tr>
                                         </xsl:if>
                                         <xsl:if test="//tei:body//tei:subst">
@@ -965,13 +956,16 @@
                                             <xsl:variable name="fileName"
                                                 select="tokenize(document-uri(.), '/')[last()]"/>
                                             <div>
-                                                <a id="downloadPdf" class="btn btn-danger btn-sm"
+                                                <span id="tooltip"
+                                                  title="Bitte beachten Sie, dass Annotationen im PDF der annotierten Ansicht möglicherweise nicht exakt ausgerichtet sind.">
+                                                  <a id="downloadPdf" class="btn btn-danger btn-sm"
                                                   style="margin-right: .25rem;">
                                                   <span id="pdfFileName" style="display: none;">
                                                   <xsl:value-of
                                                   select="replace(tokenize(document-uri(.), '/')[last()], '.xml$', '.pdf')"
                                                   />
                                                   </span>PDF herunterladen</a>
+                                                </span>
                                                 <a
                                                   href="https://nuntiaturberichte.github.io/nbr-pius-xi-static/{$fileName}"
                                                   target="_blank" class="btn btn-primary btn-sm">XML
@@ -1016,16 +1010,6 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <xsl:if test="//tei:body//tei:pb">
-                                                  <tr>
-                                                  <td>
-                                                  <span class="badge bg-warning"
-                                                  style="font-size: 10px; padding: 2px 4px; line-height: 1.5"
-                                                  >n</span>
-                                                  </td>
-                                                  <td>Seitenbeginn</td>
-                                                  </tr>
-                                                </xsl:if>
                                                 <xsl:if
                                                   test="//tei:body//tei:note[@type = 'foliation']">
                                                   <tr>
@@ -1071,7 +1055,7 @@
                                                   style="background-color: #ffedad; border-radius: 5px;"
                                                   >Text</span>
                                                   </td>
-                                                  <td>Markierung</td>
+                                                  <td>Markierung am Seitenrand</td>
                                                   </tr>
                                                 </xsl:if>
                                                 <xsl:if test="//tei:body//tei:subst">
@@ -1214,6 +1198,7 @@
                 <xsl:call-template name="scroll_offset"/>
                 <xsl:call-template name="limit_toc_legend_div"/>
                 <xsl:call-template name="toggle_view"/>
+                <xsl:call-template name="tooltip"/>
             </body>
         </html>
     </xsl:template>
@@ -1359,7 +1344,7 @@
     <!-- col-10 -->
     <xsl:template match="tei:note[@type = 'foliation']" mode="col-10">
         <span class="badge bg-secondary annotated-word toggle-content"
-            style="font-size: 10px; padding: 2px 4px; line-height: 1.5; border: 1px solid transparent;">
+            style="font-size: 10px; padding: 2px 4px; line-height: 1.5; border: 1px solid transparent; display: table; margin-left: auto;">
             <xsl:if test="@rend">
                 <xsl:attribute name="data-annotation">
                     <xsl:value-of select="generate-id()"/>
