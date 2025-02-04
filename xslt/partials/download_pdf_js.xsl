@@ -8,12 +8,13 @@
             document.getElementById('downloadPdf').addEventListener('click', function () {
             var letterBody = document.getElementById('letter-body').innerHTML;
             var documentTitle = document.title;
+            var contextualization = "Digitale Briefedition – Nuntiaturberichte Pius XI.";
             
             // Erstelle ein neues div für den PDF-Inhalt
             var combinedDiv = document.createElement('div');
             
             // Füge die Überschrift und den Body-Inhalt in das Div ein
-            combinedDiv.innerHTML = '<h1>' + documentTitle + '</h1>' + '<hr/>' + letterBody;
+            combinedDiv.innerHTML = contextualization + '<h1>' + documentTitle + '</h1>' + '<hr/>' + letterBody;
             
             // Wende CSS nur auf das `combinedDiv` an, damit es nur den PDF-Inhalt betrifft
             combinedDiv.style.fontSize = '80%'; // Verkleinere die Schriftgröße nur im PDF-Inhalt
