@@ -5,22 +5,22 @@
     <xsl:template match="/" name="tooltip">
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-            // Alle Tooltip-Elemente finden
-            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            const button = document.getElementById('tooltip');
+            const tooltip = new bootstrap.Tooltip(button);
             
-            // Tooltips initialisieren
-            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
-            const tooltip = new bootstrap.Tooltip(tooltipTriggerEl);
-            
-            // Zusätzliche Funktionalität: Tooltip ausblenden, wenn das Element geklickt wird
-            tooltipTriggerEl.addEventListener('click', () => {
+            // Tooltip ausblenden, wenn der Button geklickt wird und nicht mehr gehovert wird
+            button.addEventListener('click', () => {
             tooltip.hide(); // Tooltip manuell ausblenden
             });
             
             // Tooltip erneut anzeigen, wenn die Maus erneut hovert
-            tooltipTriggerEl.addEventListener('mouseenter', () => {
+            button.addEventListener('mouseenter', () => {
             tooltip.show();
             });
+            
+            // Tooltip ausblenden, wenn die Maus das Element verlässt
+            button.addEventListener('mouseleave', () => {
+            tooltip.hide();
             });
             });
         </script>
