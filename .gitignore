@@ -1,5 +1,6 @@
 # project specific
 *.html
+*.xpr
 html/*.xml
 /saxon
 data/*
