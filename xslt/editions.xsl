@@ -12,6 +12,7 @@
     <xsl:import href="partials/limit_toc_legend_div_js.xsl"/>
     <xsl:import href="partials/toggle_view_js.xsl"/>
     <xsl:import href="./partials/tooltip_js.xsl"/>
+    <xsl:import href="partials/copy_citation_js.xsl"/>
     <xsl:output method="html" indent="yes"/>
 
     <xsl:template match="/">
@@ -212,6 +213,10 @@
                         display: inline;
                         background-color: transparent !important;
                     }
+                    /* Foliierungsnummer */
+                    .bg-secondary.no-annotations.toggle-content {
+                        display: none !important;
+                    }
                     
                     .no-annotations.toggle-content {
                         display: none;
@@ -249,6 +254,7 @@
                                         <a href="#description">Beschreibung</a>
                                     </li>
                                 </xsl:if>
+                                <a href="#citation">Zitiervorschlag</a>
                                 <xsl:if test="//tei:profileDesc/tei:abstract/tei:p">
                                     <li>
                                         <a href="#abstract">Regest</a>
@@ -671,7 +677,7 @@
                                                   </td>
                                                   </tr>
                                                 </xsl:if>
-                                                <xsl:if test="//tei:physDesc/tei:scriptDesc">
+                                                <xsl:if test="//tei:physDesc/tei:scriptDesc/tei:ab">
                                                   <tr>
                                                   <td>Ausführung</td>
                                                   <td>
@@ -695,7 +701,7 @@
                                                   <!-- Handschriftlich -->
                                                   <xsl:choose>
                                                   <xsl:when
-                                                  test="//tei:physDesc/tei:scriptDesc/tei:ab = 'Handschriftlich'">
+                                                  test="//tei:physDesc/tei:scriptDesc/tei:ab = 'Handschriftlich' or //tei:physDesc/tei:scriptDesc/tei:ab = 'handwritten'">
                                                   <span
                                                   style="background-color: black; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
                                                   >Handschriftlich</span>
@@ -870,7 +876,7 @@
                                                   select="//tei:msIdentifier/tei:repository"/>
                                                   <xsl:if
                                                   test="//tei:msIdentifier/tei:idno[@type = 'archive']">
-                                                  <xsl:text>;&#160;</xsl:text>
+                                                  <xsl:text>,&#160;</xsl:text>
                                                   <xsl:value-of
                                                   select="//tei:msIdentifier/tei:idno[@type = 'archive']"
                                                   />
@@ -906,6 +912,52 @@
                                 </xsl:if>
 
                                 <!-- Beschreibung Ende -->
+
+                                <!-- Zitiervorschlag Anfang -->
+
+                                <div id="citation" class="card-body">
+                                    <div
+                                        style="border-radius: 5px; background-color: #e0e0e0; padding: 10px;">
+                                        <h3>Zitiervorschlag</h3>
+                                        <p>
+                                            <code id="textToCopy" style="color: black;">
+                                                <xsl:value-of
+                                                  select="normalize-space(//tei:titleStmt/tei:title)"/>
+                                                <xsl:text>;&#160;</xsl:text>
+                                                <xsl:if test="//tei:msIdentifier/tei:repository">
+                                                  <xsl:value-of
+                                                  select="normalize-space(//tei:msIdentifier/tei:repository)"
+                                                  />
+                                                </xsl:if>
+                                                <xsl:if
+                                                  test="//tei:msIdentifier/tei:idno[@type = 'archive']">
+                                                  <xsl:text>,&#160;</xsl:text>
+                                                  <xsl:value-of
+                                                  select="normalize-space(//tei:msIdentifier/tei:idno[@type = 'archive'])"
+                                                  />
+                                                </xsl:if>
+                                                <xsl:text> in: Kritische Digitale Edition der
+                                        Nuntiaturberichte Pius XI. und Österreich. Herausgegeben vom
+                                        Österreichischen Historischen Institut in Rom, bearbeitet
+                                        von Bernhard Kronegger. Zugriff: </xsl:text>
+                                                <script>
+                                            let d = new Date();
+                                            document.write(d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }));
+                                        </script>
+                                            </code>
+                                        </p>
+                                        <button class="btn btn-outline-secondary btn-sm"
+                                            onclick="copyToClipboard('textToCopy', this)">
+                                            <i class="bi bi-clipboard"/>
+                                            <i class="bi bi-clipboard-check" style="display: none;"
+                                            /> &#160;<span>Kopieren</span>
+                                            <span style="display: none;">In Zwischenablage
+                                                kopiert</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Zitiervorschlag Ende -->
 
                                 <!-- Regest Anfang -->
 
@@ -1199,6 +1251,7 @@
                 <xsl:call-template name="limit_toc_legend_div"/>
                 <xsl:call-template name="toggle_view"/>
                 <xsl:call-template name="tooltip"/>
+                <xsl:call-template name="copy_citation"/>
             </body>
         </html>
     </xsl:template>
