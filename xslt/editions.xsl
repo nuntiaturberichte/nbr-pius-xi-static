@@ -585,7 +585,7 @@
 
                                 <!-- Beschreibung Anfang -->
                                 <xsl:if
-                                    test="//tei:text/@type | //tei:physDesc/tei:scriptDesc | //tei:msDesc/@type | //tei:correspAction | //tei:msIdentifier/tei:repository | //tei:msIdentifier/tei:idno">
+                                    test="//tei:text/@type | //tei:physDesc/tei:scriptDesc | //tei:msDesc/@status | //tei:correspAction | //tei:msIdentifier/tei:repository | //tei:msIdentifier/tei:idno">
                                     <div id="description" class="card-body">
                                         <table>
                                             <thead>
@@ -731,14 +731,14 @@
                                                   </td>
                                                   </tr>
                                                 </xsl:if>
-                                                <xsl:if test="//tei:msDesc/@type">
+                                                <xsl:if test="//tei:msDesc/@status">
                                                   <tr>
                                                   <td>Status des Dokuments</td>
                                                   <td>
                                                   <!-- Reinschrift -->
                                                   <xsl:choose>
                                                   <xsl:when
-                                                  test="//tei:msDesc/@type = 'Reinschrift'">
+                                                  test="//tei:msDesc/@status = 'Reinschrift'">
                                                   <span
                                                   style="background-color: #599B6C; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
                                                   >Reinschrift</span>
@@ -754,7 +754,8 @@
 
                                                   <!-- Konzept -->
                                                   <xsl:choose>
-                                                  <xsl:when test="//tei:msDesc/@type = 'Konzept'">
+                                                  <xsl:when
+                                                  test="//tei:msDesc/@status = 'Konzept' or //tei:msDesc/@status = 'draft'">
                                                   <span
                                                   style="background-color: #FF5A1F; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
                                                   >Konzept</span>
@@ -770,7 +771,8 @@
 
                                                   <!-- Abschrift -->
                                                   <xsl:choose>
-                                                  <xsl:when test="//tei:msDesc/@type = 'Abschrift'">
+                                                  <xsl:when
+                                                  test="//tei:msDesc/@status = 'Abschrift'">
                                                   <span
                                                   style="background-color: #ADADAD; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
                                                   >Abschrift</span>
@@ -783,6 +785,7 @@
                                                   </td>
                                                   </tr>
                                                 </xsl:if>
+
                                                 <xsl:for-each select="//tei:correspDesc">
                                                   <xsl:if
                                                   test="tei:correspAction[@type = 'sent'] and tei:correspAction[@type = 'received']">
