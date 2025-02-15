@@ -45,11 +45,16 @@
     
     <!-- Projektbezogen Anfang -->
 
-    <xslt style="./xslt/editions.xsl" basedir="./data/TEI/editions" destdir="${target}"
+    <xslt style="./xslt/editions.xsl" basedir="./data/editions/" destdir="${target}"
         includes="**/*.xml">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
     </xslt>
+    <copy todir="${target}" flatten="true">
+        <fileset dir="${target}" includes="**/*.html"/>
+    </copy>
+    <delete dir="./html/folder#1/" failonerror="false"/>
+    <delete dir="./html/folder#2/" failonerror="false"/>
 
     <xslt in="./xslt/correspaction.xsl" out="${target}/correspaction.html"
         style="./xslt/correspaction.xsl">

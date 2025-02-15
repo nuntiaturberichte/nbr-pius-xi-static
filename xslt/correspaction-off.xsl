@@ -116,7 +116,7 @@
                             </thead>
                             <tbody>
                                 <xsl:for-each
-                                    select="collection('../../nbr-pius-xi-data/tei/editions/?select=*.xml')/tei:TEI">
+                                    select="collection('../../nbr-pius-xi-data/editions/?select=*.xml')/tei:TEI">
                                     <xsl:variable name="full_path">
                                         <xsl:value-of select="document-uri(/)"/>
                                     </xsl:variable>
