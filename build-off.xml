@@ -53,6 +53,12 @@
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
     </xslt>
+    
+    <xslt style="./xslt/editions.xsl" basedir="../nbr-pius-xi-data/TEI/mappe-2" destdir="${target}"
+        includes="**/*.xml">
+        <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+        <classpath location="${basedir}/saxon/saxon9he.jar"/>
+    </xslt>
 
     <xslt in="./xslt/correspaction-off.xsl" out="${target}/correspaction.html"
         style="./xslt/correspaction-off.xsl">
