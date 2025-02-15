@@ -27,6 +27,12 @@ nav a.nav-link:hover {
 nav .dropdown-item:hover {
     background-color: #FFEDAD;
 }
+
+@media (max-width : 991px) {
+    a.nav-link {
+        padding: 0.5rem;
+    }
+}
 /* navbar ende */
 
 body {
