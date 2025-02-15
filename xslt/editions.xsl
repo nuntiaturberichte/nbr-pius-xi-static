@@ -14,6 +14,7 @@
     <xsl:import href="./partials/tooltip_js.xsl"/>
     <xsl:import href="partials/copy_citation_js.xsl"/>
     <xsl:output method="html" indent="yes"/>
+    <xsl:variable name="fileName" select="tokenize(document-uri(.), '/')[last()]"/>
 
     <xsl:template match="/">
         <xsl:variable name="doc_title">
@@ -183,6 +184,13 @@
                         border-radius: 5px;
                         border: 1px solid #ddd;
                     }
+                    
+                    .col-10 [style *= "background-color"],
+                    .annotation {
+                        padding-left: 0.15rem;
+                        padding-right: 0.15rem;
+                    }
+                    
                     
                     /* Adaption für Leseansicht Anfang*/
                     .col-12 {
@@ -500,8 +508,12 @@
 
                                     <!-- MITTE -->
                                     <div
-                                        class="col d-flex justify-content-center align-items-center text-center"
+                                        class="col d-flex flex-column justify-content-center align-items-center text-center"
                                         id="heading">
+                                        <span class="badge bg-dark mt-2">
+                                            <xsl:value-of select="replace($fileName, '\.xml$', '')"
+                                            />
+                                        </span>
                                         <h1>
                                             <xsl:value-of
                                                 select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title"
@@ -1008,8 +1020,7 @@
                                                   class="btn btn-outline-dark">Leseansicht</button>
                                             </div>
 
-                                            <xsl:variable name="fileName"
-                                                select="tokenize(document-uri(.), '/')[last()]"/>
+
                                             <div>
                                                 <span id="tooltip"
                                                   title="Bitte beachten Sie, dass Annotationen im PDF der annotierten Ansicht möglicherweise nicht exakt ausgerichtet sind.">
@@ -1037,7 +1048,7 @@
                                                 </div>
                                                 <!-- Fließtext Ende -->
                                                 <!-- Anmerkungen Anfang -->
-                                                <div class="col-2">
+                                                <div class="col-2" style="font-size: 0.85rem;">
                                                   <xsl:apply-templates
                                                   select="//tei:note[@type = 'foliation'] | //tei:signed | //tei:hi[@rend = 'underline'] | //tei:hi[@rend = 'mark'] | //tei:add | //tei:unclear | //tei:body//tei:sic | //tei:corr | //tei:supplied[@reason = 'deciphering']"
                                                   mode="col-2"/>
@@ -1268,7 +1279,8 @@
 
 
     <xsl:template match="tei:lb[position() > 1]" mode="col-10">
-        <span class="toggle-content">&#8629;<br/></span>
+        <span class="toggle-content">&#8629;</span>
+        <br/>
     </xsl:template>
 
     <!-- Überall Ende -->
@@ -1350,10 +1362,19 @@
     <!-- Im Fließtext Anfang -->
 
     <xsl:template match="tei:head" mode="col-10">
+        <xsl:variable name="isChapter" select="parent::tei:div/@type = 'chapter'"/>
+        <xsl:variable name="hasNumber" select="parent::tei:div/@n"/>
+        <span style="background-color: #e0e0e0" class="toggle-content">
+            <xsl:if test="$isChapter">[Kapitel<xsl:if test="$hasNumber">&#160;<xsl:value-of
+                        select="$hasNumber"/>.:</xsl:if>
+                <xsl:text>] </xsl:text>
+            </xsl:if>
+        </span>
         <strong>
             <xsl:apply-templates mode="col-10"/>
         </strong>
     </xsl:template>
+
 
     <xsl:template match="tei:p" mode="col-10">
         <p>
@@ -1452,6 +1473,7 @@
                     <xsl:when test="@hand = 'author'">Autor</xsl:when>
                     <xsl:when test="@hand = '#LF'">Luigi Faidutti</xsl:when>
                     <xsl:when test="@hand = '#ES'">Enrico Sibilia</xsl:when>
+                    <xsl:when test="@hand = 'author #UR'">Autor und unbekannter Rezipient</xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="@hand"/>
                     </xsl:otherwise>
