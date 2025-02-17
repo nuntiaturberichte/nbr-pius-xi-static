@@ -15,6 +15,7 @@
     <xsl:import href="partials/copy_citation_js.xsl"/>
     <xsl:output method="html" indent="yes"/>
     <xsl:variable name="fileName" select="tokenize(document-uri(.), '/')[last()]"/>
+    <xsl:strip-space elements="tei:subst"/>
 
     <xsl:template match="/">
         <xsl:variable name="doc_title">
@@ -807,22 +808,23 @@
                                                   <!-- Sender -->
                                                   <div style="margin-bottom: 1em;">
                                                   <strong>von:&#160;</strong>
-                                                  <a>
-                                                  <xsl:if
-                                                  test="tei:correspAction[@type = 'sent']/tei:persName/@ref">
-                                                  <xsl:attribute name="href">
-                                                  <xsl:value-of
-                                                  select="tei:correspAction[@type = 'sent']/tei:persName/@ref"
-                                                  />
-                                                  </xsl:attribute>
-                                                  </xsl:if>
                                                   <xsl:if
                                                   test="tei:correspAction[@type = 'sent']/tei:persName">
-                                                  <xsl:value-of
-                                                  select="tei:correspAction[@type = 'sent']/tei:persName"
-                                                  />
+                                                  <xsl:for-each
+                                                  select="tei:correspAction[@type = 'sent']/tei:persName">
+                                                  <a>
+                                                  <xsl:if test="@ref">
+                                                  <xsl:attribute name="href">
+                                                  <xsl:value-of select="@ref"/>
+                                                  </xsl:attribute>
                                                   </xsl:if>
+                                                  <xsl:value-of select="."/>
                                                   </a>
+                                                  <xsl:if test="position() != last()">
+                                                  <xsl:text>&#160;</xsl:text>
+                                                  </xsl:if>
+                                                  </xsl:for-each>
+                                                  </xsl:if>
                                                   <xsl:if
                                                   test="tei:correspAction[@type = 'sent']/tei:placeName">
                                                   <xsl:text>&#160;-&#160;</xsl:text>
@@ -848,22 +850,23 @@
                                                   <!-- Empfänger -->
                                                   <div style="margin-bottom: 1em;">
                                                   <strong>an:&#160;</strong>
-                                                  <a>
-                                                  <xsl:if
-                                                  test="tei:correspAction[@type = 'received']/tei:persName/@ref">
-                                                  <xsl:attribute name="href">
-                                                  <xsl:value-of
-                                                  select="tei:correspAction[@type = 'received']/tei:persName/@ref"
-                                                  />
-                                                  </xsl:attribute>
-                                                  </xsl:if>
                                                   <xsl:if
                                                   test="tei:correspAction[@type = 'received']/tei:persName">
-                                                  <xsl:value-of
-                                                  select="tei:correspAction[@type = 'received']/tei:persName"
-                                                  />
+                                                  <xsl:for-each
+                                                  select="tei:correspAction[@type = 'received']/tei:persName">
+                                                  <a>
+                                                  <xsl:if test="@ref">
+                                                  <xsl:attribute name="href">
+                                                  <xsl:value-of select="@ref"/>
+                                                  </xsl:attribute>
                                                   </xsl:if>
+                                                  <xsl:value-of select="."/>
                                                   </a>
+                                                  <xsl:if test="position() != last()">
+                                                  <xsl:text>&#160;</xsl:text>
+                                                  </xsl:if>
+                                                  </xsl:for-each>
+                                                  </xsl:if>
                                                   <xsl:if
                                                   test="tei:correspAction[@type = 'received']/tei:placeName">
                                                   <xsl:text>&#160;-&#160;</xsl:text>
@@ -1009,20 +1012,26 @@
                                 <xsl:if test="//tei:text/tei:body/*">
                                     <div class="card-body" id="text">
                                         <div
-                                            style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
-                                            <h2>Text</h2>
+                                            class="row justify-content-between align-items-center mb-4">
+                                            <div
+                                                class="col-12 col-md-auto text-center text-md-start">
+                                                <h2>Text</h2>
+                                            </div>
 
-                                            <div class="btn-group btn-group-sm" role="group"
-                                                aria-label="Ansicht umschalten">
-                                                <button id="showAnnotations" class="btn btn-dark"
+                                            <div class="col-12 col-md-auto text-center">
+                                                <div class="btn-group btn-group-sm" role="group"
+                                                  aria-label="Ansicht umschalten">
+                                                  <button id="showAnnotations" class="btn btn-dark"
                                                   >Annotierte Ansicht</button>
-                                                <button id="showReadingView"
+                                                  <button id="showReadingView"
                                                   class="btn btn-outline-dark">Leseansicht</button>
+                                                </div>
                                             </div>
 
 
-                                            <div>
-                                                <span id="tooltip"
+                                            <div class="col-12 col-md-auto text-center text-md-end">
+                                                <div>
+                                                  <span id="tooltip"
                                                   title="Bitte beachten Sie, dass Annotationen im PDF der annotierten Ansicht möglicherweise nicht exakt ausgerichtet sind.">
                                                   <a id="downloadPdf" class="btn btn-danger btn-sm"
                                                   style="margin-right: .25rem;">
@@ -1031,12 +1040,14 @@
                                                   select="replace(tokenize(document-uri(.), '/')[last()], '.xml$', '.pdf')"
                                                   />
                                                   </span>PDF herunterladen</a>
-                                                </span>
-                                                <a
+                                                  </span>
+                                                  <a
                                                   href="https://nuntiaturberichte.github.io/nbr-pius-xi-static/{$fileName}"
                                                   target="_blank" class="btn btn-primary btn-sm">XML
                                                   herunterladen</a>
+                                                </div>
                                             </div>
+
                                         </div>
                                         <div id="text">
                                             <div class="row">
@@ -1364,12 +1375,12 @@
     <xsl:template match="tei:head" mode="col-10">
         <xsl:variable name="isChapter" select="parent::tei:div/@type = 'chapter'"/>
         <xsl:variable name="hasNumber" select="parent::tei:div/@n"/>
-        <span style="background-color: #e0e0e0" class="toggle-content">
-            <xsl:if test="$isChapter">[Kapitel<xsl:if test="$hasNumber">&#160;<xsl:value-of
-                        select="$hasNumber"/>.:</xsl:if>
+        <xsl:if test="$isChapter">
+            <span style="background-color: #e0e0e0" class="toggle-content"> [Kapitel<xsl:if
+                    test="$hasNumber">&#160;<xsl:value-of select="$hasNumber"/>.:</xsl:if>
                 <xsl:text>] </xsl:text>
-            </xsl:if>
-        </span>
+            </span>
+        </xsl:if>
         <strong>
             <xsl:apply-templates mode="col-10"/>
         </strong>
@@ -1543,7 +1554,7 @@
                 <xsl:when test="@reason = 'strikethrough'">text-decoration: line-through;</xsl:when>
                 <xsl:when test="@reason = 'overwritten'">color: gray; text-decoration: line-through;
                     text-decoration-style: wavy;</xsl:when>
-                <xsl:otherwise>background-color: #F9CBC8;</xsl:otherwise>
+                <xsl:otherwise>background-color: transparent;</xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
         <span style="background-color: #F9CBC8; border-radius: 5px; {$style}"
@@ -1555,7 +1566,7 @@
                         <xsl:text>▯</xsl:text>
                     </xsl:for-each>
                 </xsl:when>
-                <xsl:when test="@unit = 'word'">
+                <xsl:when test="@unit = 'words'">
                     <xsl:for-each select="1 to $quantity">
                         <xsl:text>▭</xsl:text>
                     </xsl:for-each>
