@@ -50,7 +50,7 @@
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <p
-                                                  style="text-align:center;font-weight:bold;margin-bottom:0;"
+                                                  style="text-align: center; font-weight: bold; margin-bottom: 0;"
                                                   >Jahr</p>
                                             </div>
                                             <div class="col-sm-12">
@@ -58,7 +58,9 @@
                                                   id="years-table"/>
                                             </div>
                                             <div class="col-sm-12 mt-4">
-                                                <p>Dokumenttyp</p>
+                                                <p
+                                                  style="text-align: center; font-weight: bold; margin-bottom: 0;"
+                                                  >Dokumenttyp</p>
                                                 <ul class="list-unstyled">
                                                   <li>
                                                   <span
