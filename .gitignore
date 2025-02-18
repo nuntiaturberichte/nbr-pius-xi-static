@@ -149,3 +149,7 @@ desktop.ini
 
 # JetBrains IDEs (PyCharm, IntelliJ IDEA, etc.)
 .idea
+
+# typesense (lokale Ausführung)
+typesense-data/
+typesense-server.ini
