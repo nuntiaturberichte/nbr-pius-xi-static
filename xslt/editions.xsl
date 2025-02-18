@@ -192,6 +192,10 @@
                         padding-right: 0.15rem;
                     }
                     
+                    .col-10 [style *= "border: black 1px dotted; border-radius: 5px;"],
+                    .col-10 [style *= "background-color"] {
+                        white-space: nowrap;
+                    }
                     
                     /* Adaption für Leseansicht Anfang*/
                     .col-12 {
@@ -323,7 +327,7 @@
                                         <xsl:if test="//tei:lb[position() > 1]">
                                             <tr>
                                                 <td>&#8629;</td>
-                                                <td>Zeilenwechsel</td>
+                                                <td>Zeilenumbruch</td>
                                             </tr>
                                         </xsl:if>
                                         <xsl:if test="//tei:body//tei:hi[@rend = 'underline']">
@@ -826,15 +830,21 @@
                                                   </xsl:for-each>
                                                   </xsl:if>
                                                   <xsl:if
-                                                  test="tei:correspAction[@type = 'sent']/tei:placeName">
+                                                  test="tei:correspAction[@type = 'sent']/tei:persName and (tei:correspAction[@type = 'sent']/tei:placeName or tei:correspAction[@type = 'sent']/tei:date)">
                                                   <xsl:text>&#160;-&#160;</xsl:text>
+                                                  </xsl:if>
+                                                  <xsl:if
+                                                  test="tei:correspAction[@type = 'sent']/tei:placeName">
                                                   <xsl:value-of
                                                   select="tei:correspAction[@type = 'sent']/tei:placeName"
                                                   />
                                                   </xsl:if>
                                                   <xsl:if
-                                                  test="tei:correspAction[@type = 'sent']/tei:date">
+                                                  test="tei:correspAction[@type = 'sent']/tei:placeName and tei:correspAction[@type = 'sent']/tei:date">
                                                   <xsl:text>,&#160;</xsl:text>
+                                                  </xsl:if>
+                                                  <xsl:if
+                                                  test="tei:correspAction[@type = 'sent']/tei:date">
                                                   <xsl:value-of
                                                   select="tei:correspAction[@type = 'sent']/tei:date"
                                                   />
@@ -868,17 +878,23 @@
                                                   </xsl:for-each>
                                                   </xsl:if>
                                                   <xsl:if
-                                                  test="tei:correspAction[@type = 'received']/tei:placeName">
+                                                  test="tei:correspAction[@type = 'received']/tei:persName and (tei:correspAction[@type = 'received']/tei:placeName or tei:correspAction[@type = 'received']/tei:date)">
                                                   <xsl:text>&#160;-&#160;</xsl:text>
+                                                  </xsl:if>
+                                                  <xsl:if
+                                                  test="tei:correspAction[@type = 'received']/tei:placeName">
                                                   <xsl:value-of
                                                   select="tei:correspAction[@type = 'received']/tei:placeName"
                                                   />
                                                   </xsl:if>
                                                   <xsl:if
-                                                  test="tei:correspAction[@type = 'sent']/tei:date">
+                                                  test="tei:correspAction[@type = 'received']/tei:placeName and tei:correspAction[@type = 'received']/tei:date">
                                                   <xsl:text>,&#160;</xsl:text>
+                                                  </xsl:if>
+                                                  <xsl:if
+                                                  test="tei:correspAction[@type = 'received']/tei:date">
                                                   <xsl:value-of
-                                                  select="tei:correspAction[@type = 'sent']/tei:date"
+                                                  select="tei:correspAction[@type = 'received']/tei:date"
                                                   />
                                                   </xsl:if>
                                                   </div>
@@ -1112,7 +1128,7 @@
                                                 <xsl:if test="//tei:lb[position() > 1]">
                                                   <tr>
                                                   <td>&#8629;</td>
-                                                  <td>Zeilenwechsel</td>
+                                                  <td>Zeilenumbruch</td>
                                                   </tr>
                                                 </xsl:if>
                                                 <xsl:if
@@ -1376,8 +1392,9 @@
         <xsl:variable name="isChapter" select="parent::tei:div/@type = 'chapter'"/>
         <xsl:variable name="hasNumber" select="parent::tei:div/@n"/>
         <xsl:if test="$isChapter">
-            <span style="background-color: #e0e0e0" class="toggle-content"> [Kapitel<xsl:if
-                    test="$hasNumber">&#160;<xsl:value-of select="$hasNumber"/>.:</xsl:if>
+            <span style="background-color: #e0e0e0; border-radius: 5px;" class="toggle-content">
+                    [Kapitel<xsl:if test="$hasNumber">&#160;<xsl:value-of select="$hasNumber"
+                    />.:</xsl:if>
                 <xsl:text>] </xsl:text>
             </span>
         </xsl:if>
