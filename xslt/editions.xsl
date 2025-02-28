@@ -628,7 +628,7 @@
                                                   </xsl:otherwise>
                                                   </xsl:choose>
 
-                                                  <!-- Separator -->
+
                                                   <xsl:text>,&#160;</xsl:text>
 
                                                   <!-- Bericht -->
@@ -644,7 +644,7 @@
                                                   </xsl:otherwise>
                                                   </xsl:choose>
 
-                                                  <!-- Separator -->
+
                                                   <xsl:text>,&#160;</xsl:text>
 
                                                   <!-- Telegramm -->
@@ -660,7 +660,7 @@
                                                   </xsl:otherwise>
                                                   </xsl:choose>
 
-                                                  <!-- Separator -->
+
                                                   <xsl:text>,&#160;</xsl:text>
 
                                                   <!-- Archivsnotiz -->
@@ -676,7 +676,7 @@
                                                   </xsl:otherwise>
                                                   </xsl:choose>
 
-                                                  <!-- Separator -->
+
                                                   <xsl:text>,&#160;</xsl:text>
 
                                                   <!-- Provvista -->
@@ -691,6 +691,23 @@
                                                   >Provvista</span>
                                                   </xsl:otherwise>
                                                   </xsl:choose>
+
+
+                                                  <xsl:text>,&#160;</xsl:text>
+
+                                                  <!-- Pro Memoria -->
+                                                  <xsl:choose>
+                                                  <xsl:when test="//tei:text/@type = 'Pro_Memoria'">
+                                                  <span
+                                                  style="background-color: black; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
+                                                  >Pro Memoria</span>
+                                                  </xsl:when>
+                                                  <xsl:otherwise>
+                                                  <span style="color: #d3d3d3; font-size: 0.9em;"
+                                                  >Pro Memoria</span>
+                                                  </xsl:otherwise>
+                                                  </xsl:choose>
+
                                                   </td>
                                                   </tr>
                                                 </xsl:if>
@@ -712,7 +729,7 @@
                                                   </xsl:otherwise>
                                                   </xsl:choose>
 
-                                                  <!-- Separator -->
+
                                                   <xsl:text>,&#160;</xsl:text>
 
                                                   <!-- handschriftlich -->
@@ -729,7 +746,7 @@
                                                   </xsl:otherwise>
                                                   </xsl:choose>
 
-                                                  <!-- Separator -->
+
                                                   <xsl:text>,&#160;</xsl:text>
 
                                                   <!-- gesetzt -->
@@ -766,7 +783,6 @@
                                                   </xsl:otherwise>
                                                   </xsl:choose>
 
-                                                  <!-- Separator -->
                                                   <xsl:text>,&#160;</xsl:text>
 
                                                   <!-- Konzept -->
@@ -783,7 +799,6 @@
                                                   </xsl:otherwise>
                                                   </xsl:choose>
 
-                                                  <!-- Separator -->
                                                   <xsl:text>,&#160;</xsl:text>
 
                                                   <!-- Abschrift -->
