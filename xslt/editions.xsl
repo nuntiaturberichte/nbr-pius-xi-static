@@ -698,51 +698,51 @@
                                                   <tr>
                                                   <td>Ausführung</td>
                                                   <td>
-                                                  <!-- Maschinenschriftlich -->
+                                                  <!-- maschinenschriftlich -->
                                                   <xsl:choose>
                                                   <xsl:when
-                                                  test="//tei:physDesc/tei:scriptDesc/tei:ab = 'Maschinenschriftlich'">
+                                                  test="//tei:physDesc/tei:scriptDesc/tei:ab = 'maschinenschriftlich'">
                                                   <span
                                                   style="background-color: black; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
-                                                  >Maschinenschriftlich</span>
+                                                  >maschinenschriftlich</span>
                                                   </xsl:when>
                                                   <xsl:otherwise>
                                                   <span style="color: #d3d3d3; font-size: 0.9em;"
-                                                  >Maschinenschriftlich</span>
+                                                  >maschinenschriftlich</span>
                                                   </xsl:otherwise>
                                                   </xsl:choose>
 
                                                   <!-- Separator -->
                                                   <xsl:text>,&#160;</xsl:text>
 
-                                                  <!-- Handschriftlich -->
+                                                  <!-- handschriftlich -->
                                                   <xsl:choose>
                                                   <xsl:when
-                                                  test="//tei:physDesc/tei:scriptDesc/tei:ab = 'Handschriftlich' or //tei:physDesc/tei:scriptDesc/tei:ab = 'handwritten'">
+                                                  test="//tei:physDesc/tei:scriptDesc/tei:ab = 'handschriftlich' or //tei:physDesc/tei:scriptDesc/tei:ab = 'handwritten'">
                                                   <span
                                                   style="background-color: black; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
-                                                  >Handschriftlich</span>
+                                                  >handschriftlich</span>
                                                   </xsl:when>
                                                   <xsl:otherwise>
                                                   <span style="color: #d3d3d3; font-size: 0.9em;"
-                                                  >Handschriftlich</span>
+                                                  >handschriftlich</span>
                                                   </xsl:otherwise>
                                                   </xsl:choose>
 
                                                   <!-- Separator -->
                                                   <xsl:text>,&#160;</xsl:text>
 
-                                                  <!-- Gesetzt -->
+                                                  <!-- gesetzt -->
                                                   <xsl:choose>
                                                   <xsl:when
-                                                  test="//tei:physDesc/tei:scriptDesc/tei:ab = 'Gesetzt'">
+                                                  test="//tei:physDesc/tei:scriptDesc/tei:ab = 'gesetzt'">
                                                   <span
                                                   style="background-color: black; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
-                                                  >Gesetzt</span>
+                                                  >gesetzt</span>
                                                   </xsl:when>
                                                   <xsl:otherwise>
                                                   <span style="color: #d3d3d3; font-size: 0.9em;"
-                                                  >Gesetzt</span>
+                                                  >gesetzt</span>
                                                   </xsl:otherwise>
                                                   </xsl:choose>
                                                   </td>
@@ -1634,6 +1634,8 @@
                     <xsl:when test="@rend = 'typewritten'">maschinenschriftlich</xsl:when>
                     <xsl:when test="@rend = 'handwritten'">handschriftlich</xsl:when>
                     <xsl:when test="@rend = 'overwritten'">überschrieben</xsl:when>
+                    <xsl:when test="@rend = 'handwritten overwritten'">händisch
+                        überschrieben</xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="@rend"/>
                     </xsl:otherwise>
@@ -1663,7 +1665,7 @@
         <div class="annotation" style="border: 1px solid transparent;">
             <xsl:attribute name="data-annotation">
                 <xsl:value-of select="generate-id()"/>
-            </xsl:attribute>Unklare Lesung</div>
+            </xsl:attribute>unklare Lesung</div>
     </xsl:template>
     <!-- unclear Ende -->
 
