@@ -37,7 +37,7 @@ for x in tqdm(files, total=len(files)):
     # Extrahiere das Datum
     date_xpaths = [
         '//tei:correspAction[@type="sent"]/tei:date/@when',  # 1. Priorität
-        '//tei:creation//tei:date/@when'  # 2. Priorität
+        '//tei:creation//tei:date/@when',  # 2. Priorität
         '//tei:opener//tei:date/@when',  # 3. Priorität
         '//tei:closer//tei:date/@when',  # 4. Priorität
         '//tei:head//tei:date/@when',  # 5. Priorität
