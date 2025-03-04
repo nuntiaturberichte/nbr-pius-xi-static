@@ -192,10 +192,12 @@
                         padding-right: 0.15rem;
                     }
                     
-                    .col-10 [style *= "border: black 1px dotted; border-radius: 5px;"],
-                    .col-10 [style *= "background-color"] {
-                        white-space: nowrap;
+                    .col-10 [style*="border: black 1px dotted; border-radius: 5px;"],
+                    .col-10 [style*="background-color: #F9CBC8"],
+                    .col-10 [style*="background-color: #CBE1D1"] {
+                    white-space: nowrap;
                     }
+                    
                     
                     /* Adaption für Leseansicht Anfang*/
                     .col-12 {
