@@ -1335,26 +1335,26 @@
         <xsl:choose>
             <xsl:when test="$layout = 'einseitig beschrieben'">
                 <xsl:variable name="currentFolio" select="$folioStart + $pbIndex"/>
-                <div class="page-nr toggle-content" style="background-color: white;">
-                    <xsl:text> — Folio </xsl:text>
-                    <xsl:value-of select="$currentFolio"/>
-                    <xsl:text> recto 📄 — </xsl:text>
-                </div>
+                <div class="page-nr toggle-content" style="background-color: white;"
+                        >—&#160;<em>Folio <xsl:value-of select="$currentFolio"/>
+                    recto</em>&#160;📄&#160;—</div>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="currentFolio" select="$folioStart + floor($pbIndex div 2)"/>
                 <xsl:variable name="isVerso" select="$pbIndex mod 2 = 1"/>
                 <xsl:variable name="folioSide" select="
                         if ($isVerso) then
-                            ' verso 🔄'
+                            ' verso'
                         else
-                            ' recto 📄'"/>
-                <div class="page-nr toggle-content" style="background-color: white;">
-                    <xsl:text> — Folio </xsl:text>
-                    <xsl:value-of select="$currentFolio"/>
-                    <xsl:value-of select="$folioSide"/>
-                    <xsl:text> — </xsl:text>
-                </div>
+                            ' recto'"/>
+                <xsl:variable name="icon" select="
+                        if ($isVerso) then
+                            ' 🔄'
+                        else
+                            ' 📄'"/>
+                <div class="page-nr toggle-content" style="background-color: white;"
+                        >—&#160;<em>Folio <xsl:value-of select="$currentFolio"/><xsl:value-of
+                            select="$folioSide"/></em><xsl:value-of select="$icon"/>&#160;—</div>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
