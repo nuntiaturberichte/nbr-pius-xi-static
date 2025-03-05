@@ -1338,7 +1338,7 @@
                 <div class="page-nr toggle-content" style="background-color: white;">
                     <xsl:text> — Folio </xsl:text>
                     <xsl:value-of select="$currentFolio"/>
-                    <xsl:text> recto — </xsl:text>
+                    <xsl:text> recto 📄 — </xsl:text>
                 </div>
             </xsl:when>
             <xsl:otherwise>
