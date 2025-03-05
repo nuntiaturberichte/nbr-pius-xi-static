@@ -41,6 +41,10 @@ body {
     hyphens: auto;
 }
 
+.col-2 {
+    text-align: initial;
+}
+
 @media (max-width : 441px) {
     body {
         padding-top: 130px;
