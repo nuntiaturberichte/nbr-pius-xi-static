@@ -158,8 +158,8 @@
                     
                     .page-nr.toggle-content {
                         display: revert;
-                        border-top: 1px solid #d2d2d2;
                         text-align: center;
+                        border-top: #d2d2d2 solid 1px;
                         margin: 20px 0;
                         padding-top: 5px;
                     }
@@ -192,10 +192,10 @@
                         padding-right: 0.15rem;
                     }
                     
-                    .col-10 [style*="border: black 1px dotted; border-radius: 5px;"],
-                    .col-10 [style*="background-color: #F9CBC8"],
-                    .col-10 [style*="background-color: #CBE1D1"] {
-                    white-space: nowrap;
+                    .col-10 [style *= "border: black 1px dotted; border-radius: 5px;"],
+                    .col-10 [style *= "background-color: #F9CBC8"],
+                    .col-10 [style *= "background-color: #CBE1D1"] {
+                        white-space: nowrap;
                     }
                     
                     
@@ -1094,7 +1094,7 @@
                                                 <!-- Anmerkungen Anfang -->
                                                 <div class="col-2" style="font-size: 0.85rem;">
                                                   <xsl:apply-templates
-                                                  select="//tei:note[@type = 'foliation'] | //tei:signed | //tei:hi[@rend = 'underline'] | //tei:hi[@rend = 'mark'] | //tei:add | //tei:unclear | //tei:body//tei:sic | //tei:corr | //tei:supplied[@reason = 'deciphering']"
+                                                  select="//tei:note[@type = 'foliation'] | //tei:signed | //tei:hi[@rend = 'underline'] | //tei:hi[@rend = 'mark'] | //tei:add | //tei:unclear | //tei:body//tei:sic | //tei:supplied[@reason = 'deciphering'] | //tei:abbr"
                                                   mode="col-2"/>
                                                 </div>
                                                 <!-- Anmerkungen Ende -->
@@ -1314,13 +1314,52 @@
         </html>
     </xsl:template>
 
+
     <!--Überall Anfang -->
 
+    <!-- pb Anfang -->
     <xsl:template match="tei:pb" mode="col-10">
-        <div class="page-nr toggle-content" style="background-color: white;">— Seite <xsl:value-of
-                select="@n"/> —</div>
+        <xsl:variable name="folio" select="//tei:idno[@type = 'archive']"/>
+        <xsl:variable name="folioText" select="normalize-space($folio)"/>
+        <xsl:variable name="layout" select="//tei:objectDesc/tei:layoutDesc/tei:ab"/>
+        <xsl:variable name="folioStart"
+            select="number(substring-before(substring-after($folioText, 'Fol. '), 'r'))"/>
+        <xsl:variable name="folioEnd" select="
+                number(substring-before(substring-after($folioText, '- '), 'r'))"/>
+        <xsl:variable name="folioMax" select="
+                if ($folioEnd) then
+                    $folioEnd
+                else
+                    $folioStart"/>
+        <xsl:variable name="pbIndex" select="number(@n) - 1"/>
+        <xsl:choose>
+            <xsl:when test="$layout = 'einseitig beschrieben'">
+                <xsl:variable name="currentFolio" select="$folioStart + $pbIndex"/>
+                <div class="page-nr toggle-content" style="background-color: white;">
+                    <xsl:text> — Folio </xsl:text>
+                    <xsl:value-of select="$currentFolio"/>
+                    <xsl:text> recto — </xsl:text>
+                </div>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:variable name="currentFolio" select="$folioStart + floor($pbIndex div 2)"/>
+                <xsl:variable name="isVerso" select="$pbIndex mod 2 = 1"/>
+                <xsl:variable name="folioSide" select="
+                        if ($isVerso) then
+                            ' verso 🔄'
+                        else
+                            ' recto 📄'"/>
+                <div class="page-nr toggle-content" style="background-color: white;">
+                    <xsl:text> — Folio </xsl:text>
+                    <xsl:value-of select="$currentFolio"/>
+                    <xsl:value-of select="$folioSide"/>
+                    <xsl:text> — </xsl:text>
+                </div>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
+    <!-- pb Ende -->
 
     <xsl:template match="tei:lb[position() > 1]" mode="col-10">
         <span class="toggle-content">&#8629;</span>
@@ -1332,7 +1371,7 @@
     <!-- Am Dokumentbeginn Anfang -->
 
     <xsl:template match="tei:opener" mode="col-10">
-        <div style="background-color: #fffbeb; border-radius: 5px;">
+        <div>
             <xsl:apply-templates mode="col-10"/>
         </div>
     </xsl:template>
@@ -1348,8 +1387,7 @@
     <!-- Am Dokumentende Anfang -->
 
     <xsl:template match="tei:closer" mode="col-10">
-        <div
-            style="margin-top: 75px; text-align: right; background-color: #fffbeb; border-radius: 5px;">
+        <div style="margin-top: 75px; text-align: right;">
             <xsl:apply-templates mode="col-10"/>
         </div>
     </xsl:template>
@@ -1515,10 +1553,11 @@
                 </xsl:attribute>
                 <xsl:choose>
                     <xsl:when test="@hand = '#UR'">unbekannter Rezipient</xsl:when>
-                    <xsl:when test="@hand = 'author'">Autor</xsl:when>
+                    <xsl:when test="@hand = '#author'">Autor</xsl:when>
                     <xsl:when test="@hand = '#LF'">Luigi Faidutti</xsl:when>
                     <xsl:when test="@hand = '#ES'">Enrico Sibilia</xsl:when>
-                    <xsl:when test="@hand = 'author #UR'">Autor und unbekannter Rezipient</xsl:when>
+                    <xsl:when test="@hand = '#group_UR_author'">Autor und unbekannter
+                        Rezipient</xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="@hand"/>
                     </xsl:otherwise>
@@ -1670,12 +1709,10 @@
     <!-- unclear Anfang -->
     <!-- col-10 -->
     <xsl:template match="tei:unclear" mode="col-10">
-        <span class="annotated-word" style="border: 1px solid transparent;">
+        <span class="annotated-word" style="color: gray; border: 1px solid transparent;">
             <xsl:attribute name="data-annotation">
                 <xsl:value-of select="generate-id()"/>
-            </xsl:attribute>
-            <xsl:apply-templates mode="col-10"/>
-        </span>
+            </xsl:attribute> [<xsl:apply-templates mode="col-10"/>] </span>
     </xsl:template>
     <!-- col-2 -->
     <xsl:template match="tei:unclear" mode="col-2">
@@ -1701,13 +1738,20 @@
         <div class="annotation" style="border: 1px solid transparent;">
             <xsl:attribute name="data-annotation">
                 <xsl:value-of select="generate-id()"/>
-            </xsl:attribute>sic</div>
+            </xsl:attribute>sic<xsl:if test="following-sibling::tei:corr">&#160;<i
+                    class="bi bi-arrow-right"/>
+                <xsl:text> Korrektur: </xsl:text> "<xsl:apply-templates
+                    select="following-sibling::tei:corr"/>" </xsl:if></div>
     </xsl:template>
     <!-- sic Ende -->
 
     <!-- corr Anfang -->
+    <xsl:template match="tei:corr" mode="col-10"/>
+    <!-- corr Ende -->
+
+    <!-- abbr Anfang -->
     <!-- col-10 -->
-    <xsl:template match="tei:corr" mode="col-10">
+    <xsl:template match="tei:abbr" mode="col-10">
         <span class="annotated-word" style="border: 1px solid transparent;">
             <xsl:attribute name="data-annotation">
                 <xsl:value-of select="generate-id()"/>
@@ -1716,13 +1760,20 @@
         </span>
     </xsl:template>
     <!-- col-2 -->
-    <xsl:template match="tei:corr" mode="col-2">
+    <xsl:template match="tei:abbr" mode="col-2">
         <div class="annotation" style="border: 1px solid transparent;">
             <xsl:attribute name="data-annotation">
                 <xsl:value-of select="generate-id()"/>
-            </xsl:attribute>Korrektur</div>
+            </xsl:attribute>
+            <xsl:if test="following-sibling::tei:expan"><xsl:text>Auflösung: </xsl:text>
+                    "<xsl:apply-templates select="following-sibling::tei:expan"/>" </xsl:if>
+        </div>
     </xsl:template>
-    <!-- corr Ende -->
+    <!-- abbr Ende -->
+
+    <!-- expan Anfang -->
+    <xsl:template match="tei:expan" mode="col-10"/>
+    <!-- expan Ende -->
 
     <!-- Dechiffrierung Anfang -->
     <!-- col-10 -->
