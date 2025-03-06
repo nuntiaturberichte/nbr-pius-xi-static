@@ -197,7 +197,28 @@
                     .col-10 [style *= "background-color: #CBE1D1"] {
                         white-space: nowrap;
                     }
+                    /* Text Ende */
                     
+                    /* Loader PDF Anfang */
+                    #loader {
+                        position: fixed;
+                        left: 50%;
+                        top: 50%;
+                        width: 50px;
+                        height: 50px;
+                        margin-left: -25px;
+                        margin-top: -25px;
+                        border: 4px solid rgba(0, 0, 0, .1);
+                        border-radius: 50%;
+                        border-top-color: #3498db;
+                        animation: spin 1s infinite linear;
+                        z-index: 1000;
+                    }
+                    
+                    @keyframes spin {
+                    to { transform: rotate(360deg); }
+                    }
+                    /* Loader PDF Ende */
                     
                     /* Adaption für Leseansicht Anfang*/
                     .col-12 {
@@ -1064,6 +1085,7 @@
 
                                             <div class="col-12 col-md-auto text-center text-md-end">
                                                 <div>
+                                                  <div id="loader" style="display: none;"/>
                                                   <span id="tooltip"
                                                   title="Bitte beachten Sie, dass Annotationen im PDF der annotierten Ansicht möglicherweise nicht exakt ausgerichtet sind.">
                                                   <a id="downloadPdf" class="btn btn-danger btn-sm"
