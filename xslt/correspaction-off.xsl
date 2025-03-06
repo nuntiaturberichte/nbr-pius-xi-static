@@ -108,7 +108,7 @@
                                     <th scope="col">Titel</th>
                                     <th scope="col">Schlagwort</th>
                                     <th scope="col">Sendedatum</th>
-                                    <th scope="col">Sender</th>
+                                    <th scope="col">Verfasser</th>
                                     <th scope="col">Empfänger</th>
                                     <th scope="col">Sendeort</th>
                                     <th scope="col">Empfangsort</th>
@@ -156,23 +156,29 @@
                                         </td>
                                         <td>
                                             <a target="_blank">
-                                                <xsl:attribute name="href">
+                                                <xsl:if
+                                                  test="descendant::tei:titleStmt/tei:author/tei:persName[1]/@ref">
+                                                  <xsl:attribute name="href">
                                                   <xsl:value-of
-                                                  select="descendant::tei:correspDesc/tei:correspAction[@type = 'sent']/tei:persName[1]/@ref"
+                                                  select="descendant::tei:titleStmt/tei:author/tei:persName[1]/@ref"
                                                   />
-                                                </xsl:attribute>
+                                                  </xsl:attribute>
+                                                </xsl:if>
                                                 <xsl:value-of
-                                                  select="descendant::tei:correspDesc/tei:correspAction[@type = 'sent']/tei:persName[1]"
+                                                  select="descendant::tei:titleStmt/tei:author/tei:persName[1]"
                                                 />
                                             </a>
                                         </td>
                                         <td>
                                             <a target="_blank">
-                                                <xsl:attribute name="href">
+                                                <xsl:if
+                                                  test="descendant::tei:correspDesc/tei:correspAction[@type = 'received']/tei:persName[1]/@ref">
+                                                  <xsl:attribute name="href">
                                                   <xsl:value-of
                                                   select="descendant::tei:correspDesc/tei:correspAction[@type = 'received']/tei:persName[1]/@ref"
                                                   />
-                                                </xsl:attribute>
+                                                  </xsl:attribute>
+                                                </xsl:if>
                                                 <xsl:value-of
                                                   select="descendant::tei:correspDesc/tei:correspAction[@type = 'received']/tei:persName[1]"
                                                 />
