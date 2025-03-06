@@ -621,7 +621,7 @@
                                                   <xsl:choose>
                                                   <xsl:when test="//tei:text/@type = 'Brief'">
                                                   <span
-                                                      style="background-color: #0d6efd; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
+                                                  style="background-color: #0d6efd; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
                                                   >Brief</span>
                                                   </xsl:when>
                                                   <xsl:otherwise>
@@ -637,7 +637,7 @@
                                                   <xsl:choose>
                                                   <xsl:when test="//tei:text/@type = 'Bericht'">
                                                   <span
-                                                      style="background-color: #c74343; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
+                                                  style="background-color: #c74343; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
                                                   >Bericht</span>
                                                   </xsl:when>
                                                   <xsl:otherwise>
@@ -653,7 +653,7 @@
                                                   <xsl:choose>
                                                   <xsl:when test="//tei:text/@type = 'Telegramm'">
                                                   <span
-                                                      style="background-color: #6ab547; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
+                                                  style="background-color: #6ab547; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
                                                   >Telegramm</span>
                                                   </xsl:when>
                                                   <xsl:otherwise>
@@ -669,7 +669,7 @@
                                                   <xsl:choose>
                                                   <xsl:when test="//tei:text/@type = 'Archivsnotiz'">
                                                   <span
-                                                      style="background-color: #7b287d; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
+                                                  style="background-color: #7b287d; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
                                                   >Archivsnotiz</span>
                                                   </xsl:when>
                                                   <xsl:otherwise>
@@ -685,7 +685,7 @@
                                                   <xsl:choose>
                                                   <xsl:when test="//tei:text/@type = 'Provvista'">
                                                   <span
-                                                      style="background-color: #f8c400; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
+                                                  style="background-color: #f8c400; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
                                                   >Provvista</span>
                                                   </xsl:when>
                                                   <xsl:otherwise>
