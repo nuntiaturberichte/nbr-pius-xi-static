@@ -145,10 +145,10 @@
             width: "8%"
             },
             
-            // Spalte: Sender
+            // Spalte: Verfasser
             {
-            title: "Sender",
-            field: "sender",
+            title: "Verfasser",
+            field: "verfasser",
             formatter: "html",
             width: "8%",
             headerFilter: "list",
