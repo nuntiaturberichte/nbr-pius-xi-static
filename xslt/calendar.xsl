@@ -82,6 +82,10 @@
                                                   <span
                                                   style="display:inline-block; width:20px; height:20px; background-color:#f8c400; margin-right:10px;"
                                                   />Provvista</li>
+                                                  <li>
+                                                  <span
+                                                  style="display:inline-block; width:20px; height:20px; background-color: black; margin-right:10px;"
+                                                  />Sonstiges</li>
                                                 </ul>
                                             </div>
                                         </div>
