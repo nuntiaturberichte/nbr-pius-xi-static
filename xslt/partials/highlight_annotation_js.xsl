@@ -4,36 +4,41 @@
 
     <xsl:template match="/" name="highlight_annotation">
         <script>
-            // Suche nach allen Elementen mit den Klassen "annotation" und "annotated-word"
             document.querySelectorAll('.annotation, .annotated-word').forEach(element => {
             element.addEventListener('mouseenter', () => {
-            // Hole das zugehörige `data-annotation`-Attribut
             const annotationValue = element.getAttribute('data-annotation');
             
-            // Finde alle passenden Elemente mit gleichem `data-annotation`-Wert
-            const relatedElements = document.querySelectorAll(
-            `[data-annotation="${annotationValue}"]`
-            );
+            // Hole alle `.annotated-word`-Elemente mit der gleichen data-annotation
+            const relatedWords = document.querySelectorAll(`.annotated-word[data-annotation="${annotationValue}"]`);
             
-            // Füge die Highlight-Klasse hinzu
-            relatedElements.forEach(relatedElement => {
-            relatedElement.classList.add('highlight');
+            // Hole die erste (bestehende) `.annotation` mit diesem `data-annotation`-Wert
+            const firstAnnotation = document.querySelector(`.col-2 .annotation[data-annotation="${annotationValue}"]`);
+            
+            // Falls eine erste Annotation existiert, füge sie zum Highlight hinzu
+            if (firstAnnotation) {
+            firstAnnotation.classList.add('highlight');
+            }
+            
+            // Füge die Highlight-Klasse zu allen zugehörigen `.annotated-word`-Elementen hinzu
+            relatedWords.forEach(word => {
+            word.classList.add('highlight');
             });
             });
             
             element.addEventListener('mouseleave', () => {
-            // Hole das zugehörige `data-annotation`-Attribut
             const annotationValue = element.getAttribute('data-annotation');
             
-            // Finde alle passenden Elemente mit gleichem `data-annotation`-Wert
-            const relatedElements = document.querySelectorAll(
-            `[data-annotation="${annotationValue}"]`
-            );
-            
-            // Entferne die Highlight-Klasse
-            relatedElements.forEach(relatedElement => {
-            relatedElement.classList.remove('highlight');
+            // Entferne Highlight von allen `.annotated-word`-Elementen
+            const relatedWords = document.querySelectorAll(`.annotated-word[data-annotation="${annotationValue}"]`);
+            relatedWords.forEach(word => {
+            word.classList.remove('highlight');
             });
+            
+            // Entferne Highlight von der ersten `.annotation` in `.col-2`
+            const firstAnnotation = document.querySelector(`.col-2 .annotation[data-annotation="${annotationValue}"]`);
+            if (firstAnnotation) {
+            firstAnnotation.classList.remove('highlight');
+            }
             });
             });
         </script>
