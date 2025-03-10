@@ -1087,7 +1087,7 @@
                                                 <div>
                                                   <div id="loader" style="display: none;"/>
                                                   <span id="tooltip"
-                                                  title="Bitte beachten Sie, dass Annotationen im PDF der annotierten Ansicht möglicherweise nicht exakt ausgerichtet sind.">
+                                                  title="Annotationen im PDF der annotierten Ansicht sind möglicherweise nicht richtig ausgerichtet.">
                                                   <a id="downloadPdf" class="btn btn-danger btn-sm"
                                                   style="margin-right: .25rem;">
                                                   <span id="pdfFileName" style="display: none;">
