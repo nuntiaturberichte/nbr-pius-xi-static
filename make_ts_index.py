@@ -49,18 +49,18 @@ current_schema = {
             "sort": True,
         },
         {
-            "name": "sender",
+            "name": "author",
             "type": "string[]",
             "optional": True,
             "facet": True,
-            "sort": False,
+            "sort": True,
         },
         {
             "name": "receiver",
             "type": "string[]",
             "optional": True,
             "facet": True,
-            "sort": False,
+            "sort": True,
         },
     ],
 }
@@ -95,28 +95,37 @@ for x in tqdm(files, total=len(files)):
 
     # Jahr extrahieren
     try:
-        year = doc.any_xpath(".//correspAction[@type='sent']/date[@when]")[0].attrib["when"]
-        if len(year) > 4:
+        year = doc.any_xpath(".//tei:correspAction[@type='sent']/tei:date[@when]")[0].attrib.get("when", "")
+        if len(year) >= 4 and year[:4].isdigit():
             record["year"] = int(year[:4])
+        else:
+            record["year"] = None
     except IndexError:
-        record["year"] = None  # Falls kein Datum existiert
+        record["year"] = None
+    if record["year"] is None:
+        print(f"⚠️  Kein gültiges Jahr gefunden für {record['id']}")
 
     # Titel extrahieren
     record["title"] = extract_fulltext(doc.any_xpath(".//tei:titleStmt/tei:title")[0])
     cfts_record["title"] = record["title"]
 
-    # Sender extrahieren
-    record["sender"] = []
-    cfts_record["persons"] = []
-    for y in doc.any_xpath(".//tei:correspAction[@type='sent']//tei:persName"):
-        record["sender"].append(normalize_string(y.text))
-        cfts_record["persons"].append(normalize_string(y.text))
+    # Autor extrahieren
+    cfts_record = {"project": COLLECTION_NAME, "persons": []}
+    record["author"] = [
+        normalize_string(y.text) for y in doc.any_xpath(".//tei:titleStmt/tei:author/tei:persName") if y.text
+    ]
+    if not record["author"]:
+        record["author"] = None
+    cfts_record["persons"] = record["author"] if record["author"] else []
 
     # Empfänger extrahieren
-    record["receiver"] = []
-    for y in doc.any_xpath(".//tei:correspAction[@type='received']//tei:persName"):
-        record["receiver"].append(normalize_string(y.text))
-        cfts_record["persons"].append(normalize_string(y.text))
+    record["receiver"] = [
+        normalize_string(y.text) for y in doc.any_xpath(".//tei:correspAction[@type='received']//tei:persName") if
+        y.text
+    ]
+    if not record["receiver"]:
+        record["receiver"] = None
+    cfts_record["persons"] = record["receiver"] if record["receiver"] else []
 
     # Volltext extrahieren
     record["full_text"] = extract_fulltext(body, tag_blacklist=tag_blacklist)
