@@ -51,8 +51,8 @@
     <copy todir="${target}" flatten="true">
         <fileset dir="${target}" includes="**/*.html"/>
     </copy>
-    <delete dir="./html/folder#1/" failonerror="false"/>
-    <delete dir="./html/folder#2/" failonerror="false"/>
+    <delete dir="./html/folder_1/" failonerror="false"/>
+    <delete dir="./html/folder_2/" failonerror="false"/>
 
     <xslt in="./xslt/correspaction.xsl" out="${target}/correspaction.html"
         style="./xslt/correspaction.xsl">
