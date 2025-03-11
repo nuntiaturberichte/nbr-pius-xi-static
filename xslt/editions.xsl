@@ -731,6 +731,21 @@
                                                   </xsl:otherwise>
                                                   </xsl:choose>
 
+                                                  <xsl:text>,&#160;</xsl:text>
+
+                                                  <!-- Übersetzung -->
+                                                  <xsl:choose>
+                                                  <xsl:when test="//tei:text/@type = 'Übersetzung'">
+                                                  <span
+                                                  style="background-color: black; color: #fff; padding: 0.1em 0.4em; border-radius: 0.2em; font-size: 0.9em;"
+                                                  >Übersetzung</span>
+                                                  </xsl:when>
+                                                  <xsl:otherwise>
+                                                  <span style="color: #d3d3d3; font-size: 0.9em;"
+                                                  >Übersetzung</span>
+                                                  </xsl:otherwise>
+                                                  </xsl:choose>
+
                                                   </td>
                                                   </tr>
                                                 </xsl:if>
