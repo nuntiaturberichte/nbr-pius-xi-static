@@ -17,8 +17,27 @@
                     <xsl:with-param name="html_title" select="$doc_title"/>
                 </xsl:call-template>
                 <meta name="description"
-                    content="Durchsuchen Sie die Nuntiatur Pius XI. mit einer facettierten Volltextsuche, womit Suchergebnisse nach verschiedenen Kategorien gefiltert werden können."
-                />
+                    content="Durchsuchen Sie die Nuntiatur Pius XI. mit einer facettierten Volltextsuche, womit Suchergebnisse nach verschiedenen Kategorien gefiltert werden können."/>
+                <style>
+                    .ais-SearchBox-input:focus {
+                        border-color: #f8c400;
+                        box-shadow: 0 0 0 5px #ffe485;
+                        outline: none;
+                    }
+                    
+                    .ais-Pagination-link {
+                        color: black !important;
+                    }
+                    
+                    .ais-Pagination-item--selected .ais-Pagination-link {
+                        background-color: #db2017 !important;
+                        border-color: #db2017 !important;
+                        color: white !important;
+                    }
+                    
+                    .ais-RefinementList-showMore.btn {
+                        background-color: #db2017 !important;
+                    }</style>
             </head>
 
             <body class="d-flex flex-column h-100">
