@@ -46,8 +46,8 @@ jobs:
         run: ./fetch_data.sh
       - name: Build the app
         run: ./transform.sh
-      #- name: Build Search Index
-      #  run: python make_ts_index.py
+      - name: Build Search Index
+        run: python make_ts_index.py
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

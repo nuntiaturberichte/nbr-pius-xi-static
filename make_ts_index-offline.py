@@ -1,12 +1,27 @@
 import glob
 import os
+import typesense
 
 from typesense.api_call import ObjectNotFound
-from acdh_cfts_pyutils import TYPESENSE_CLIENT as client, CFTS_COLLECTION
+from acdh_cfts_pyutils import CFTS_COLLECTION
 from acdh_tei_pyutils.tei import TeiReader
 from acdh_tei_pyutils.utils import extract_fulltext, normalize_string
 from tqdm import tqdm
 
+# Typesense Konfiguration für lokale Ausführung
+TYPESENSE_API_KEY = "xyz"
+TYPESENSE_HOST = "localhost"
+TYPESENSE_PORT = "8108"
+
+client = typesense.Client({
+    "nodes": [{
+        "host": TYPESENSE_HOST,
+        "port": TYPESENSE_PORT,
+        "protocol": "http",
+    }],
+    "api_key": TYPESENSE_API_KEY,
+    "connection_timeout_seconds": 10
+})
 
 # Name der Collection
 COLLECTION_NAME = "nbr-pius-xi"
@@ -20,7 +35,7 @@ except ObjectNotFound:
 # Collection-Schema definieren
 current_schema = {
     "name": COLLECTION_NAME,
-    "enable_nested_fields": False,  # not needed because we don't index any objects
+    "enable_nested_fields": True,
     "fields": [
         {"name": "id", "type": "string", "sort": True},
         {"name": "rec_id", "type": "string", "sort": True},
@@ -38,14 +53,14 @@ current_schema = {
             "type": "string[]",
             "optional": True,
             "facet": True,
-            "sort": False,
+            "sort": True,
         },
         {
             "name": "receiver",
             "type": "string[]",
             "optional": True,
             "facet": True,
-            "sort": False,
+            "sort": True,
         },
     ],
 }
@@ -54,7 +69,8 @@ current_schema = {
 client.collections.create(current_schema)
 
 # Daten aus TEI-XML-Dateien einlesen
-files = glob.glob("./data/editions/**/*.xml", recursive=True)
+#files = glob.glob("./data/editions/**/*.xml", recursive=True)
+files = glob.glob("../nbr-pius-xi-data/editions/**/*.xml", recursive=True)
 tag_blacklist = ["{http://www.tei-c.org/ns/1.0}abbr"]
 
 records = []
@@ -73,17 +89,13 @@ for x in tqdm(files, total=len(files)):
     # ID und Resolver
     record["id"] = os.path.split(x)[-1].replace(".xml", "")
     cfts_record["id"] = record["id"]
-    cfts_record["resolver"] = (
-        f"https://nuntiaturberichte.github.io/nbr-pius-xi-static/{record['id']}.html"
-    )
+    cfts_record["resolver"] = f"https://nuntiaturberichte.github.io/nbr-graz-static/{record['id']}.html"
     record["rec_id"] = record["id"]
     cfts_record["rec_id"] = record["rec_id"]
 
     # Jahr extrahieren
     try:
-        year = doc.any_xpath(".//tei:correspAction[@type='sent']/tei:date[@when]")[
-            0
-        ].attrib.get("when", "")
+        year = doc.any_xpath(".//tei:correspAction[@type='sent']/tei:date[@when]")[0].attrib.get("when", "")
         if len(year) >= 4 and year[:4].isdigit():
             record["year"] = int(year[:4])
         else:
@@ -98,30 +110,22 @@ for x in tqdm(files, total=len(files)):
     cfts_record["title"] = record["title"]
 
     # Autor extrahieren
+    cfts_record = {"project": COLLECTION_NAME, "persons": []}
     record["author"] = [
-        normalize_string(y.text)
-        for y in doc.any_xpath(".//tei:titleStmt/tei:author/tei:persName")
-        if y.text
+        normalize_string(y.text) for y in doc.any_xpath(".//tei:titleStmt/tei:author/tei:persName") if y.text
     ]
     if not record["author"]:
         record["author"] = None
+    cfts_record["persons"] = record["author"] if record["author"] else []
 
     # Empfänger extrahieren
     record["receiver"] = [
-        normalize_string(y.text)
-        for y in doc.any_xpath(".//tei:correspAction[@type='received']//tei:persName")
-        if y.text
+        normalize_string(y.text) for y in doc.any_xpath(".//tei:correspAction[@type='received']//tei:persName") if
+        y.text
     ]
     if not record["receiver"]:
         record["receiver"] = None
-
-    # Combine authors and receivers for persons field
-    persons = []
-    if record["author"]:
-        persons.extend(record["author"])
-    if record["receiver"]:
-        persons.extend(record["receiver"])
-    cfts_record["persons"] = persons if persons else None
+    cfts_record["persons"] = record["receiver"] if record["receiver"] else []
 
     # Volltext extrahieren
     record["full_text"] = extract_fulltext(body, tag_blacklist=tag_blacklist)
@@ -133,8 +137,20 @@ for x in tqdm(files, total=len(files)):
 # Dokumente in Typesense speichern
 make_index = client.collections[COLLECTION_NAME].documents.import_(records)
 print(make_index)
-print(f"✅ done with indexing {COLLECTION_NAME}")
+print(f"✅ Fertig mit Indexierung {COLLECTION_NAME}")
 
-make_index = CFTS_COLLECTION.documents.import_(cfts_records, {"action": "upsert"})
-print(make_index)
-print(f"done with cfts-index {COLLECTION_NAME}")
+# Überprüfen, ob die Collection existiert, bevor `CFTS_COLLECTION` verwendet wird
+existing_collections = [col['name'] for col in client.collections.retrieve()]
+if COLLECTION_NAME in existing_collections:
+    CFTS_COLLECTION = client.collections[COLLECTION_NAME]
+else:
+    print(f"⚠️  Collection '{COLLECTION_NAME}' existiert nicht.")
+    CFTS_COLLECTION = None  # Verhindert Fehler durch falschen Zugriff
+
+# CFTS-Indexierung durchführen
+if CFTS_COLLECTION:
+    make_index = CFTS_COLLECTION.documents.import_(cfts_records, {"action": "upsert"})
+    print(make_index)
+    print(f"✅ Fertig mit CFTS-Indexierung {COLLECTION_NAME}")
+else:
+    print("⚠️  CFTS_COLLECTION ist nicht korrekt konfiguriert.")

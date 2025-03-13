@@ -1,6 +1,6 @@
 const project_collection_name = "nbr-pius-xi";
 const main_search_field = "full_text";
-const search_api_key = "xyz"; // custom search only key
+const search_api_key = "NLAN3VelVVcGiYRzOYw6vBmmXPN1VhKu"; // custom search only key
 
 const DEFAULT_CSS_CLASSES = {
   searchableInput: "form-control form-control-sm m-2 border-light-2",
@@ -18,9 +18,9 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
     apiKey: search_api_key,
     nodes: [
       {
-        host: "localhost",
-        port: "8108",
-        protocol: "http",
+        host: "typesense.acdh-dev.oeaw.ac.at",
+        port: "443",
+        protocol: "https",
       },
     ],
   },
