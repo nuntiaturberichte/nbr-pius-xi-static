@@ -37,7 +37,7 @@
                                     <br/>
                                     <span class="display-4">Korrespondenz</span>
                                     <br/>
-                                    <span class="display-6">XXXX-XXXX</span>
+                                    <span class="display-6">1923-1936</span>
                                 </h1>
                                 <p class="text-end">Bearbeitet von Bernhard Kronegger</p>
                                 <xsl:apply-templates select="//tei:body//tei:p[@style = 'big']"/>
