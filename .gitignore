@@ -153,3 +153,5 @@ desktop.ini
 # typesense (lokale Ausführung)
 typesense-data/
 typesense-server.ini
+.secret
+set_env_variables.sh
