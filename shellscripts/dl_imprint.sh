@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REDMINE_ID="24832?format=xhtml&locale="
+REDMINE_ID="24835?format=xhtml&locale="
 IMPRINT_XML=./data/imprint.xml
 rm ${IMPRINT_XML}
 echo '<?xml version="1.0" encoding="UTF-8"?>'
