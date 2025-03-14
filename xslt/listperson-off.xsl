@@ -27,6 +27,7 @@
                                     >Kurzbiographien</h1>
                             </div>
                             <div class="card-body">
+                                <!-- ev. tabelle mit geb datum... -->
                                 <ul>
                                     <li>
                                         <a href="./johannes_gfollner.html">Johannes Maria

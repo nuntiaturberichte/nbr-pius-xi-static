@@ -60,6 +60,17 @@
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
     </xslt>
 
+    <xslt in="./xslt/listperson.xsl" out="${target}/listperson.html" style="./xslt/listperson.xsl">
+        <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+        <classpath location="${basedir}/saxon/saxon9he.jar"/>
+    </xslt>
+
+    <xslt style="./xslt/biography.xsl" basedir="./data/biographies/" destdir="${target}"
+        includes="*.xml">
+        <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+        <classpath location="${basedir}/saxon/saxon9he.jar"/>
+    </xslt>
+
     <xslt in="./xslt/calendar.xsl" out="${target}/calendar.html" style="./xslt/calendar.xsl">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
