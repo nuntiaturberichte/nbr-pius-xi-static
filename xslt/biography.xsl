@@ -51,22 +51,29 @@
                                 </h1>
                             </div>
                             <div class="card-body">
-                                <div>
-                                    <xsl:variable name="fileName"
-                                        select="tokenize(document-uri(.), '/')[last()]"/>
-                                    <xsl:variable name="imgName"
-                                        select="replace($fileName, '\.[^.]+$', '.jpg')"/>
-                                    <xsl:if test="$imgName ne 'wenzel_grosam.jpg'">
-                                        <img
-                                            style="max-height: 420px; float: left; border: 1px solid black; margin-right: 1rem; border-radius: 10px;"
-                                            src="./images/{$imgName}"/>
-                                    </xsl:if>
-                                    <xsl:apply-templates select="//tei:div[@type = 'text']"/>
-                                </div>
-
-                                <div style="display: none;">
-                                    <xsl:apply-templates select="//tei:div[@type = 'table']"/>
-                                </div>
+                                <xsl:variable name="fileName"
+                                    select="tokenize(document-uri(.), '/')[last()]"/>
+                                <xsl:variable name="imgName"
+                                    select="replace($fileName, '\.[^.]+$', '.jpg')"/>
+                                <xsl:if test="$imgName ne 'wenzel_grosam.jpg'">
+                                    <img
+                                        style="max-height: 420px; float: left; border: 1px solid black; margin-right: 1rem; border-radius: 10px;"
+                                        src="./images/{$imgName}"/>
+                                </xsl:if>
+                                <xsl:apply-templates select="//tei:div[@type = 'text']"/>
+                            </div>
+                            <div class="card-footer" style="background-color: #ffedad;">
+                                <h2>Quellen</h2>
+                                <ul>
+                                    <xsl:for-each select="//tei:sourceDesc//tei:bibl">
+                                        <li>
+                                            <xsl:apply-templates/>
+                                        </li>
+                                    </xsl:for-each>
+                                </ul>
+                            </div>
+                            <div style="display: none;">
+                                <xsl:apply-templates select="//tei:div[@type = 'table']"/>
                             </div>
                         </div>
                     </div>
@@ -96,6 +103,10 @@
         <p>
             <xsl:apply-templates/>
         </p>
+    </xsl:template>
+
+    <xsl:template match="tei:lb">
+        <br/>
     </xsl:template>
 
     <xsl:template match="tei:hi[@rend = 'bold']">
