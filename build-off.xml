@@ -65,8 +65,7 @@
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
     </xslt>
 
-    <xslt in="./xslt/listperson-off.xsl" out="${target}/listperson.html"
-        style="./xslt/listperson-off.xsl">
+    <xslt in="./xslt/listperson.xsl" out="${target}/listperson.html" style="./xslt/listperson.xsl">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
     </xslt>
@@ -102,7 +101,7 @@
         <include name="*.html"/>
         <replacetoken>xmlns="http://www.w3.org/1999/xhtml"</replacetoken>
     </replace>
-    <copy todir="${target}" flatten="true">
+    <copy todir="${target}" flatten="true" failonerror="false">
         <fileset dir="./data/">
             <include name="**/*.xml"/>
         </fileset>
