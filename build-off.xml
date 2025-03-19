@@ -65,7 +65,8 @@
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
     </xslt>
 
-    <xslt in="./xslt/listperson.xsl" out="${target}/listperson.html" style="./xslt/listperson.xsl">
+    <xslt in="./xslt/listperson-off.xsl" out="${target}/listperson.html"
+        style="./xslt/listperson-off.xsl">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
     </xslt>
