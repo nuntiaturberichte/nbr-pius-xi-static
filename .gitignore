@@ -5,6 +5,7 @@ html/*.xml
 /saxon
 data/*
 html/js-data/
+/html/oai-pmh
 
 data/indices/*.xml
 data/editions/*.xml
