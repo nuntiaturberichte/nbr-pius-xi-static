@@ -36,7 +36,7 @@
                         <div class="cardContainer">
                             <div class="row">
                                 <xsl:for-each
-                                    select="collection('../data/biographies/?select=*.xml')/tei:TEI">
+                                    select="collection('../../nbr-pius-xi-data/biographies/?select=*.xml')/tei:TEI">
                                     <xsl:variable name="fileName"
                                         select="tokenize(base-uri(.), '/')[last()]"/>
                                     <xsl:variable name="htmlName"

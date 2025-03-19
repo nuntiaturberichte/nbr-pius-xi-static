@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:tei="http://www.tei-c.org/ns/1.0">
     <xsl:import href="./partials/html_head.xsl"/>
     <xsl:import href="./partials/html_navbar.xsl"/>
@@ -41,7 +41,7 @@
                     
                     /* Inhaltsverzeichnis Beginn */
                     
-                    .toc {
+                    .navigation {
                         position: fixed;
                         top: 148px;
                         left: 1vw;
@@ -52,23 +52,22 @@
                         border-radius: 5px;
                     }
                     
-                    .toc a {
+                    .navigation a {
                         display: block;
                         padding: 8px 12px;
                         text-decoration: none;
+                        background-color: #fffbeb;
+                        margin-bottom: 0.25rem;
+                        border: 1px solid transparent;
+                        border-radius: 5px;
                         color: black;
                         transition: background-color 0.3s, color 0.3s;
                     }
                     
-                    .toc a:hover {
-                        background-color: #f8c400;
+                    .navigation a:hover {
+                        border: 1px solid black;
                         border-radius: 5px;
                     }
-                    
-                    .toc a:active {
-                        background-color: black;
-                    }
-                    
                     /* Inhaltsverzeichnis Ende */
                     
                     /* Legende schmal Beginn */
@@ -98,9 +97,9 @@
                     }
                     /* Legende breit Anfang */
                     
-                    /* Handling toc und legend bezüglich Bildschirmbreite Anfang */
+                    /* Handling .navigation und legend bezüglich Bildschirmbreite Anfang */
                     @media (max-width : 1840px) {
-                        .toc {
+                        .navigation {
                             left: 5px;
                         }
                         .legend-slim {
@@ -110,11 +109,11 @@
                     
                     @media (max-width : 1810px) {
                         .legend-slim.toggle-content,
-                        .toc {
+                        .navigation {
                             display: none;
                         }
                     }
-                    /* Handling toc und legend bezüglich Bildschirmbreite Ende */
+                    /* Handling .navigation und legend bezüglich Bildschirmbreite Ende */
                     
                     /* Beschreibungs-Tabelle Anfang */
                     table {
@@ -281,9 +280,9 @@
 
                         <!-- Inhaltsverzeichnis Anfang -->
 
-                        <div class="toc">
+                        <div class="navigation">
                             <h2>Inhalt</h2>
-                            <ul class="list-unstyled" style="margin-bottom: 0px;">
+                            <ul class="list-unstyled content" style="margin-bottom: 0px;">
                                 <xsl:if
                                     test="//tei:text/@type | //tei:physDesc/tei:scriptDesc | //tei:msDesc/@type | //tei:correspAction | //tei:msIdentifier/tei:repository | //tei:msIdentifier/tei:idno">
                                     <li>
@@ -307,6 +306,51 @@
                                     </li>
                                 </xsl:if>
                             </ul>
+
+                            <xsl:variable name="editionPersNameRef"
+                                select="//tei:correspAction/tei:persName/@ref"/>
+                            <!-- off-relevant -->
+                            <xsl:variable name="biographyFiles"
+                                select="collection('../data/biographies/?select=*.xml')"/>
+                            <xsl:variable name="biographyPersName"
+                                select="$biographyFiles//tei:TEI//tei:profileDesc//tei:persName"/>
+                            <xsl:variable name="biographyPersNameRef"
+                                select="$biographyPersName/@ref"/>
+                            <xsl:variable name="matchingRefs" select="
+                                    for $ref in $editionPersNameRef
+                                    return
+                                        if ($ref = $biographyPersNameRef) then
+                                            $ref
+                                        else
+                                            ()"/>
+                            <xsl:if test="$matchingRefs">
+                                <hr/>
+                                <h2>Personen</h2>
+                                <ul class="list-unstyled person" style="margin-bottom: 0px;">
+                                    <xsl:for-each select="$biographyFiles">
+                                        <xsl:variable name="currentFileUri" select="document-uri(.)"/>
+                                        <xsl:variable name="currentFileNameTokenized"
+                                            select="tokenize($currentFileUri, '/')"/>
+                                        <xsl:variable name="currentFileName"
+                                            select="$currentFileNameTokenized[last()]"/>
+                                        <xsl:variable name="currentFileHtml"
+                                            select="replace($currentFileName, '\.[^.]+$', '.html')"/>
+                                        <xsl:for-each
+                                            select=".//tei:TEI//tei:profileDesc//tei:persName">
+                                            <xsl:variable name="currentRef" select="@ref"/>
+                                            <xsl:if test="$currentRef = $matchingRefs">
+                                                <li>
+                                                  <a href="{$currentFileHtml}">
+                                                  <xsl:value-of select="."/>
+                                                  </a>
+                                                </li>
+                                            </xsl:if>
+                                        </xsl:for-each>
+                                    </xsl:for-each>
+                                </ul>
+                            </xsl:if>
+
+
                         </div>
 
                         <!-- Inhaltsverzeichnis Ende -->

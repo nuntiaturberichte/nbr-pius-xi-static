@@ -67,8 +67,13 @@
                                     </li>
                                 </ul>
                             </li>
+
                             <li class="nav-item">
                                 <a class="nav-link pri" href="correspaction.html">Dokumente</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link pri" href="listperson.html">Kurzbiographien</a>
                             </li>
 
                             <li class="nav-item">
