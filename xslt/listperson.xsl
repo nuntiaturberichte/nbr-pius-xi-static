@@ -15,6 +15,16 @@
                 <xsl:call-template name="html_head">
                     <xsl:with-param name="html_title" select="$doc_title"/>
                 </xsl:call-template>
+                <style>
+                    .d-flex {
+                        border: 1px transparent solid;
+                        border-radius: 5px;
+                    }
+                    
+                    .d-flex:hover {
+                        border: 1px solid black;
+                        border-radius: 5px;
+                    }</style>
             </head>
             <body>
                 <xsl:call-template name="nav_bar"/>
@@ -26,69 +36,51 @@
                         <div class="cardContainer">
                             <div class="row">
                                 <xsl:for-each
-                                    select="collection('../../nbr-pius-xi-data/biographies/?select=*.xml')/tei:TEI">
-                                    <div class="col-sm-12 col-md-6 col-lg-4">
-                                        <div class="card mb-3" style="max-width: 540px;">
-                                            <div class="row g-0">
-                                                <div class="col-md-4">
-                                                  <xsl:variable name="fileName"
-                                                  select="tokenize(base-uri(.), '/')[last()]"/>
+                                    select="collection('../data/biographies/?select=*.xml')/tei:TEI">
+                                    <xsl:variable name="fileName"
+                                        select="tokenize(base-uri(.), '/')[last()]"/>
+                                    <xsl:variable name="htmlName"
+                                        select="replace($fileName, '\.[^.]+$', '.html')"/>
+                                    <div class="col-sm-12 col-md-6 col-lg-4"
+                                        style="text-align: initial;">
+                                        <a href="{$htmlName}"
+                                            style="text-decoration: none; color: inherit; display: block;">
+                                            <div class="card mb-3" style="max-width: 540px;">
+                                                <div class="d-flex align-items-start">
                                                   <xsl:variable name="imgName"
                                                   select="replace($fileName, '\.[^.]+$', '.jpg')"/>
-                                                  <xsl:if test="$imgName ne 'wenzel_grosam.jpg'">
+                                                  <xsl:choose>
+                                                  <xsl:when test="$imgName ne 'wenzel_grosam.jpg'">
                                                   <img
-                                                  style="max-width: 180px; float: left; border: 1px solid black; margin-right: 1rem; border-radius: 5px;"
+                                                  style="width: 180px; height: auto; margin-right: 1rem; border-radius: 5px;"
                                                   src="./images/{$imgName}"/>
-                                                  </xsl:if>
-                                                </div>
-                                                <div class="col-md-8">
+                                                  </xsl:when>
+                                                  <xsl:otherwise>
+                                                  <img
+                                                  style="width: 180px; height: auto; margin-right: 1rem; border-radius: 5px;"
+                                                  src="./images/placeholder.jpg"/>
+                                                  </xsl:otherwise>
+                                                  </xsl:choose>
+                                                  <div class="flex-grow-1">
                                                   <div class="card-body">
-                                                  <h5 class="card-title">Card title</h5>
-                                                  <p class="card-text">This is a wider card with
-                                                  supporting text below as a natural lead-in to
-                                                  additional content. This content is a little bit
-                                                  longer.</p>
+                                                  <h5 class="card-title">
+                                                  <xsl:value-of
+                                                  select="descendant::tei:body/tei:div/tei:head"/>
+                                                  </h5>
                                                   <p class="card-text">
-                                                  <small class="text-body-secondary">Last updated 3
-                                                  mins ago</small>
+                                                  <xsl:variable name="text"
+                                                  select="string-join(descendant::tei:div[@type = 'text']/tei:p, ' ')"/>
+                                                  <xsl:value-of
+                                                  select="concat(substring($text, 1, 200), '...')"/>
                                                   </p>
+                                                  </div>
                                                   </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </a>
                                     </div>
+
                                 </xsl:for-each>
-                            </div>
-                        </div>
-
-
-
-                        <div class="card mt-4">
-                            <div class="card-body">
-                                <ul>
-                                    <li>
-                                        <a href="./johannes_gfollner.html">Johannes Maria
-                                            Gföllner</a>
-                                    </li>
-                                    <li>
-                                        <a href="./karl_rudolf.html">Karl Rudolf</a>
-                                    </li>
-                                    <li>
-                                        <a href="./ludwig_pastor.html">Ludwig von Pastor</a>
-                                    </li>
-                                    <li>
-                                        <a href="./luigi_faidutti.html">Luigi Faidutti</a>
-                                    </li>
-                                    <li>
-                                        <a href="./michael_pfliegler.html">Michael Pfliegler</a>
-                                    </li>
-                                    <li>
-                                        <a href="./theodor_innitzer.html">Theodor Innitzer</a>
-                                    </li>
-                                    <li>
-                                        <a href="./wenzel_grosam.html">Wenzel Grosam</a>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
