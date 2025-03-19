@@ -48,7 +48,7 @@
 
     <!-- Projektbezogen Anfang -->
 
-    <xslt style="./xslt/editions.xsl" basedir="../nbr-pius-xi-data/editions/" destdir="${target}"
+    <xslt style="./xslt/editions-off.xsl" basedir="../nbr-pius-xi-data/editions/" destdir="${target}"
         includes="**/*.xml">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
