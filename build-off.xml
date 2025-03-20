@@ -48,10 +48,12 @@
 
     <!-- Projektbezogen Anfang -->
 
-    <xslt style="./xslt/editions-off.xsl" basedir="../nbr-pius-xi-data/editions/"
-        destdir="${target}" includes="**/*.xml">
+    <xslt style="./xslt/editions.xsl" basedir="../nbr-pius-xi-data/editions/" destdir="${target}"
+        includes="**/*.xml">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
+        <param name="biographyPath"
+            expression="'../../../../nbr-pius-xi-data/biographies/?select=*.xml'"/>
     </xslt>
     <copy todir="${target}" flatten="true">
         <fileset dir="${target}" includes="**/*.html"/>
