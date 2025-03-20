@@ -61,10 +61,14 @@
     <delete dir="./html/folder_1/" failonerror="false"/>
     <delete dir="./html/folder_2/" failonerror="false"/>
 
-    <xslt in="./xslt/correspaction-off.xsl" out="${target}/correspaction.html"
-        style="./xslt/correspaction-off.xsl">
+    <xslt in="./xslt/correspaction.xsl" out="${target}/correspaction.html"
+        style="./xslt/correspaction.xsl">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
+        <param name="editionPath1"
+            expression="'../../../../nbr-pius-xi-data/editions/folder_1/?select=*.xml'"/>
+        <param name="editionPath2"
+            expression="'../../../../nbr-pius-xi-data/editions/folder_2/?select=*.xml'"/>
     </xslt>
 
     <xslt in="./xslt/listperson-off.xsl" out="${target}/listperson.html"

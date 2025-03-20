@@ -59,6 +59,8 @@
         style="./xslt/correspaction.xsl">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
+        <param name="editionPath1" expression="'../../../data/editions/folder_1/?select=*.xml'"/>
+        <param name="editionPath2" expression="'../../../data/editions/folder_2/?select=*.xml'"/>
     </xslt>
 
     <xslt in="./xslt/listperson.xsl" out="${target}/listperson.html" style="./xslt/listperson.xsl">
