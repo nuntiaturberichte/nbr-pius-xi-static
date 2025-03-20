@@ -15,6 +15,7 @@
     <xsl:import href="partials/copy_citation_js.xsl"/>
     <xsl:output method="html" indent="yes"/>
     <xsl:variable name="fileName" select="tokenize(document-uri(.), '/')[last()]"/>
+    <xsl:param name="biographyPath" select="'../data/biographies/?select=*.xml'"/>
     <xsl:strip-space elements="tei:subst"/>
 
     <xsl:template match="/">
@@ -310,8 +311,7 @@
                             <xsl:variable name="editionPersNameRef"
                                 select="//tei:particDesc//tei:persName/@ref"/>
                             <!-- off-relevant -->
-                            <xsl:variable name="biographyFiles"
-                                select="collection('../data/biographies/?select=*.xml')"/>
+                            <xsl:variable name="biographyFiles" select="collection($biographyPath)"/>
                             <xsl:variable name="biographyPersName"
                                 select="$biographyFiles//tei:TEI//tei:profileDesc//tei:persName"/>
                             <xsl:variable name="biographyPersNameRef"
@@ -671,14 +671,15 @@
                                 <xsl:if
                                     test="//tei:text/@type | //tei:physDesc/tei:scriptDesc | //tei:msDesc/@status | //tei:correspAction | //tei:msIdentifier/tei:repository | //tei:msIdentifier/tei:idno">
                                     <div id="description" class="card-body">
-                                        <table>
-                                            <thead>
-                                                <tr>
+                                        <div class="table-responsive">
+                                            <table>
+                                                <thead>
+                                                  <tr>
                                                   <th colspan="2">Beschreibung</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <xsl:if test="//tei:text/@type">
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                  <xsl:if test="//tei:text/@type">
                                                   <tr>
                                                   <td>Art des Dokuments</td>
                                                   <td>
@@ -792,8 +793,9 @@
 
                                                   </td>
                                                   </tr>
-                                                </xsl:if>
-                                                <xsl:if test="//tei:physDesc/tei:scriptDesc/tei:ab">
+                                                  </xsl:if>
+                                                  <xsl:if
+                                                  test="//tei:physDesc/tei:scriptDesc/tei:ab">
                                                   <tr>
                                                   <td>Ausführung</td>
                                                   <td>
@@ -846,8 +848,8 @@
                                                   </xsl:choose>
                                                   </td>
                                                   </tr>
-                                                </xsl:if>
-                                                <xsl:if test="//tei:msDesc/@status">
+                                                  </xsl:if>
+                                                  <xsl:if test="//tei:msDesc/@status">
                                                   <tr>
                                                   <td>Status des Dokuments</td>
                                                   <td>
@@ -898,9 +900,9 @@
                                                   </xsl:choose>
                                                   </td>
                                                   </tr>
-                                                </xsl:if>
+                                                  </xsl:if>
 
-                                                <xsl:for-each select="//tei:correspDesc">
+                                                  <xsl:for-each select="//tei:correspDesc">
                                                   <xsl:if
                                                   test="tei:correspAction[@type = 'sent'] and tei:correspAction[@type = 'received']">
                                                   <tr>
@@ -998,8 +1000,8 @@
                                                   </td>
                                                   </tr>
                                                   </xsl:if>
-                                                </xsl:for-each>
-                                                <xsl:if test="//tei:msIdentifier/tei:repository">
+                                                  </xsl:for-each>
+                                                  <xsl:if test="//tei:msIdentifier/tei:repository">
                                                   <tr>
                                                   <td>Quelle</td>
                                                   <td>
@@ -1014,8 +1016,8 @@
                                                   </xsl:if>
                                                   </td>
                                                   </tr>
-                                                </xsl:if>
-                                                <xsl:if
+                                                  </xsl:if>
+                                                  <xsl:if
                                                   test="//tei:msIdentifier/tei:idno[@type = 'institutional' and @subtype = 'internal']">
                                                   <tr>
                                                   <td>Interne Nummerierung</td>
@@ -1025,8 +1027,8 @@
                                                   />
                                                   </td>
                                                   </tr>
-                                                </xsl:if>
-                                                <xsl:if
+                                                  </xsl:if>
+                                                  <xsl:if
                                                   test="//tei:msIdentifier/tei:idno[@type = 'institutional' and @subtype = 'external']">
                                                   <tr>
                                                   <td>Externe Nummerierung</td>
@@ -1036,9 +1038,10 @@
                                                   />
                                                   </td>
                                                   </tr>
-                                                </xsl:if>
-                                            </tbody>
-                                        </table>
+                                                  </xsl:if>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </xsl:if>
 
