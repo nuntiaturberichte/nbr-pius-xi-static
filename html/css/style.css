@@ -28,6 +28,10 @@ nav .dropdown-item:hover {
     background-color: #FFEDAD;
 }
 
+.navbar-toggler {
+    margin-bottom: 0.25rem;
+}
+
 @media (max-width : 991px) {
     a.nav-link {
         padding: 0.5rem;
