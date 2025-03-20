@@ -48,7 +48,7 @@
 
     <!-- Projektbezogen Anfang -->
 
-    <xslt style="./xslt/editions.xsl" basedir="../nbr-pius-xi-data/editions/"
+    <xslt style="./xslt/editions-off.xsl" basedir="../nbr-pius-xi-data/editions/"
         destdir="${target}" includes="**/*.xml">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
@@ -65,11 +65,23 @@
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
     </xslt>
 
+    <xslt in="./xslt/listperson-off.xsl" out="${target}/listperson.html"
+        style="./xslt/listperson-off.xsl">
+        <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+        <classpath location="${basedir}/saxon/saxon9he.jar"/>
+    </xslt>
+
+    <xslt style="./xslt/biography.xsl" basedir="../nbr-pius-xi-data/biographies/"
+        destdir="${target}" includes="*.xml">
+        <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+        <classpath location="${basedir}/saxon/saxon9he.jar"/>
+    </xslt>
+
     <xslt in="./xslt/calendar.xsl" out="${target}/calendar.html" style="./xslt/calendar.xsl">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
     </xslt>
-    
+
     <xslt in="./xslt/search.xsl" out="${target}/search.html" style="./xslt/search.xsl">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
@@ -90,9 +102,4 @@
         <include name="*.html"/>
         <replacetoken>xmlns="http://www.w3.org/1999/xhtml"</replacetoken>
     </replace>
-    <copy todir="${target}" flatten="true">
-        <fileset dir="./data/">
-            <include name="**/*.xml"/>
-        </fileset>
-    </copy>
 </project>
