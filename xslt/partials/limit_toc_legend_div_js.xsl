@@ -5,7 +5,7 @@
     <xsl:template match="/" name="limit_toc_legend_div">
         <script>
             document.addEventListener("scroll", function () {
-            const toc = document.querySelector('.toc');
+            const toc = document.querySelector('.navigation');
             const legend = document.querySelector('.legend-slim');
             const card = document.querySelector('.card');
             
