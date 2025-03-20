@@ -16,12 +16,19 @@
                     <xsl:with-param name="html_title" select="$doc_title"/>
                 </xsl:call-template>
                 <style>
-                    .d-flex {
-                        border: 1px transparent solid;
+                    .card-text {
+                        display: -webkit-box;
+                        -webkit-line-clamp: 6;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                    }
+                    
+                    .card.mb-3 {
+                        border: 1px #d2d2d2 solid;
                         border-radius: 5px;
                     }
                     
-                    .d-flex:hover {
+                    .card.mb-3:hover {
                         border: 1px solid black;
                         border-radius: 5px;
                     }</style>
@@ -45,19 +52,19 @@
                                         style="text-align: initial;">
                                         <a href="{$htmlName}"
                                             style="text-decoration: none; color: inherit; display: block;">
-                                            <div class="card mb-3" style="max-width: 540px;">
+                                            <div class="card mb-3" style="height: 225px;">
                                                 <div class="d-flex align-items-start">
                                                   <xsl:variable name="imgName"
                                                   select="replace($fileName, '\.[^.]+$', '.jpg')"/>
                                                   <xsl:choose>
                                                   <xsl:when test="$imgName ne 'wenzel_grosam.jpg'">
                                                   <img
-                                                  style="width: 180px; height: auto; margin-right: 1rem; border-radius: 5px;"
+                                                  style="height: 223px; margin-right: 1rem; border-radius: 5px;"
                                                   src="./images/{$imgName}"/>
                                                   </xsl:when>
                                                   <xsl:otherwise>
                                                   <img
-                                                  style="width: 180px; height: auto; margin-right: 1rem; border-radius: 5px;"
+                                                  style="height: 223px; margin-right: 1rem; border-radius: 5px;"
                                                   src="./images/placeholder.jpg"/>
                                                   </xsl:otherwise>
                                                   </xsl:choose>
@@ -68,10 +75,9 @@
                                                   select="descendant::tei:body/tei:div/tei:head"/>
                                                   </h5>
                                                   <p class="card-text">
-                                                  <xsl:variable name="text"
-                                                  select="string-join(descendant::tei:div[@type = 'text']/tei:p, ' ')"/>
                                                   <xsl:value-of
-                                                  select="concat(substring($text, 1, 200), '...')"/>
+                                                  select="descendant::tei:div[@type = 'text']/tei:p"
+                                                  />
                                                   </p>
                                                   </div>
                                                   </div>
