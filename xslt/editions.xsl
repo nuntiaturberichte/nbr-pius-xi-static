@@ -308,7 +308,7 @@
                             </ul>
 
                             <xsl:variable name="editionPersNameRef"
-                                select="//tei:correspAction/tei:persName/@ref"/>
+                                select="//tei:particDesc//tei:persName/@ref"/>
                             <!-- off-relevant -->
                             <xsl:variable name="biographyFiles"
                                 select="collection('../data/biographies/?select=*.xml')"/>
