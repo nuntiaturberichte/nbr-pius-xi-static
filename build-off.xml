@@ -52,8 +52,8 @@
         includes="**/*.xml">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
-        <param name="biographyPath"
-            expression="'../../../../nbr-pius-xi-data/biographies/?select=*.xml'"/>
+        <param name="biographyFolder"
+            expression="file:/c:/users/krois/desktop/pixi/nbr-pius-xi-data/biographies"/>
     </xslt>
     <copy todir="${target}" flatten="true">
         <fileset dir="${target}" includes="**/*.html"/>
@@ -65,16 +65,15 @@
         style="./xslt/correspaction.xsl">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
-        <param name="editionPath1"
-            expression="'../../../../nbr-pius-xi-data/editions/folder_1/?select=*.xml'"/>
-        <param name="editionPath2"
-            expression="'../../../../nbr-pius-xi-data/editions/folder_2/?select=*.xml'"/>
+        <param name="dataRoot"
+            expression="file:/c:/users/krois/desktop/pixi/nbr-pius-xi-data/editions"/>
     </xslt>
 
-    <xslt in="./xslt/listperson-off.xsl" out="${target}/listperson.html"
-        style="./xslt/listperson-off.xsl">
+    <xslt in="./xslt/listperson.xsl" out="${target}/listperson.html" style="./xslt/listperson.xsl">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
+        <param name="biographyFolder"
+            expression="file:/c:/users/krois/desktop/pixi/nbr-pius-xi-data/biographies"/>
     </xslt>
 
     <xslt style="./xslt/biography.xsl" basedir="../nbr-pius-xi-data/biographies/"

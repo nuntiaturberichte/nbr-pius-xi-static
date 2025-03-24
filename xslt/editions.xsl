@@ -15,7 +15,7 @@
     <xsl:import href="partials/copy_citation_js.xsl"/>
     <xsl:output method="html" indent="yes"/>
     <xsl:variable name="fileName" select="tokenize(document-uri(.), '/')[last()]"/>
-    <xsl:param name="biographyPath" select="'../data/biographies/?select=*.xml'"/>
+    <xsl:param name="biographyFolder"/>
     <xsl:strip-space elements="tei:subst"/>
 
     <xsl:template match="/">
@@ -310,10 +310,13 @@
 
                             <xsl:variable name="editionPersNameRef"
                                 select="//tei:particDesc//tei:persName/@ref"/>
-                            <!-- off-relevant -->
-                            <xsl:variable name="biographyFiles" select="collection($biographyPath)"/>
+
+                            <xsl:variable name="biographyFiles"
+                                select="collection(concat($biographyFolder, '/?select=*.xml'))"/>
+
                             <xsl:variable name="biographyPersName"
-                                select="$biographyFiles//tei:TEI//tei:profileDesc//tei:persName"/>
+                                select="$biographyFiles//tei:profileDesc//tei:persName"/>
+
                             <xsl:variable name="biographyPersNameRef"
                                 select="$biographyPersName/@ref"/>
                             <xsl:variable name="matchingRefs" select="

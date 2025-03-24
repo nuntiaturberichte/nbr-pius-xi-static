@@ -4,6 +4,7 @@
     <xsl:import href="./partials/html_head.xsl"/>
     <xsl:import href="./partials/html_navbar.xsl"/>
     <xsl:import href="./partials/html_footer.xsl"/>
+    <xsl:param name="biographyFolder"/>
 
     <xsl:output method="html" encoding="UTF-8" indent="yes"/>
 
@@ -42,8 +43,10 @@
                         </div>
                         <div class="cardContainer">
                             <div class="row">
+                                <xsl:variable name="biographyFiles"
+                                    select="collection(concat($biographyFolder, '/?select=*.xml'))"/>
                                 <xsl:for-each
-                                    select="collection('../data/biographies/?select=*.xml')/tei:TEI">
+                                    select="$biographyFiles/tei:TEI">
                                     <xsl:variable name="fileName"
                                         select="tokenize(base-uri(.), '/')[last()]"/>
                                     <xsl:variable name="htmlName"

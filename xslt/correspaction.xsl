@@ -6,8 +6,7 @@
     <xsl:import href="./partials/html_footer.xsl"/>
     <xsl:import href="./partials/tabulator_js.xsl"/>
     <xsl:import href="./partials/tooltip_js.xsl"/>
-    <xsl:param name="editionPath1" select="'../data/editions/folder_1/?select=*.xml'"/>
-    <xsl:param name="editionPath2" select="'../data/editions/folder_2/?select=*.xml'"/>
+    <xsl:param name="dataRoot"/>
     <xsl:output method="html" encoding="UTF-8" indent="yes"/>
     <xsl:strip-space elements="*"/>
 
@@ -116,8 +115,12 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <xsl:variable name="folder1"
+                                    select="concat($dataRoot, '/folder_1/?select=*.xml')"/>
+                                <xsl:variable name="folder2"
+                                    select="concat($dataRoot, '/folder_2/?select=*.xml')"/>
                                 <xsl:for-each
-                                    select="collection($editionPath1)/tei:TEI | collection($editionPath2)/tei:TEI">
+                                    select="collection($folder1)/tei:TEI | collection($folder2)/tei:TEI">
                                     <xsl:variable name="full_path">
                                         <xsl:value-of select="document-uri(/)"/>
                                     </xsl:variable>
