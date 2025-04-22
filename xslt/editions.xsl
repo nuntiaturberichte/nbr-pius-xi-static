@@ -524,62 +524,62 @@
                             <div class="card-header" style="background-color: #FFEDAD">
                                 <div class="row align-items-center" id="title-nav">
                                     <!-- LINKS -->
-                                    <div class="col-auto d-flex justify-content-start">
-                                        <h1>
-                                            <nav class="navbar navbar-previous-next">
-                                                <i class="bi bi-arrow-left nav-link float-start"
+                                    <xsl:if
+                                        test="//tei:correspDesc/tei:correspContext/tei:ref[@subtype = 'previous_letter' and @type = 'withinCollection']/@target">
+                                        <div class="col-auto d-flex justify-content-start">
+                                            <h1>
+                                                <nav class="navbar navbar-previous-next">
+                                                  <i class="bi bi-arrow-left nav-link float-start"
                                                   id="navbarDropdownLeft" role="button"
                                                   data-bs-toggle="dropdown" aria-expanded="false"/>
-                                                <ul class="dropdown-menu unstyled"
-                                                  aria-labelledby="navbarDropdown">
+                                                  <ul class="dropdown-menu unstyled"
+                                                  aria-labelledby="navbarDropdown"
+                                                  style="padding: 0.5rem; box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.35);">
                                                   <!-- "Vorheriger Brief" -->
-                                                  <span class="dropdown-item-text">Vorheriger
-                                                  Brief</span>
-                                                  <!-- Listenpunkt für direkten Vorfolger -->
-                                                  <li>
                                                   <xsl:if
                                                   test="//tei:correspDesc/tei:correspContext/tei:ref[@subtype = 'previous_letter' and @type = 'withinCollection']/@target">
-                                                  <!-- Link und Linktext zum direkten Vorfolger -->
-                                                  <a id="prev-doc" class="dropdown-item">
+                                                  <span class="dropdown-item-text">Vorheriger
+                                                  Brief</span>
+                                                  <li>
+                                                  <a id="prev-doc" class="dropdown-item"
+                                                  style="border: 1px #d2d2d2 solid; border-radius: 5px;">
                                                   <xsl:attribute name="href">
                                                   <xsl:value-of
                                                   select="concat(substring-before(//tei:correspDesc/tei:correspContext/tei:ref[@subtype = 'previous_letter' and @type = 'withinCollection']/@target, '.xml'), '.html')"
                                                   />
                                                   </xsl:attribute>
-                                                  <i class="bi bi-arrow-left">
-                                                  <xsl:value-of
+                                                  <i class="bi bi-arrow-left">&#160; <xsl:value-of
                                                   select="//tei:correspDesc/tei:correspContext/tei:ref[@subtype = 'previous_letter' and @type = 'withinCollection']"
                                                   />
                                                   </i>
                                                   </a>
-                                                  </xsl:if>
                                                   </li>
+                                                  </xsl:if>
                                                   <!-- "... in der Korrespondenz" -->
-                                                  <span class="dropdown-item-text">… in der
-                                                  Korrespondenz</span>
-                                                  <!-- Listenpunkt für Korrespondenz-Vorfolger -->
-                                                  <li>
                                                   <xsl:if
                                                   test="//tei:correspDesc/tei:correspContext/tei:ref[@subtype = 'previous_letter' and @type = 'withinCorrespondence']/@target">
-                                                  <!-- Link und Linktext zum Korrespondenz-Vorfolger -->
-                                                  <a id="prev-doc2" class="dropdown-item">
+                                                  <span class="dropdown-item-text">… in der
+                                                  Korrespondenz</span>
+                                                  <li>
+                                                  <a id="prev-doc2" class="dropdown-item"
+                                                  style="border: 1px #d2d2d2 solid; border-radius: 5px;">
                                                   <xsl:attribute name="href">
                                                   <xsl:value-of
                                                   select="concat(substring-before(//tei:correspDesc/tei:correspContext/tei:ref[@subtype = 'previous_letter' and @type = 'withinCorrespondence']/@target, '.xml'), '.html')"
                                                   />
                                                   </xsl:attribute>
-                                                  <i class="bi bi-arrow-left">
-                                                  <xsl:value-of
+                                                  <i class="bi bi-arrow-left">&#160; <xsl:value-of
                                                   select="//tei:correspDesc/tei:correspContext/tei:ref[@subtype = 'previous_letter' and @type = 'withinCorrespondence']"
                                                   />
                                                   </i>
                                                   </a>
-                                                  </xsl:if>
                                                   </li>
-                                                </ul>
-                                            </nav>
-                                        </h1>
-                                    </div>
+                                                  </xsl:if>
+                                                  </ul>
+                                                </nav>
+                                            </h1>
+                                        </div>
+                                    </xsl:if>
 
                                     <!-- MITTE -->
                                     <div
@@ -607,62 +607,63 @@
                                     </div>
 
                                     <!-- RECHTS -->
-                                    <div class="col-auto d-flex justify-content-end">
-                                        <h1>
-                                            <nav class="navbar navbar-previous-next">
-                                                <i class="bi bi-arrow-right nav-link float-start"
+                                    <xsl:if
+                                        test="//tei:correspDesc/tei:correspContext/tei:ref[@subtype = 'next_letter' and @type = 'withinCollection']/@target">
+                                        <div class="col-auto d-flex justify-content-end">
+                                            <h1>
+                                                <nav class="navbar navbar-previous-next">
+                                                  <i class="bi bi-arrow-right nav-link float-start"
                                                   id="navbarDropdownLeft" role="button"
                                                   data-bs-toggle="dropdown" aria-expanded="false"/>
-                                                <ul class="dropdown-menu dropdown-menu-end unstyled"
-                                                  aria-labelledby="navbarDropdownLeft">
+                                                  <ul
+                                                  class="dropdown-menu dropdown-menu-end unstyled"
+                                                  aria-labelledby="navbarDropdownLeft"
+                                                  style="padding: 0.5rem; box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.35);">
                                                   <!-- "Nächster Brief" -->
-                                                  <span class="dropdown-item-text">Nächster
-                                                  Brief</span>
-                                                  <!-- Listenpunkt für direkten Nachfolger -->
-                                                  <li>
                                                   <xsl:if
                                                   test="//tei:correspDesc/tei:correspContext/tei:ref[@subtype = 'next_letter' and @type = 'withinCollection']/@target">
-                                                  <!-- Link und Linktext zum direkten Nachfolger -->
-                                                  <a id="prev-doc" class="dropdown-item">
+                                                  <span class="dropdown-item-text">Nächster
+                                                  Brief</span>
+                                                  <li>
+                                                  <a id="prev-doc" class="dropdown-item"
+                                                  style="border: 1px #d2d2d2 solid; border-radius: 5px;">
                                                   <xsl:attribute name="href">
                                                   <xsl:value-of
                                                   select="concat(substring-before(//tei:correspDesc/tei:correspContext/tei:ref[@subtype = 'next_letter' and @type = 'withinCollection']/@target, '.xml'), '.html')"
                                                   />
                                                   </xsl:attribute>
-                                                  <i class="bi bi-arrow-right">
-                                                  <xsl:value-of
+                                                  <i class="bi bi-arrow-right">&#160; <xsl:value-of
                                                   select="//tei:correspDesc/tei:correspContext/tei:ref[@subtype = 'next_letter' and @type = 'withinCollection']"
                                                   />
                                                   </i>
                                                   </a>
-                                                  </xsl:if>
                                                   </li>
+                                                  </xsl:if>
                                                   <!-- "... in der Korrespondenz" -->
-                                                  <span class="dropdown-item-text">… in der
-                                                  Korrespondenz</span>
-                                                  <!-- Listenpunkt für Korrespondenz-Vorfolger -->
-                                                  <li>
                                                   <xsl:if
                                                   test="//tei:correspDesc/tei:correspContext/tei:ref[@subtype = 'next_letter' and @type = 'withinCorrespondence']/@target">
-                                                  <!-- Link und Linktext zum Korrespondenz-Vorfolger -->
-                                                  <a id="prev-doc2" class="dropdown-item">
+                                                  <span class="dropdown-item-text">… in der
+                                                  Korrespondenz</span>
+                                                  <li>
+                                                  <a id="prev-doc2" class="dropdown-item"
+                                                  style="border: 1px #d2d2d2 solid; border-radius: 5px;">
                                                   <xsl:attribute name="href">
                                                   <xsl:value-of
                                                   select="concat(substring-before(//tei:correspDesc/tei:correspContext/tei:ref[@subtype = 'next_letter' and @type = 'withinCorrespondence']/@target, '.xml'), '.html')"
                                                   />
                                                   </xsl:attribute>
-                                                  <i class="bi bi-arrow-right">
-                                                  <xsl:value-of
+                                                  <i class="bi bi-arrow-right">&#160; <xsl:value-of
                                                   select="//tei:correspDesc/tei:correspContext/tei:ref[@subtype = 'next_letter' and @type = 'withinCorrespondence']"
                                                   />
                                                   </i>
                                                   </a>
-                                                  </xsl:if>
                                                   </li>
-                                                </ul>
-                                            </nav>
-                                        </h1>
-                                    </div>
+                                                  </xsl:if>
+                                                  </ul>
+                                                </nav>
+                                            </h1>
+                                        </div>
+                                    </xsl:if>
                                 </div>
                             </div>
 
@@ -686,16 +687,22 @@
                                                   <tr>
                                                   <td>Autor</td>
                                                   <td>
+                                                  <xsl:for-each
+                                                  select="//tei:titleStmt/tei:author/tei:persName">
                                                   <a>
-                                                  <xsl:variable name="author"
-                                                  select="//tei:titleStmt/tei:author/tei:persName"/>
-                                                  <xsl:if test="$author/@ref">
+                                                  <xsl:if test="@ref">
                                                   <xsl:attribute name="href">
-                                                  <xsl:value-of select="$author/@ref"/>
+                                                  <xsl:value-of select="@ref"/>
+                                                  </xsl:attribute>
+                                                  <xsl:attribute name="target">
+                                                  <xsl:text>_blank</xsl:text>
                                                   </xsl:attribute>
                                                   </xsl:if>
-                                                  <xsl:value-of select="$author"/>
+                                                  <xsl:value-of select="."/>
                                                   </a>
+                                                  <xsl:if test="position() != last()">, </xsl:if>
+                                                  <!-- Komma zwischen Autoren -->
+                                                  </xsl:for-each>
                                                   </td>
                                                   </tr>
                                                   </xsl:if>
