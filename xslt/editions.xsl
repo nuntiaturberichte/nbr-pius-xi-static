@@ -682,6 +682,24 @@
                                                   </tr>
                                                 </thead>
                                                 <tbody>
+                                                  <xsl:if test="//tei:titleStmt/tei:author">
+                                                  <tr>
+                                                  <td>Autor</td>
+                                                  <td>
+                                                  <a>
+                                                  <xsl:variable name="author"
+                                                  select="//tei:titleStmt/tei:author/tei:persName"/>
+                                                  <xsl:if test="$author/@ref">
+                                                  <xsl:attribute name="href">
+                                                  <xsl:value-of select="$author/@ref"/>
+                                                  </xsl:attribute>
+                                                  </xsl:if>
+                                                  <xsl:value-of select="$author"/>
+                                                  </a>
+                                                  </td>
+                                                  </tr>
+                                                  </xsl:if>
+
                                                   <xsl:if test="//tei:text/@type">
                                                   <tr>
                                                   <td>Art des Dokuments</td>
