@@ -43,8 +43,9 @@
 
     <!-- Projektbezogen Anfang -->
 
+    <!-- wenn Mappe 3 deploy ready ist, hier excludes löschen -->
     <xslt style="./xslt/editions.xsl" basedir="./data/editions/" destdir="${target}"
-        includes="**/*.xml">
+        includes="**/*.xml" excludes="folder_3/**">
         <factory name="net.sf.saxon.TransformerFactoryImpl"/>
         <classpath location="${basedir}/saxon/saxon9he.jar"/>
         <param name="biographyFolder"
