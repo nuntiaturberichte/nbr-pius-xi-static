@@ -103,4 +103,14 @@
         </figure>
     </xsl:template>
 
+    <xsl:template match="tei:ref">
+        <a>
+            <xsl:attribute name="href">
+                <xsl:value-of select="@target"/>
+            </xsl:attribute>
+            <xsl:attribute name="target">_blank</xsl:attribute>
+            <xsl:apply-templates/>
+        </a>
+    </xsl:template>
+
 </xsl:stylesheet>
