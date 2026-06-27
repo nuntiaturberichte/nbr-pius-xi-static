@@ -24,7 +24,7 @@ current_schema = {
     "metadata": {
         "owners": ["Peter Andorfer", "Martin Kroißenbrunner"],
         "description": "https://github.com/nuntiaturberichte/nbr-pius-xi-static",
-        "service_ids": [10920],
+        "service_ids": [24835],
     },
     "fields": [
         {"name": "id", "type": "string", "sort": True},
