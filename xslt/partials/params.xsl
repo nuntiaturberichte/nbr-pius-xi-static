@@ -4,7 +4,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
     <xsl:param name="directory_name">nbr-pius-xi-static</xsl:param>
     <xsl:param name="project_title">Digitale Edition der Nuntiatur Pius XI</xsl:param>
-    <xsl:param name="redmine_id">18716</xsl:param>
+    <xsl:param name="redmine_id">24835</xsl:param>
     <xsl:param name="project_short_title">Nuntiatur Pius XI</xsl:param>
     <xsl:param name="github_url">https://github.com/nuntiaturberichte/nbr-pius-xi-static</xsl:param>
     <xsl:param name="html_title">Nuntiatur Pius XI</xsl:param>
