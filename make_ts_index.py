@@ -21,6 +21,11 @@ except ObjectNotFound:
 current_schema = {
     "name": COLLECTION_NAME,
     "enable_nested_fields": False,  # not needed because we don't index any objects
+    "metadata": {
+        "owners": ["Peter Andorfer", "Martin Kroißenbrunner"],
+        "description": "https://github.com/nuntiaturberichte/nbr-pius-xi-static",
+        "service_ids": [10920],
+    },
     "fields": [
         {"name": "id", "type": "string", "sort": True},
         {"name": "rec_id", "type": "string", "sort": True},
