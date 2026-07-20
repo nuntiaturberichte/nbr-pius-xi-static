@@ -1,7 +1,7 @@
 import glob
 import os
 
-from typesense.api_call import ObjectNotFound
+from typesense.exceptions import ObjectNotFound
 from acdh_cfts_pyutils import TYPESENSE_CLIENT as client, CFTS_COLLECTION
 from acdh_tei_pyutils.tei import TeiReader
 from acdh_tei_pyutils.utils import extract_fulltext, normalize_string
